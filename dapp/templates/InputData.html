@@ -1,0 +1,359 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+        <head>
+        <meta charset="utf-8" />
+        <title>Input-Data -TEMOA</title>
+        <meta name="description" content="Draggabble Widget Boxes &amp; Containers" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+            <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+            <link rel="stylesheet" href="assets/css/font-awesome.min.css" />
+            <link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+            <link rel="stylesheet" href="assets/css/chosen.css" />
+           <link rel="stylesheet" href="assets/css/ace-fonts.css" />
+            <link rel="stylesheet" href="assets/css/ace.min.css" />
+            <script src="assets/js/ace-extra.min.js"></script>
+        </head>
+
+<body style="background-color:#f7f7f7 !important;">
+    <div class="navbar navbar-default navbar-fixed-top" id="navbar">
+        <script type="text/javascript">
+				try{ace.settings.check('navbar' , 'fixed')}catch(e){}
+        </script>
+        <div class="">
+            <div class="navbar-header pull-left">
+                  <a href="#" target="_blank" class="navbar-brand no-padding-top no-padding-bottom"><i>
+                    <img src="assets/css/images/smallLogo.png"></i><span style="vertical-align:middle">  TEMOA</span></a><!-- /.brand -->
+            </div>
+            <div class="navbar-header pull-right " role="navigation">
+                <ul id="nav" class="nav ace-nav   autosize-transition ">
+                    <li class="active"><a href="">Input Data</a></li>
+
+                    <li><a href="ModelRun.html">Model Run</a></li>
+
+
+                    <li class="clearfix et"> <a href="OutputData.html"> Output Data </a> </li>
+                     <li class="clearfix et"> <a href="About-Us.html"> About us</a> </li>
+
+                    <li class="">
+                        <a data-toggle="dropdown" href="#" class="dropdown-toggle"> <img class="nav-user-photo" src="assets/avatars/avatar2.png" alt="Jason's Photo" /> <span class="user-info"> <small>Welcome,</small> Jason </span> <i class="icon-caret-down"></i> </a>
+                        <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+
+
+                            <li> <a href="login.html"> <i class="icon-off"></i> Logout </a> </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="main-container" id="main-container">
+        <script type="text/javascript">
+				try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+        </script>
+        <div class="main-container-inner">
+
+            <div class="">
+                <div class="page-content" style="background-color:#f7f7f7;">
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <!-- PAGE CONTENT BEGINS -->
+
+                            <h3 class="header lighter  blue no-margin-top ">Input Data </h3>
+                            <div class="space-10"></div>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 widget-container-span">
+                                    <div class="widget-box width-95" style="border-bottom:none; margin:auto;  background-color:#fff; padding:10px;">
+                                       
+                                        <div class="space-10"></div>
+                                        <form class="form-horizontal" role="form">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1">Select a Database or text file </label>
+                                               <div class="col-sm-5">
+                                                    <input type="file" id="id-input-file-2" class="form-control" />
+                                                </div>
+                                                <div class="col-sm-1 no-padding">
+                                                    <button class="btn btn-primary btn-sm form-control">View/Edit Data</button>
+                                                </div>
+                                            </div>
+                                            <div class="space-4"></div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-2"> Upload Data </label>
+                                                <div class="col-sm-5">
+                                                    <input type="file" id="id-input-file-2" class="form-control" />
+                                                </div>
+                                                <div class="col-sm-1 no-padding">
+                                                    <button class="btn btn-primary btn-sm form-control">Upload Data</button>
+                                                </div>
+                                            </div>
+
+                                        </form>
+
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="space-10"></div>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 widget-container-span">
+                                    <div class="widget-box width-95" style="background-color:#fff; margin:auto !important; border-bottom:none;  height:265px; padding:10px;">
+
+                                        <h4 class="row header lighter brown no-margin-top no-margin-left no-margin-right ">
+                                            <span class="col-xs-6"> Network Diagram Options  </span><!-- /.col -->
+
+                                            <span class="col-xs-6">
+                                                <span class="pull-right inline">
+
+
+                                                    <span class="btn-toolbar inline middle no-margin">
+                                                        <button class="btn btn-success btn-sm">Render Network Diagram</button>
+                                                    </span>
+                                                </span>
+                                            </span><!-- /.col -->
+                                        </h4>
+
+                                        <div class="space-16"></div>
+                                        <div class="row">
+                                            <div class="col-sm-1"></div>
+                                            <div class="col-sm-5">
+                                                Commodity Input Limit
+                                                <input type="text" class="form-control" placeholder="COAL" />
+                                            </div>
+                                            <div class="col-sm-5">
+                                                Commodity Output Limit
+                                                <input type="text" class="form-control" placeholder="ELC" />
+                                            </div>
+                                        </div>
+                                        <div class="space-8"></div>
+                                        <div class="row">
+                                            <div class="col-sm-1"></div>
+                                            <div class="col-sm-5">
+                                                Color Scheme
+                                                <div class="control-group">
+
+
+
+                                                    <label style="margin-right:20px;">
+                                                        <input name="form-field-radio" type="radio" class="ace">
+                                                        <span class="lbl"> Grey Scale </span>
+                                                    </label>
+
+                                                    <label>
+                                                        <input name="form-field-radio" type="radio" class="ace">
+                                                        <span class="lbl"> Color</span>
+                                                    </label>
+
+
+
+
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-5">
+                                                Output Format
+                                                <select class="form-control" id="" data-placeholder="Choose a Format...">
+                                                    <option value="">&nbsp;</option>
+                                                    <option value="AL">SVG</option>
+                                                    <option value="AK">Canvas</option>
+                                                </select>
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+
+                                <!-- /span -->
+                            </div>
+                            <!-- /row -->
+
+                            <div class="space-10"></div>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 widget-container-span">
+                                    <div class="widget-box width-95" style="background-color:#fff; margin:auto !important; padding:10px;">
+                                        <h4 class="header lighter brown no-margin-top "> Energy Network Diagram </h4>
+                                        <div class="space-16"></div>
+
+                                    </div>
+                                </div>
+
+                                <!-- /span -->
+                            </div>
+
+                            <!-- PAGE CONTENT ENDS -->
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.page-content -->
+            </div>
+            <!-- /.main-content -->
+            <!-- /#ace-settings-container -->
+        </div>
+      <div class="space-32"></div>     <!-- /.main-container-inner -->
+<div class="footer">
+  <div class="footer-inner">
+    <div class="footer-content"> <span class="bigger-120"> <span class="blue ">TEMOA</span> © 2015 Joe DeCarolis </span> &nbsp; &nbsp; </div>
+  </div>
+</div>
+        <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse"> <i class="icon-double-angle-up icon-only bigger-110"></i> </a>
+    </div>
+    <!-- /.main-container -->
+    <!-- basic scripts -->
+
+    <script type="text/javascript">
+        window.jQuery || document.write("<script src='assets/js/jquery-2.0.3.min.js'>" + "<" + "/script>");
+    </script>
+
+    <!-- <![endif]-->
+    <!--[if IE]>
+    <script type="text/javascript">
+     window.jQuery || document.write("<script src='assets/js/jquery-1.10.2.min.js'>"+"<"+"/script>");
+    </script>
+    <![endif]-->
+
+    <script type="text/javascript">
+        if ("ontouchend" in document) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
+    </script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/typeahead-bs2.min.js"></script>
+
+    <!-- page specific plugin scripts -->
+    <!--[if lte IE 8]>
+              <script src="assets/js/excanvas.min.js"></script>
+            <![endif]-->
+
+    <script src="assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="assets/js/jquery.ui.touch-punch.min.js"></script>
+    <script src="assets/js/chosen.jquery.min.js"></script>
+    
+    
+
+    <!-- ace scripts -->
+
+    <script src="assets/js/ace-elements.min.js"></script>
+    <script src="assets/js/ace.min.js"></script>
+
+    <!-- inline scripts related to this page -->
+
+    <script type="text/javascript">
+        jQuery(function ($) {
+             $(".chosen-select").chosen();
+             $('[data-rel=tooltip]').tooltip({ container: 'body' });
+             $('[data-rel=popover]').popover({ container: 'body' });
+             $('#id-input-file-1 , #id-input-file-2').ace_file_input({
+                no_file: 'No File ...',
+                btn_choose: 'Choose',
+                btn_change: 'Change',
+                droppable: false,
+                onchange: null,
+                thumbnail: false //| true | large
+                //whitelist:'gif|png|jpg|jpeg'
+                //blacklist:'exe|php'
+                //onchange:''
+                //
+            });
+
+            $('#id-input-file-3').ace_file_input({
+                style: 'well',
+                btn_choose: 'Drop files here or click to choose',
+                btn_change: null,
+                no_icon: 'icon-cloud-upload',
+                droppable: true,
+                thumbnail: 'small'//large | fit
+                //,icon_remove:null//set null, to hide remove/reset button
+                /**,before_change:function(files, dropped) {
+                    //Check an example below
+                    //or examples/file-upload.html
+                    return true;
+                }*/
+                /**,before_remove : function() {
+                    return true;
+                }*/
+                ,
+                preview_error: function (filename, error_code) {
+                    //name of the file that failed
+                    //error_code values
+                    //1 = 'FILE_LOAD_FAILED',
+                    //2 = 'IMAGE_LOAD_FAILED',
+                    //3 = 'THUMBNAIL_FAILED'
+                    //alert(error_code);
+                }
+
+            }).on('change', function () {
+                //console.log($(this).data('ace_input_files'));
+                //console.log($(this).data('ace_input_method'));
+            });
+
+
+            //dynamically change allowed formats by changing before_change callback function
+            $('#id-file-format').removeAttr('checked').on('change', function () {
+                var before_change
+                var btn_choose
+                var no_icon
+                if (this.checked) {
+                    btn_choose = "Drop images here or click to choose";
+                    no_icon = "icon-picture";
+                    before_change = function (files, dropped) {
+                        var allowed_files = [];
+                        for (var i = 0 ; i < files.length; i++) {
+                            var file = files[i];
+                            if (typeof file === "string") {
+                                //IE8 and browsers that don't support File Object
+                                if (!(/\.(jpe?g|png|gif|bmp)$/i).test(file)) return false;
+                            }
+                            else {
+                                var type = $.trim(file.type);
+                                if ((type.length > 0 && !(/^image\/(jpe?g|png|gif|bmp)$/i).test(type))
+                                        || (type.length == 0 && !(/\.(jpe?g|png|gif|bmp)$/i).test(file.name))//for android's default browser which gives an empty string for file.type
+                                    ) continue;//not an image so don't keep this file
+                            }
+
+                            allowed_files.push(file);
+                        }
+                        if (allowed_files.length == 0) return false;
+
+                        return allowed_files;
+                    }
+                }
+                else {
+                    btn_choose = "Drop files here or click to choose";
+                    no_icon = "icon-cloud-upload";
+                    before_change = function (files, dropped) {
+                        return files;
+                    }
+                }
+                var file_input = $('#id-input-file-3');
+                file_input.ace_file_input('update_settings', { 'before_change': before_change, 'btn_choose': btn_choose, 'no_icon': no_icon })
+                file_input.ace_file_input('reset_input');
+            });
+
+
+
+
+
+
+            
+           
+          
+
+            //we could just set the data-provide="tag" of the element inside HTML, but IE8 fails!
+            
+
+
+
+            /////////
+          
+
+            
+
+        });
+    </script>
+</body>
+
+</html>
