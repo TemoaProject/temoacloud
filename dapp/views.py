@@ -9,10 +9,15 @@ def login(request):
     return render_to_response('login.html', context_instance=RequestContext(request))
 
 
-def index(request):
+def runModel(request):
   
   
   return HttpResponse("Generating model...")
+
+def index(request):
+  
+  
+  return HttpResponse("Nothing for now...")
   
   
 
