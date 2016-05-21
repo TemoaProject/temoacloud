@@ -1,19 +1,23 @@
-
-from django.shortcuts import render_to_response
 from django.template import RequestContext
- 
-def index(request):
-    return render_to_response('login.html', context_instance=RequestContext(request))
-
-/*
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 from django.http import HttpResponse
 from thirdparty import test
 from thirdparty.temoa.db_io import Make_Graphviz
 import os
 
-# Create your views here.
+def login(request):
+    return render_to_response('login.html', context_instance=RequestContext(request))
+
+
 def index(request):
+  
+  
+  return HttpResponse("Generating model...")
+  
+  
+
+# Create your views here.
+def makeGraph(request):
   print test.tryme()
   
   #So we have to pass inputs to Make_Graphviz to generate graph
@@ -28,7 +32,7 @@ def index(request):
             "-o" : "result"
           }
   
-  3Make_Graphviz.createGraphBasedOnInput(inputs)
+  Make_Graphviz.createGraphBasedOnInput(inputs)
   
   
   #expected result
@@ -59,5 +63,5 @@ def index(request):
   
   
   return HttpResponse("Index SSS") 
-*/
+
 
