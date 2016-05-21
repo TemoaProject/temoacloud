@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from thirdparty import test
 from thirdparty.temoa.db_io import Make_Graphviz
+import os
 
 # Create your views here.
 def index(request):
@@ -10,7 +11,24 @@ def index(request):
   #So we have to pass inputs to Make_Graphviz to generate graph
   #After getting response run a ajax call to get that
   
-  inputs = {  }
+  filename = "/home/yash/Projects/dapp/thirdparty/temoa/db_io/temoa_utopia.sqlite"
+  
+  inputs = { 
+            "-i" : filename , 
+            "-f" : "svg",
+            "--scenario" : "sname" ,
+            "-o" : "result"
+          }
+  
+  Make_Graphviz.createGraphBasedOnInput(inputs)
+  
+  
+  #expected result
+  # image svg now fetch and show result
+  print "result/%s/" %( os.path.splitext(os.path.basename(filename))[0] )
+  
+  
+  
   
   #if opt in ("-i", "input"):
     #ifile = arg

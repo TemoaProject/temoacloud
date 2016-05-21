@@ -1991,167 +1991,200 @@ def help_user() :
 	| -o (or --output) <Optional output file path(to dump the images folder)>
 	| -h  (or --help) print help'''
   
-try:
-	argv = sys.argv[1:]
-	opts, args = getopt.getopt(argv, "hf:cvt:i:s:n:go:", ["help", "format=", "show_capacity", "splinevar", "graph_type=", "input=", "scenario=", "name=", "grey", "output="])
-except getopt.GetoptError:          
-	help_user()                          
-	sys.exit(2) 
+# try:
+# 	argv = sys.argv[1:]
+# 	opts, args = getopt.getopt(argv, "hf:cvt:i:s:n:go:", ["help", "format=", "show_capacity", "splinevar", "graph_type=", "input=", "scenario=", "name=", "grey", "output="])
+# except getopt.GetoptError:          
+# 	help_user()                          
+# 	sys.exit(2) 
 	
-for opt, arg in opts:
-	if opt in ("-h", "--help"):
-		help_user()
-		sys.exit()
-	elif opt in ("-i", "--input"):
-		ifile = arg
-	elif opt in ("-f", "--format"):
-		graph_format = arg
-	elif opt in ("-c", "--show_capacity"):
-		show_capacity = True
-	elif opt in ("-v", "--splinevar") :
-		splinevar = True
-	elif opt in ("-t", "--graph_type") :
-		graph_type = arg
-	elif opt in ("-s", "--scenario") :
-		scenario = arg
-	elif opt in ("-n", "--name") :
-		quick_name = arg
-	elif opt in ("-o", "--output") :
-		res_dir = arg
-	elif opt in ("-g", "--grey") :
-		grey_flag = False
+# for opt, arg in opts:
+# 	if opt in ("-h", "--help"):
+# 		help_user()
+# 		sys.exit()
+# 	elif opt in ("-i", "--input"):
+# 		ifile = arg
+# 	elif opt in ("-f", "--format"):
+# 		graph_format = arg
+# 	elif opt in ("-c", "--show_capacity"):
+# 		show_capacity = True
+# 	elif opt in ("-v", "--splinevar") :
+# 		splinevar = True
+# 	elif opt in ("-t", "--graph_type") :
+# 		graph_type = arg
+# 	elif opt in ("-s", "--scenario") :
+# 		scenario = arg
+# 	elif opt in ("-n", "--name") :
+# 		quick_name = arg
+# 	elif opt in ("-o", "--output") :
+# 		res_dir = arg
+# 	elif opt in ("-g", "--grey") :
+# 		grey_flag = False
 
-if ifile is None:
-	print "You did not specify one or more of the following required flags: -i(or --input)"
-	help_user()
-	sys.exit()
+# if ifile is None:
+# 	print "You did not specify one or more of the following required flags: -i(or --input)"
+# 	help_user()
+# 	sys.exit()
 
-file_ty = re.search(r"(\w+)\.(\w+)\b", ifile) # Extract the input filename and extension
-if not file_ty :
-	print "The file type %s is not recognized." % ifile
-	sys.exit(2)
-elif file_ty.group(2) in ("db", "sqlite", "sqlite3", "sqlitedb") :
-	db_dat_flag = 1
-	if scenario is None:
-		quick_flag = True
-		if quick_name is None:
-			quick_name = file_ty.group(1)
-		else:
-			quick_name = file_ty.group(1) + '_' + quick_name
-	else:
-		quick_name = file_ty.group(1)
+# file_ty = re.search(r"(\w+)\.(\w+)\b", ifile) # Extract the input filename and extension
+# if not file_ty :
+# 	print "The file type %s is not recognized." % ifile
+# 	sys.exit(2)
+# elif file_ty.group(2) in ("db", "sqlite", "sqlite3", "sqlitedb") :
+# 	db_dat_flag = 1
+# 	if scenario is None:
+# 		quick_flag = True
+# 		if quick_name is None:
+# 			quick_name = file_ty.group(1)
+# 		else:
+# 			quick_name = file_ty.group(1) + '_' + quick_name
+# 	else:
+# 		quick_name = file_ty.group(1)
 		
-elif file_ty.group(2) in ("dat", "txt") :
-	quick_flag = True
-	db_dat_flag = 0
-	if quick_name is None:
-		quick_name = file_ty.group(1)
-	else:
-		quick_name = file_ty.group(1) + '_' + quick_name
-else :
-	print "The input file type %s is not recognized. Please specify a database or a text file." % ifile
-	sys.exit(2)
+# elif file_ty.group(2) in ("dat", "txt") :
+# 	quick_flag = True
+# 	db_dat_flag = 0
+# 	if quick_name is None:
+# 		quick_name = file_ty.group(1)
+# 	else:
+# 		quick_name = file_ty.group(1) + '_' + quick_name
+# else :
+# 	print "The input file type %s is not recognized. Please specify a database or a text file." % ifile
+# 	sys.exit(2)
 	
-print "Reading File %s ..." %ifile 
-if quick_flag :
-	ifile = os.path.realpath(ifile)
-	if res_dir is None:
-		res_dir = "current directory"
-	else:
-		os.chdir(res_dir)
-	CreateModelDiagrams ()
-	print "Done. Look for results in %s" %res_dir
-else:
-	db_file(ifile)
-	InitializeProcessParameters ()
-	calc_intermediates(ifile)
-	print "Creating Diagrams..."
-	if res_dir is None:
-		res_dir = "current directory"
-	else:
-		os.chdir(res_dir)
-	CreateModelDiagrams ()
-	print "Done. Look for results in %s_%s folder in %s" %(quick_name, scenario, res_dir)
-	
-	
+# print "Reading File %s ..." %ifile 
+# if quick_flag :
+# 	ifile = os.path.realpath(ifile)
+# 	if res_dir is None:
+# 		res_dir = "current directory"
+# 	else:
+# 		os.chdir(res_dir)
+# 	CreateModelDiagrams ()
+# 	print "Done. Look for results in %s" %res_dir
+# else:
+# 	db_file(ifile)
+# 	InitializeProcessParameters ()
+# 	calc_intermediates(ifile)
+# 	print "Creating Diagrams..."
+# 	if res_dir is None:
+# 		res_dir = "current directory"
+# 	else:
+# 		os.chdir(res_dir)
+# 	CreateModelDiagrams ()
+# 	print "Done. Look for results in %s_%s folder in %s" %(quick_name, scenario, res_dir)
 	
 	
+
 	
-def createGraphBasedOnInput(**kwargs):
-    if kwargs is None:
-		raise "no arguments found", level
+	
+def createGraphBasedOnInput(inputs):
+	
+	global ifile ,  graph_format,  show_capacity,  graph_type,  splinevar,  quick_flag,  quick_name, \
+    grey_flag,  scenario,  res_dir,  inp_comm,  out_comm,  db_dat_flag
+
+	if inputs is None:
+		raise "no arguments found"
 		
-    for opt, arg in kwargs.iteritems():
-        
+	for opt, arg in inputs.iteritems():
+	    
 		print "%s == %s" %(opt, arg)
-        
-        	if opt in ("-i", "--input"):
-        		ifile = arg
-        	elif opt in ("-f", "--format"):
-        		graph_format = arg
-        	elif opt in ("-c", "--show_capacity"):
-        		show_capacity = True
-        	elif opt in ("-v", "--splinevar") :
-        		splinevar = True
-        	elif opt in ("-t", "--graph_type") :
-        		graph_type = arg
-        	elif opt in ("-s", "--scenario") :
-        		scenario = arg
-        	elif opt in ("-n", "--name") :
-        		quick_name = arg
-        	elif opt in ("-o", "--output") :
-        		res_dir = arg
-        	elif opt in ("-g", "--grey") :
-        		grey_flag = False
+	    
+		if opt in ("-i", "--input"):
+			ifile = arg
+		elif opt in ("-f", "--format"):
+			graph_format = arg
+		elif opt in ("-c", "--show_capacity"):
+			show_capacity = True
+		elif opt in ("-v", "--splinevar") :
+			splinevar = True
+		elif opt in ("-t", "--graph_type") :
+			graph_type = arg
+		elif opt in ("-s", "--scenario") :
+			scenario = arg
+		elif opt in ("-n", "--name") :
+			quick_name = arg
+		elif opt in ("-o", "--output") :
+			res_dir = arg
+		elif opt in ("-g", "--grey") :
+			grey_flag = False
 
-if ifile is None:
-	print "You did not specify one or more of the following required flags: -i(or --input)"
-	help_user()
-	sys.exit()
+	if ifile is None:
+			print "You did not specify one or more of the following required flags: -i(or --input)"
+			raise "Input file is missing"
 
-file_ty = re.search(r"(\w+)\.(\w+)\b", ifile) # Extract the input filename and extension
-if not file_ty :
-	print "The file type %s is not recognized." % ifile
-	sys.exit(2)
-elif file_ty.group(2) in ("db", "sqlite", "sqlite3", "sqlitedb") :
-	db_dat_flag = 1
-	if scenario is None:
+	file_ty = re.search(r"(\w+)\.(\w+)\b", ifile) # Extract the input filename and extension
+	
+	if not file_ty :
+		raise "The file type %s is not recognized." % ifile
+		
+	elif file_ty.group(2) in ("db", "sqlite", "sqlite3", "sqlitedb") :
+		db_dat_flag = 1
+		
+		if scenario is None:
+			quick_flag = True
+			if quick_name is None:
+				quick_name = file_ty.group(1)
+			else:
+				quick_name = file_ty.group(1) + '_' + quick_name
+		
+		else:
+			quick_name = file_ty.group(1)
+			
+	elif file_ty.group(2) in ("dat", "txt") :
 		quick_flag = True
+		db_dat_flag = 0
+	
 		if quick_name is None:
 			quick_name = file_ty.group(1)
 		else:
 			quick_name = file_ty.group(1) + '_' + quick_name
-	else:
-		quick_name = file_ty.group(1)
-		
-elif file_ty.group(2) in ("dat", "txt") :
-	quick_flag = True
-	db_dat_flag = 0
-	if quick_name is None:
-		quick_name = file_ty.group(1)
-	else:
-		quick_name = file_ty.group(1) + '_' + quick_name
-else :
-	print "The input file type %s is not recognized. Please specify a database or a text file." % ifile
-	sys.exit(2)
 	
-print "Reading File %s ..." %ifile 
-if quick_flag :
-	ifile = os.path.realpath(ifile)
-	if res_dir is None:
-		res_dir = "current directory"
+	else :
+		print "The input file type %s is not recognized. Please specify a database or a text file." % ifile
+		sys.exit(2)
+		
+	print "Reading File %s ..." %ifile 
+	
+	if quick_flag :
+		ifile = os.path.realpath(ifile)
+		
+		if res_dir is None:
+			res_dir = "current directory"
+		else:
+			os.chdir(res_dir)
+		
+		CreateModelDiagrams ()
+		
+		print "Done. Look for results in %s" %res_dir
+	
 	else:
-		os.chdir(res_dir)
-	CreateModelDiagrams ()
-	print "Done. Look for results in %s" %res_dir
-else:
-	db_file(ifile)
-	InitializeProcessParameters ()
-	calc_intermediates(ifile)
-	print "Creating Diagrams..."
-	if res_dir is None:
-		res_dir = "current directory"
-	else:
-		os.chdir(res_dir)
-	CreateModelDiagrams ()
-	print "Done. Look for results in %s_%s folder in %s" %(quick_name, scenario, res_dir)
+		db_file(ifile)
+		InitializeProcessParameters ()
+		calc_intermediates(ifile)
+		
+		print "Creating Diagrams..."
+		
+		if res_dir is None:
+			res_dir = "current directory"
+		else:
+			os.chdir(res_dir)
+		
+		
+		CreateModelDiagrams ()
+		
+		print "Done. Look for results in %s_%s folder in %s" %(quick_name, scenario, res_dir)
+
+
+if __name__ == "__main__":	
+	
+	try:
+		argv = sys.argv[1:]
+ 		opts, args = getopt.getopt(argv, "hf:cvt:i:s:n:go:", ["help", "format=", "show_capacity", "splinevar", "graph_type=", "input=", "scenario=", "name=", "grey", "output="])
+		
+		print opts
+		
+ 	except getopt.GetoptError:          
+ 		help_user()                          
+ 		sys.exit(2) 
+	
+	createGraphBasedOnInput( dict(opts) )
