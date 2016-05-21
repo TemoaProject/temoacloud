@@ -21,7 +21,7 @@ in LICENSE.txt.  Users uncompressing this from an archive may not have
 received this license file.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-__all__ = ( 'temoa_create_model', )
+#__all__ = ( 'temoa_create_model', )
 
 from temoa_rules import *
 
@@ -344,7 +344,7 @@ def temoa_create_model ( name='The Temoa Energy System Model' ):
       dimen=6, initialize=TechOutputSplitConstraintIndices )
     M.TechOutputSplitConstraint = Constraint( 
       M.TechOutputSplitConstraint_psdtvo, 
-      rule=TechOutputSplit_Constraint )file:///home/yash/Projects/dapp/thirdparty/temoa/temoa_model/config_sample
+      rule=TechOutputSplit_Constraint )
 
 
     return M
@@ -361,18 +361,18 @@ def runModel():
 
 
 
-if '__main__' == __name__:
-  #default temoa_create_model function arg is 'name'
-  model = temoa_create_model()
-
-  
-  # This script was apparently invoked directly, rather than through Pyomo.
-  # $ ./model.py  test.dat           # called directly
-  # $ lpython  model.py  test.dat    # called directly
-  # $ pyomo    model.py  test.dat    # through Pyomo
-
-  # Calling this script directly enables a cleaner formatting than Pyomo's
-  # default output, but (currently) forces the choice of solver to GLPK.
-  from temoa_lib import temoa_solve
-  temoa_solve( model )
+#if '__main__' == __name__:
+  ##default temoa_create_model function arg is 'name'
+  #model = temoa_create_model()
+#
+  #
+  ## This script was apparently invoked directly, rather than through Pyomo.
+  ## $ ./model.py  test.dat           # called directly
+  ## $ lpython  model.py  test.dat    # called directly
+  ## $ pyomo    model.py  test.dat    # through Pyomo
+#
+  ## Calling this script directly enables a cleaner formatting than Pyomo's
+  ## default output, but (currently) forces the choice of solver to GLPK.
+  #from temoa_lib import temoa_solve
+  #temoa_solve( model )
 

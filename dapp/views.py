@@ -2,7 +2,10 @@ from django.template import RequestContext
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse
 from thirdparty import test
+
 from thirdparty.temoa.db_io import Make_Graphviz
+from thirdparty.temoa.temoa_model import temoa_model
+
 import os
 
 def login(request):
@@ -11,6 +14,7 @@ def login(request):
 
 def runModel(request):
   
+  temoa_model.runModel()
   
   return HttpResponse("Generating model...")
 
