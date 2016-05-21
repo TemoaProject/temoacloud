@@ -1,19 +1,18 @@
 ﻿<!DOCTYPE html>
-<html lang="en" style="background-color:#f7f7f7 !important;">
+<html lang="en">
         <head>
         <meta charset="utf-8" />
-        <title>Output-Data -TEMOA</title>
+        <title>Input-Data -TEMOA</title>
         <meta name="description" content="Draggabble Widget Boxes &amp; Containers" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <link href="/static/assets/css/bootstrap.min.css" rel="stylesheet" />
-            <link rel="stylesheet" href="/static/assets/css/font-awesome.min.css" />
-            <link rel="stylesheet" href="/static/assets/css/jquery-ui-1.10.3.custom.min.css" />
-            <link rel="stylesheet" href="/static/assets/css/chosen.css" />
-           <link rel="stylesheet" href="/static/assets/css/ace-fonts.css" />
-            <link rel="stylesheet" href="/static/assets/css/ace.min.css" />
-            <script src="/static/assets/js/ace-extra.min.js"></script>
-
+            <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+            <link rel="stylesheet" href="assets/css/font-awesome.min.css" />
+            <link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+            <link rel="stylesheet" href="assets/css/chosen.css" />
+           <link rel="stylesheet" href="assets/css/ace-fonts.css" />
+            <link rel="stylesheet" href="assets/css/ace.min.css" />
+            <script src="assets/js/ace-extra.min.js"></script>
         </head>
 
 <body style="background-color:#f7f7f7 !important;">
@@ -23,12 +22,12 @@
         </script>
         <div class="">
             <div class="navbar-header pull-left">
-                 <a href="#" target="_blank" class="navbar-brand no-padding-top no-padding-bottom"><i>
-                    <img src="/static/assets/css/images/smallLogo.png"></i>  <span style="vertical-align:middle">TEMOA</span></a><!-- /.brand -->
+                  <a href="#" target="_blank" class="navbar-brand no-padding-top no-padding-bottom"><i>
+                    <img src="assets/css/images/smallLogo.png"></i><span style="vertical-align:middle">  TEMOA</span></a><!-- /.brand -->
             </div>
             <div class="navbar-header pull-right " role="navigation">
                 <ul id="nav" class="nav ace-nav   autosize-transition ">
-                    <li class="active"><a href="InputData.html">Input Data</a></li>
+                    <li class="active"><a href="">Input Data</a></li>
 
                     <li><a href="ModelRun.html">Model Run</a></li>
 
@@ -37,7 +36,7 @@
                      <li class="clearfix et"> <a href="About-Us.html"> About us</a> </li>
 
                     <li class="">
-                        <a data-toggle="dropdown" href="#" class="dropdown-toggle"> <img class="nav-user-photo" src="/static/assets/avatars/avatar2.png" alt="Jason's Photo" /> <span class="user-info"> <small>Welcome,</small> Jason </span> <i class="icon-caret-down"></i> </a>
+                        <a data-toggle="dropdown" href="#" class="dropdown-toggle"> <img class="nav-user-photo" src="assets/avatars/avatar2.png" alt="Jason's Photo" /> <span class="user-info"> <small>Welcome,</small> Jason </span> <i class="icon-caret-down"></i> </a>
                         <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
 
 
@@ -61,36 +60,43 @@
                         <div class="col-xs-12">
                             <!-- PAGE CONTENT BEGINS -->
 
-                            <h3 class="header lighter  blue no-margin-top ">Output Data </h3>
+                            <h3 class="header lighter  blue no-margin-top ">Input Data </h3>
                             <div class="space-10"></div>
                             <div class="row">
-                            <div class="col-xs-12 col-sm-12 widget-container-span">
-                                <div class="widget-box width-95" style="border-bottom:none; margin:auto;  background-color:#fff; padding:10px;">
-
-                                    <div class="space-10"></div>
-
-                                    <form class="form-horizontal" role="form">
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1">Select a Database or text file </label>
-                                            <div class="col-sm-5">
-                                              <input type="file" id="id-input-file-2" class="form-control" />
+                                <div class="col-xs-12 col-sm-12 widget-container-span">
+                                    <div class="widget-box width-95" style="border-bottom:none; margin:auto;  background-color:#fff; padding:10px;">
+                                       
+                                        <div class="space-10"></div>
+                                        <form class="form-horizontal" role="form">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1">Select a Database or text file </label>
+                                               <div class="col-sm-5">
+                                                    <input type="file" id="id-input-file-2" class="form-control" />
+                                                </div>
+                                                <div class="col-sm-1 no-padding">
+                                                    <button class="btn btn-primary btn-sm form-control">View/Edit Data</button>
+                                                </div>
                                             </div>
-                                            <div class="col-sm-1 no-padding">
-                                                <button class="btn btn-primary btn-sm form-control">View/Edit Data</button>
+                                            <div class="space-4"></div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-2"> Upload Data </label>
+                                                <div class="col-sm-5">
+                                                    <input type="file" id="id-input-file-2" class="form-control" />
+                                                </div>
+                                                <div class="col-sm-1 no-padding">
+                                                    <button class="btn btn-primary btn-sm form-control">Upload Data</button>
+                                                </div>
                                             </div>
-                                        </div>
 
-
-
-                                    </form>
+                                        </form>
 
 
 
 
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                            <div class="space-14"></div>
+                            <div class="space-10"></div>
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 widget-container-span">
                                     <div class="widget-box width-95" style="background-color:#fff; margin:auto !important; border-bottom:none;  height:265px; padding:10px;">
@@ -165,7 +171,7 @@
                             </div>
                             <!-- /row -->
 
-                            <div class="space-14"></div>
+                            <div class="space-10"></div>
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 widget-container-span">
                                     <div class="widget-box width-95" style="background-color:#fff; margin:auto !important; padding:10px;">
@@ -189,27 +195,7 @@
             <!-- /.main-content -->
             <!-- /#ace-settings-container -->
         </div>
-        <!-- /.main-container-inner -->
-<div id="Run" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Modal Header</h4>
-      </div>
-      <div class="modal-body">
-        <p>Some text in the modal.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-
-  </div>
-</div>
-<div class="space-32"></div> 
+      <div class="space-32"></div>     <!-- /.main-container-inner -->
 <div class="footer">
   <div class="footer-inner">
     <div class="footer-content"> <span class="bigger-120"> <span class="blue ">TEMOA</span> © 2015 Joe DeCarolis </span> &nbsp; &nbsp; </div>
@@ -217,40 +203,41 @@
 </div>
         <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse"> <i class="icon-double-angle-up icon-only bigger-110"></i> </a>
     </div>
+    <!-- /.main-container -->
     <!-- basic scripts -->
 
     <script type="text/javascript">
-        window.jQuery || document.write("<script src='/static/assets/js/jquery-2.0.3.min.js'>" + "<" + "/script>");
+        window.jQuery || document.write("<script src='assets/js/jquery-2.0.3.min.js'>" + "<" + "/script>");
     </script>
 
     <!-- <![endif]-->
     <!--[if IE]>
     <script type="text/javascript">
-     window.jQuery || document.write("<script src='/static/assets/js/jquery-1.10.2.min.js'>"+"<"+"/script>");
+     window.jQuery || document.write("<script src='assets/js/jquery-1.10.2.min.js'>"+"<"+"/script>");
     </script>
     <![endif]-->
 
     <script type="text/javascript">
-        if ("ontouchend" in document) document.write("<script src='/static/assets/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
+        if ("ontouchend" in document) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
     </script>
-    <script src="/static/assets/js/bootstrap.min.js"></script>
-    <script src="/static/assets/js/typeahead-bs2.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/typeahead-bs2.min.js"></script>
 
     <!-- page specific plugin scripts -->
     <!--[if lte IE 8]>
-              <script src="/static/assets/js/excanvas.min.js"></script>
+              <script src="assets/js/excanvas.min.js"></script>
             <![endif]-->
 
-    <script src="/static/assets/js/jquery-ui-1.10.3.custom.min.js"></script>
-    <script src="/static/assets/js/jquery.ui.touch-punch.min.js"></script>
-    <script src="/static/assets/js/chosen.jquery.min.js"></script>
+    <script src="assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="assets/js/jquery.ui.touch-punch.min.js"></script>
+    <script src="assets/js/chosen.jquery.min.js"></script>
     
     
 
     <!-- ace scripts -->
 
-    <script src="/static/assets/js/ace-elements.min.js"></script>
-    <script src="/static/assets/js/ace.min.js"></script>
+    <script src="assets/js/ace-elements.min.js"></script>
+    <script src="assets/js/ace.min.js"></script>
 
     <!-- inline scripts related to this page -->
 
@@ -368,4 +355,5 @@
         });
     </script>
 </body>
+
 </html>

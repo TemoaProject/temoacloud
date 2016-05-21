@@ -8,10 +8,16 @@ import os
 def login(request):
     return render_to_response('login.html', context_instance=RequestContext(request))
 
+def inputdata(request):
+    return render_to_response('InputData.html', context_instance=RequestContext(request))
+
+def outputdata(request):
+    return render_to_response('OutputData.html', context_instance=RequestContext(request))
+
+def modelrun(request):
+    return render_to_response('ModelRun.html', context_instance=RequestContext(request))
 
 def index(request):
-  
-  
   return HttpResponse("Generating model...")
   
   
