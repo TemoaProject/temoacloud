@@ -56,7 +56,7 @@ ROOT_URLCONF = 'dproject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['/home/vivek/code/python/dapp/dapp/templates'],
+        'DIRS': [''],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -121,8 +121,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static")
+    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "assets")
 ]
-STATIC_ROOT = "/home/vivek/code/dapp/static/"
+STATIC_ROOT = ""
+#STATIC_ROOT = "/home/vivek/code/dapp/static/"
 
 
