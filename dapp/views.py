@@ -28,8 +28,11 @@ def runModel(request):
 
 def index(request):
   
-  
   return HttpResponse("Nothing for now...")
+
+
+def about(request):
+  return render_to_response('About-Us.html', context_instance=RequestContext(request))
   
   
 

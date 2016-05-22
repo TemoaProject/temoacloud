@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" style="background-color:#f7f7f7 !important;">
 <head>
 <meta charset="utf-8" />
@@ -60,13 +60,14 @@
     </div>
     <div class="navbar-header pull-right " role="navigation">
       <ul id="nav" class="nav ace-nav   autosize-transition ">
-        <li class="active"><a href="InputData.html">Input Data</a></li>
-        <li><a href="ModelRun.html">Model Run</a></li>
-        <li class="clearfix et"> <a href="OutputData.html"> Output Data </a> </li>
-         <li class="clearfix et"> <a href="About-Us.html"> About us</a> </li>
+        
+        <li class="active"><a href="{% url 'input' %}">Input Data</a></li>
+        <li><a href="{% url 'modelrun' %}">Model Run</a></li>
+        <li class="clearfix et"> <a href="{% url 'output' %}"> Output Data </a> </li>
+        <li class="clearfix et"> <a href="{% url 'about' %}"> About us</a> </li>
         <li class=""> <a data-toggle="dropdown" href="#" class="dropdown-toggle"> <img class="nav-user-photo" src="/static/assets/avatars/avatar2.png" alt="Jason's Photo" /> <span class="user-info"> <small>Welcome,</small> Jason </span> <i class="icon-caret-down"></i> </a>
           <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
-            <li> <a href="login.html"> <i class="icon-off"></i> Logout </a> </li>
+            <li> <a href="{% url 'login' %}"> <i class="icon-off"></i> Logout </a> </li>
           </ul>
         </li>
       </ul>
@@ -372,6 +373,7 @@ DeCarolis, J. F., Babaee, S., Li, B., & Kanungo, S. (2015). Modelling to generat
 														<span class="lbl"> choice 1</span>
 													</label>
 												</div>
+file:///home/yash/Projects/dapp/dapp/templates/master.html
 
 												<div class="checkbox">
 													<label>

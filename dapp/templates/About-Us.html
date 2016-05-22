@@ -1,17 +1,17 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" style="background-color:#f7f7f7 !important;">
 <head>
 <meta charset="utf-8" />
 <title>About-Us  -TEMOA</title>
 <meta name="description" content="Draggabble Widget Boxes &amp; Containers" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link href="assets/css/bootstrap.min.css" rel="stylesheet" />
-<link rel="stylesheet" href="assets/css/font-awesome.min.css" />
-<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
-<link rel="stylesheet" href="assets/css/chosen.css" />
-<link rel="stylesheet" href="assets/css/ace-fonts.css" />
-<link rel="stylesheet" href="assets/css/ace.min.css" />
-<script src="assets/js/ace-extra.min.js"></script>
+<link rel="stylesheet" href="/static/assets/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/static/assets/css/font-awesome.min.css" />
+<link rel="stylesheet" href="/static/assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="/static/assets/css/chosen.css" />
+<link rel="stylesheet" href="/static/assets/css/ace-fonts.css" />
+<link rel="stylesheet" href="/static/assets/css/ace.min.css" />
+<script src="/static/assets/js/ace-extra.min.js"></script>
 </head>
 
 <body style="background-color:#f7f7f7 !important;">
@@ -20,17 +20,19 @@
 				try{ace.settings.check('navbar' , 'fixed')}catch(e){}
         </script>
   <div class="">
-    <div class="navbar-header pull-left"> <a href="#" target="_blank" class="navbar-brand no-padding-top no-padding-bottom"><i> <img src="assets/css/images/smallLogo.png"></i> <span style="vertical-align:middle">TEMOA</span></a><!-- /.brand --> 
+    <div class="navbar-header pull-left"> <a href="#" target="_blank" class="navbar-brand no-padding-top no-padding-bottom">
+    <i> <img src="/static/assets/css/images/smallLogo.png"></i> <span style="vertical-align:middle">TEMOA</span></a><!-- /.brand --> 
     </div>
     <div class="navbar-header pull-right " role="navigation">
       <ul id="nav" class="nav ace-nav   autosize-transition ">
-        <li class="active"><a href="InputData.html">Input Data</a></li>
-        <li><a href="ModelRun.html">Model Run</a></li>
-        <li class="clearfix et"> <a href="OutputData.html"> Output Data </a> </li>
-        <li class="clearfix et"> <a href="About-Us.html"> About us</a> </li>
-        <li class=""> <a data-toggle="dropdown" href="#" class="dropdown-toggle"> <img class="nav-user-photo" src="assets/avatars/avatar2.png" alt="Jason's Photo" /> <span class="user-info"> <small>Welcome,</small> Jason </span> <i class="icon-caret-down"></i> </a>
+        
+        <li><a href="{% url 'input' %}">Input Data</a></li>
+        <li><a href="{% url 'modelrun' %}">Model Run</a></li>
+        <li class="clearfix et"> <a href="{% url 'output' %}"> Output Data </a> </li>
+        <li  class="active clearfix et"> <a href="{% url 'about' %}"> About us</a> </li>
+        <li class=""> <a data-toggle="dropdown" href="#" class="dropdown-toggle"> <img class="nav-user-photo" src="/static/assets/avatars/avatar2.png" alt="Jason's Photo" /> <span class="user-info"> <small>Welcome,</small> Jason </span> <i class="icon-caret-down"></i> </a>
           <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
-            <li> <a href="login.html"> <i class="icon-off"></i> Logout </a> </li>
+            <li> <a href="{% url 'login' %}"> <i class="icon-off"></i> Logout </a> </li>
           </ul>
         </li>
       </ul>
@@ -117,35 +119,35 @@
 <!-- basic scripts -->
 
 <script type="text/javascript">
-        window.jQuery || document.write("<script src='assets/js/jquery-2.0.3.min.js'>" + "<" + "/script>");
+        window.jQuery || document.write("<script src='/static/assets/js/jquery-2.0.3.min.js'>" + "<" + "/script>");
     </script> 
 
 <!-- <![endif]--> 
 <!--[if IE]>
     <script type="text/javascript">
-     window.jQuery || document.write("<script src='assets/js/jquery-1.10.2.min.js'>"+"<"+"/script>");
+     window.jQuery || document.write("<script src='/static/assets/js/jquery-1.10.2.min.js'>"+"<"+"/script>");
     </script>
     <![endif]--> 
 
 <script type="text/javascript">
-        if ("ontouchend" in document) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
+        if ("ontouchend" in document) document.write("<script src='/static/assets/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
     </script> 
-<script src="assets/js/bootstrap.min.js"></script> 
-<script src="assets/js/typeahead-bs2.min.js"></script> 
+<script src="/static/assets/js/bootstrap.min.js"></script> 
+<script src="/static/assets/js/typeahead-bs2.min.js"></script> 
 
 <!-- page specific plugin scripts --> 
 <!--[if lte IE 8]>
-              <script src="assets/js/excanvas.min.js"></script>
+              <script src="/static/assets/js/excanvas.min.js"></script>
             <![endif]--> 
 
-<script src="assets/js/jquery-ui-1.10.3.custom.min.js"></script> 
-<script src="assets/js/jquery.ui.touch-punch.min.js"></script> 
-<script src="assets/js/chosen.jquery.min.js"></script> 
+<script src="/static/assets/js/jquery-ui-1.10.3.custom.min.js"></script> 
+<script src="/static/assets/js/jquery.ui.touch-punch.min.js"></script> 
+<script src="/static/assets/js/chosen.jquery.min.js"></script> 
 
 <!-- ace scripts --> 
 
-<script src="assets/js/ace-elements.min.js"></script> 
-<script src="assets/js/ace.min.js"></script> 
+<script src="/static/assets/js/ace-elements.min.js"></script> 
+<script src="/static/assets/js/ace.min.js"></script> 
 
 <!-- inline scripts related to this page --> 
 
