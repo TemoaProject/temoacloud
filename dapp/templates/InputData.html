@@ -61,7 +61,7 @@
                                     <div class="widget-box width-95" style="border-bottom:none; margin:auto;  background-color:#fff; padding:10px;">
                                        
                                         <div class="space-10"></div>
-                                        <form class="form-horizontal" role="form">
+                                        <form class="form-horizontal" action="/dapp/fileupload" method="post"role="form">
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label no-padding-right" for="form-field-1">Select a Database or text file </label>
                                                <div class="col-sm-5">
@@ -77,10 +77,15 @@
                                                 <div class="col-sm-5">
                                                     <input type="file" id="id-input-file-2" class="form-control" />
                                                 </div>
+                                                  <!-- The global progress bar -->
+                                                
                                                 <div class="col-sm-1 no-padding">
-                                                    <button class="btn btn-primary btn-sm form-control">Upload Data</button>
+                                                    <button id="file-upload-button"class="btn btn-primary btn-sm form-control">Upload Data</button>
                                                 </div>
                                             </div>
+                                            <div id="progress" class="progress">
+                                                    <div class="progress-bar progress-bar-success"></div>
+                                                </div>
 
                                         </form>
 
@@ -232,10 +237,39 @@
 
     <script src="/static/assets/js/ace-elements.min.js"></script>
     <script src="/static/assets/js/ace.min.js"></script>
+     <!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+     <script src="/static/assets/js/jquery.iframe-transport.js"></script>
+     <!-- The basic File Upload plugin -->
+     <script src="/static/assets/js/jquery.fileupload.js"></script>
+       <script>
 
-    <!-- inline scripts related to this page -->
+$('#file-upload-button').on("click",function(e){
+    //e.preventDefault();
 
-    <script type="text/javascript">
+    /*
+    'use strict';
+    // Change this to the location of your server-side upload handler:
+    var url = 'dapp/fileupload';
+    $('#id-input-file-2').fileupload({ 
+        url: url,
+        dataType: 'json',
+        done: function (e, data) {
+            $.each(data.result.files, function (index, file) {
+                $('<p/>').text(file.name).appendTo('#files');
+            });
+        },
+        progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#progress .progress-bar').css(
+                'width',
+                progress + '%'
+            );
+        }
+    }).prop('disabled', !$.support.fileInput)
+        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+        */
+});
+
         jQuery(function ($) {
              $(".chosen-select").chosen();
              $('[data-rel=tooltip]').tooltip({ container: 'body' });
@@ -326,26 +360,6 @@
                 file_input.ace_file_input('update_settings', { 'before_change': before_change, 'btn_choose': btn_choose, 'no_icon': no_icon })
                 file_input.ace_file_input('reset_input');
             });
-
-
-
-
-
-
-            
-           
-          
-
-            //we could just set the data-provide="tag" of the element inside HTML, but IE8 fails!
-            
-
-
-
-            /////////
-          
-
-            
-
         });
     </script>
 </body>

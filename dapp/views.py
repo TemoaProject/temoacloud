@@ -2,6 +2,11 @@ from django.template import RequestContext
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse
 from thirdparty import test
+import json
+import os
+import re
+import urllib
+from django.views.decorators.csrf import csrf_exempt
 
 from thirdparty.temoa.db_io import Make_Graphviz
 from thirdparty.temoa.temoa_model import temoa_model
@@ -33,6 +38,11 @@ def index(request):
 
 def about(request):
   return render_to_response('About-Us.html', context_instance=RequestContext(request))
+
+@csrf_exempt
+def fileUpload(request):
+  result = fileUploadHandler(request)
+  return HttpResponse("File uploaded result")
   
   
 
@@ -83,5 +93,18 @@ def makeGraph(request):
   
   
   return HttpResponse("Index SSS") 
+
+def fileUploadHandler(request):
+    result = 0
+    if request.method == 'POST':
+            result = handle_uploaded_file(request.FILES['file'])
+    else:
+        result = 1
+    return result
+
+def handle_uploaded_file(f):
+    with open('/home/vivek/upload/name.txt', 'wb+') as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
 
 
