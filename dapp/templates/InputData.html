@@ -61,11 +61,13 @@
                                     <div class="widget-box width-95" style="border-bottom:none; margin:auto;  background-color:#fff; padding:10px;">
                                        
                                         <div class="space-10"></div>
-                                        <form class="form-horizontal" action="/dapp/fileupload" method="post"role="form">
+                                        <form class="form-horizontal" action="/dapp/fileupload" method="POST" enctype="multipart/form-data" role="form">
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label no-padding-right" for="form-field-1">Select a Database or text file </label>
                                                <div class="col-sm-5">
-                                                    <input type="file" id="id-input-file-2" class="form-control" />
+                                                 <div id="myId" class="dropzone">
+                                                    <input type="file" name="file"id="id-input-file-2" class="form-control" />
+                                                </div>
                                                 </div>
                                                 <div class="col-sm-1 no-padding">
                                                     <button class="btn btn-primary btn-sm form-control">View/Edit Data</button>
@@ -230,45 +232,21 @@
     <script src="/static/assets/js/jquery-ui-1.10.3.custom.min.js"></script>
     <script src="/static/assets/js/jquery.ui.touch-punch.min.js"></script>
     <script src="/static/assets/js/chosen.jquery.min.js"></script>
-    
+    <script src="/static/assets/js/ace.min.js"></script>
+    <script src="/static/assets/js/ace-elements.min.js"></script>
+    <script src="/static/assets/js/ace-extra.min.js"></script>
     
 
     <!-- ace scripts -->
-
-    <script src="/static/assets/js/ace-elements.min.js"></script>
-    <script src="/static/assets/js/ace.min.js"></script>
-     <!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
-     <script src="/static/assets/js/jquery.iframe-transport.js"></script>
-     <!-- The basic File Upload plugin -->
-     <script src="/static/assets/js/jquery.fileupload.js"></script>
+     <script src="/static/assets/js/dropzone.js"></script>
        <script>
-
+/*
 $('#file-upload-button').on("click",function(e){
-    //e.preventDefault();
-
-    /*
-    'use strict';
-    // Change this to the location of your server-side upload handler:
-    var url = 'dapp/fileupload';
-    $('#id-input-file-2').fileupload({ 
-        url: url,
-        dataType: 'json',
-        done: function (e, data) {
-            $.each(data.result.files, function (index, file) {
-                $('<p/>').text(file.name).appendTo('#files');
-            });
-        },
-        progressall: function (e, data) {
-            var progress = parseInt(data.loaded / data.total * 100, 10);
-            $('#progress .progress-bar').css(
-                'width',
-                progress + '%'
-            );
-        }
-    }).prop('disabled', !$.support.fileInput)
-        .parent().addClass($.support.fileInput ? undefined : 'disabled');
-        */
-});
+ e.preventDefault();
+ alert("hi");
+("div#myId").dropzone({ url: "/dapp/fileupload"});
+alert("hi"); exit;
+});*/
 
         jQuery(function ($) {
              $(".chosen-select").chosen();

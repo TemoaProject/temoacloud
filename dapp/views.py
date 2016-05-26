@@ -10,6 +10,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 from thirdparty.temoa.db_io import Make_Graphviz
 from thirdparty.temoa.temoa_model import temoa_model
+from .forms import UploadFileForm
+from .models import ModelWithFileField
 
 import os
 
@@ -41,7 +43,7 @@ def about(request):
 
 @csrf_exempt
 def fileUpload(request):
-  result = fileUploadHandler(request)
+  fileUploadHandler(request)
   return HttpResponse("File uploaded result")
   
   
@@ -95,16 +97,15 @@ def makeGraph(request):
   return HttpResponse("Index SSS") 
 
 def fileUploadHandler(request):
-    result = 0
     if request.method == 'POST':
-            result = handle_uploaded_file(request.FILES['file'])
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            instance = ModelWithFileField(file_field=request.FILES['file'])
+            instance.save()
+            return HttpResponseRedirect('/dapp/input')
     else:
-        result = 1
-    return result
+        form = UploadFileForm()
+    return render(request, 'input.html')
 
-def handle_uploaded_file(f):
-    with open('/home/vivek/upload/name.txt', 'wb+') as destination:
-        for chunk in f.chunks():
-            destination.write(chunk)
 
 
