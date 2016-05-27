@@ -1,6 +1,6 @@
 from django.template import RequestContext
 from django.shortcuts import render, render_to_response
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from thirdparty import test
 import json
 import os
@@ -36,6 +36,7 @@ def runModel(request):
   #temoa_model.runModel()
   
   return HttpResponse("Generating model...")
+
 
 def index(request):
   
@@ -109,28 +110,47 @@ def fileUpload(request):
     
     if request.method == 'POST':
         
-        #form = UploadFileForm(request.POST, request.FILES)
         
-        #if form.is_valid():
+        result = handle_uploaded_file( request.FILES['file'] )
         
-        handle_uploaded_file( request.FILES['file'] )
-        return HttpResponse("Success")
-        #return HttpResponseRedirect('/success/url/')
+        #if string is empty we have no errors hence success
+        if not result :
+            return HttpResponse("Success")
+        
     
-    return HttpResponse("Failed")
+    return JsonResponse({'error': result}, status = 403)
 
 def handle_uploaded_file(f):
+    import os.path
     
-    print(f)
-    print("Some")
-    print('uploads/input/' + f.name)
+    
+    fname = 'uploads/input/' + f.name
+    
+    print(fname)
+    
+    if(os.path.isfile(fname) ):
+        print "Testing" + fname
+        return "File already exists. Please rename and try to upload."
     
     with open('uploads/input/' + f.name, 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
-
-
-    
-
-    
             
+    loadFiles()
+    
+    return "";
+
+
+def loadFiles():
+    import glob
+    
+    #print glob.glob("upload/adam/*.txt")
+    
+    types = ('*.data', '*.sqlite') # the tuple of file types
+    files_grabbed = []
+    for type in types:
+        files_grabbed.extend(glob.glob('uploads/input/' + type))
+
+    print (files_grabbed)
+    
+

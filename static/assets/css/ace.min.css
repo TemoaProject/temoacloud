@@ -2497,8 +2497,7 @@ li [class*=" icon-"],
     }
     .menu-toggler {
         display: inline-block;
-        position: absolute;
-        left: 0;
+        position: absolute;        left: 0;
         z-index: 998;
         width: 52px;
         height: 32px;
@@ -4997,8 +4996,7 @@ span.input-icon {
 .form-inline .radio [type=radio]+label,
 .form-search .checkbox [type=checkbox]+label,
 .form-inline .checkbox [type=checkbox]+label {
-    float: left;
-    margin-left: -20px
+    float: left;    margin-left: -20px
 }
 .form-search .form-search .radio [type=radio]+label,
 .form-search .form-inline .radio [type=radio]+label,
@@ -7497,8 +7495,7 @@ td .lbl:only-child {
 }
 .tooltip-warning+.tooltip>.tooltip-inner {
     background-color: #ed9421;
-    color: #FFF;
-    text-shadow: 1px 1px 0 rgba(100, 90, 10, 0.3);
+    color: #FFF;    text-shadow: 1px 1px 0 rgba(100, 90, 10, 0.3);
     border-radius: 0
 }
 .tooltip-warning+.tooltip.top .tooltip-arrow {
@@ -9997,8 +9994,7 @@ ul.attachment-list>li {
     color: #777
 }
 .timeline-style2 .timeline-item .widget-box {
-    margin-left: 112px
-}
+    margin-left: 112px}
 .timeline-style2 .timeline-label {
     width: 75px;
     text-align: center;
@@ -12497,8 +12493,7 @@ th[aria-selected=true] .ui-jqgrid-sortable {
     text-align: center;
     border-radius: 100%;
     background-color: #FFF
-}
-.EditTable .navButton .fm-button:hover [class*="icon-"] {
+}.EditTable .navButton .fm-button:hover [class*="icon-"] {
     color: #699ab5;
     border-color: #699ab5
 }
@@ -12892,80 +12887,7 @@ th[aria-selected=true] .ui-jqgrid-sortable {
 .dd-dragel>.dd-item>.dd2-handle .normal-icon {
     display: none
 }
-.dropzone {
-    border-radius: 0;
-    border: 1px solid rgba(0, 0, 0, 0.06)
-}
-.dropzone .dz-default.dz-message {
-    background-image: none;
-    font-size: 24px;
-    text-align: center;
-    line-height: 32px;
-    left: 0;
-    width: 100%;
-    margin-left: auto
-}
-.dropzone .dz-default.dz-message span {
-    display: inline;
-    color: #555
-}
-.dropzone .dz-default.dz-message span .upload-icon {
-    opacity: .7;
-    filter: alpha(opacity=70);
-    margin-top: 8px;
-    cursor: pointer
-}
-.dropzone .dz-default.dz-message span .upload-icon:hover {
-    opacity: 1;
-    filter: alpha(opacity=100)
-}
-.dropzone .dz-preview .dz-error-mark,
-.dropzone-previews .dz-preview .dz-error-mark,
-.dropzone .dz-preview .dz-success-mark,
-.dropzone-previews .dz-preview .dz-success-mark {
-    background-image: none;
-    background-color: rgba(255, 255, 255, 0.8);
-    border-radius: 100%;
-    text-align: center;
-    line-height: 35px
-}
-.dropzone .dz-preview .dz-error-mark:before,
-.dropzone-previews .dz-preview .dz-error-mark:before {
-    font-family: FontAwesome;
-    font-size: 30px;
-    color: #db6262;
-    content: "\f00d"
-}
-.dropzone .dz-preview .dz-success-mark:before,
-.dropzone-previews .dz-preview .dz-success-mark:before {
-    font-family: FontAwesome;
-    font-size: 30px;
-    color: #6da552;
-    content: "\f00c"
-}
-.dropzone a.dz-remove,
-.dropzone-previews a.dz-remove {
-    border: 0;
-    border-radius: 0;
-    color: #FFF;
-    background: #d15b47;
-    cursor: pointer
-}
-.dropzone a.dz-remove:hover,
-.dropzone-previews a.dz-remove:hover {
-    color: #FFF;
-    background: #b74635
-}
-.dropzone .progress,
-.dropzone-previews .progress {
-    margin-bottom: 0
-}
-.dropzone .dz-preview.dz-success .progress,
-.dropzone-previews .dz-preview.dz-success .progress,
-.dropzone .dz-preview.dz-error .progress,
-.dropzone-previews .dz-preview.dz-error .progress {
-    display: none
-}
+
 .icon-animated-bell {
     display: inline-block;
     -moz-animation: ringing 2.0s 5 ease 1.0s;
