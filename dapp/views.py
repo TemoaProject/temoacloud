@@ -14,7 +14,7 @@ from django.views.decorators.csrf import csrf_exempt
 #from .models import ModelWithFileField
 
 from thirdparty.temoa.db_io import Make_Graphviz
-from thirdparty.temoa.temoa_model import temoa_model
+#from thirdparty.temoa.temoa_model import temoa_model
 
 
 import os
@@ -33,7 +33,7 @@ def modelRun(request):
 
 def runModel(request):
   
-  temoa_model.runModel()
+  #temoa_model.runModel()
   
   return HttpResponse("Generating model...")
 
@@ -45,10 +45,10 @@ def index(request):
 def about(request):
   return render_to_response('About-Us.html', context_instance=RequestContext(request))
 
-@csrf_exempt
-def fileUpload(request):
-  upload_file(request)
-  return HttpResponse("File uploaded result")
+#@csrf_exempt
+#def fileUpload(request):
+#  upload_file(request)
+#  return HttpResponse("File uploaded result")
   
   
 
@@ -104,19 +104,28 @@ class UploadFileForm(forms.Form):
     title = forms.CharField(max_length=50)
     file = forms.FileField()
 
-def upload_file(request):
-    if request.method == 'POST':
-        form = UploadFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            handle_uploaded_file(request.FILES['file'])
-            return HttpResponseRedirect('/success/url/')
-    else:
-        form = UploadFileForm()
+@csrf_exempt
+def fileUpload(request):
     
-    return render(request, 'upload.html', {'form': form})
+    if request.method == 'POST':
+        
+        #form = UploadFileForm(request.POST, request.FILES)
+        
+        #if form.is_valid():
+        
+        handle_uploaded_file( request.FILES['file'] )
+        return HttpResponse("Success")
+        #return HttpResponseRedirect('/success/url/')
+    
+    return HttpResponse("Failed")
 
 def handle_uploaded_file(f):
-    with open('some/file/name.txt', 'wb+') as destination:
+    
+    print(f)
+    print("Some")
+    print('uploads/input/' + f.name)
+    
+    with open('uploads/input/' + f.name, 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
 

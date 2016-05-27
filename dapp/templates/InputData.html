@@ -65,7 +65,7 @@
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label no-padding-right" for="form-field-1">Select a Database or text file </label>
                                                <div class="col-sm-5">
-                                                 <div id="myId" class="dropzone">
+                                                 <div id="dropArea" class="dropzone">
                                                     <input type="file" name="file"id="id-input-file-2" class="form-control" />
                                                 </div>
                                                 </div>
@@ -249,10 +249,12 @@ alert("hi"); exit;
 });*/
 
         jQuery(function ($) {
+            
              $(".chosen-select").chosen();
              $('[data-rel=tooltip]').tooltip({ container: 'body' });
              $('[data-rel=popover]').popover({ container: 'body' });
-             $('#id-input-file-1 , #id-input-file-2').ace_file_input({
+             
+            $('#id-input-file-1 , #id-input-file-2').ace_file_input({
                 no_file: 'No File ...',
                 btn_choose: 'Choose',
                 btn_change: 'Change',
@@ -264,6 +266,9 @@ alert("hi"); exit;
                 //onchange:''
                 //
             });
+            
+            
+            $("div#dropArea").dropzone({ url: "/dapp/fileupload" });
 
             $('#id-input-file-3').ace_file_input({
                 style: 'well',
