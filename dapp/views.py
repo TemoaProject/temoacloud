@@ -6,12 +6,16 @@ import json
 import os
 import re
 import urllib
+
+from django import forms
+
 from django.views.decorators.csrf import csrf_exempt
+#from .forms import UploadFileForm
+#from .models import ModelWithFileField
 
 from thirdparty.temoa.db_io import Make_Graphviz
 from thirdparty.temoa.temoa_model import temoa_model
-from .forms import UploadFileForm
-from .models import ModelWithFileField
+
 
 import os
 
@@ -43,7 +47,7 @@ def about(request):
 
 @csrf_exempt
 def fileUpload(request):
-  fileUploadHandler(request)
+  upload_file(request)
   return HttpResponse("File uploaded result")
   
   
@@ -96,16 +100,28 @@ def makeGraph(request):
   
   return HttpResponse("Index SSS") 
 
-def fileUploadHandler(request):
+class UploadFileForm(forms.Form):
+    title = forms.CharField(max_length=50)
+    file = forms.FileField()
+
+def upload_file(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            instance = ModelWithFileField(file_field=request.FILES['file'])
-            instance.save()
-            return HttpResponseRedirect('/dapp/input')
+            handle_uploaded_file(request.FILES['file'])
+            return HttpResponseRedirect('/success/url/')
     else:
         form = UploadFileForm()
-    return render(request, 'input.html')
+    
+    return render(request, 'upload.html', {'form': form})
+
+def handle_uploaded_file(f):
+    with open('some/file/name.txt', 'wb+') as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
 
 
+    
 
+    
+            

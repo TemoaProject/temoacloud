@@ -2,7 +2,14 @@
 
     sudo apt-get install libblas-dev liblapack-dev libatlas-base-dev gfortran graphviz
 
-    pip  --user install django scipy 
+    pip  --user install django scipy pyomo pyomo.extras  
+	
+	wget http://ftp.gnu.org/gnu/glpk/glpk-4.60.tar.gz
+	tar -xvz glpk-4.60.tar.gz
+	./configure
+	make
+	sudo make install
+
 
 
 We will update this more
