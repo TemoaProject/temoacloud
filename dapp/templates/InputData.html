@@ -62,12 +62,17 @@
                                     <div class="widget-box width-95" style="border-bottom:none; margin:auto;  background-color:#fff; padding:10px;">
                                        
                                         <div class="space-10"></div>
-                                        <form class="form-horizontal" action="/dapp/fileupload" method="POST" enctype="multipart/form-data" role="form">
+                                        <form class="form-horizontal" action="/dapp/runinput" method="POST" enctype="multipart/form-data" role="form">
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label no-padding-right" for="form-field-1">Select a Database or text file </label>
                                                <div class="col-sm-5">
                                                  <div id="dropArea" class="dropzone">
-                                                    <input type="file" name="file"id="id-input-file-2" class="form-control" />
+                                                 <select class="form-control" id="" data-placeholder="Choose a Format...">
+                                                    <option value="">&nbsp;</option>
+                                                    <option value="AL">SVG</option>
+                                                    <option value="AK">Canvas</option>
+                                                </select>
+                                                    <!-- <input type="file" name="file"id="id-input-file-2" class="form-control" /> -->
                                                 </div>
                                                 </div>
                                                 <div class="col-sm-1 no-padding">
@@ -268,8 +273,18 @@ alert("hi"); exit;
                 //
             });
             
-            
-            $("div#dropArea").dropzone({ url: "/dapp/fileupload" });
+            // Dropzone class:
+            var myDropzone = new Dropzone("div#dropArea", { url: "/dapp/fileupload"});
+
+
+            //$("div#dropArea").dropzone({ url: "/dapp/fileupload" });
+
+            myDropzone.on("success", function(file) {
+                /* Maybe display some more file information on your page */
+                alert("hi");
+            });
+
+
 
             $('#id-input-file-3').ace_file_input({
                 style: 'well',
