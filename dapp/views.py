@@ -143,8 +143,8 @@ def handle_uploaded_file(f):
 
 
 def loadFileList(request):
-  fileList = json.dumps(loadFiles())
-  return HttpResponse(fileList)
+  fileList = { "data" : loadFiles() }
+  return JsonResponse(fileList)
 
 def loadFiles():
   import glob   
