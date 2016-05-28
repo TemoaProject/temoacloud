@@ -21,16 +21,16 @@ from thirdparty.temoa.temoa_model import temoa_model
 import os
 
 def login(request):
-    return render_to_response('login.html', context_instance=RequestContext(request))
+  return render_to_response('login.html', context_instance=RequestContext(request))
 
 def inputData(request):
-    return render_to_response('InputData.html', context_instance=RequestContext(request))
+  return render_to_response('InputData.html', context_instance=RequestContext(request))
 
 def outputData(request):
-    return render_to_response('OutputData.html', context_instance=RequestContext(request))
+  return render_to_response('OutputData.html', context_instance=RequestContext(request))
 
 def modelRun(request):
-    return render_to_response('ModelRun.html', context_instance=RequestContext(request))
+  return render_to_response('ModelRun.html', context_instance=RequestContext(request))
 
 def runModel(request):
   
@@ -53,9 +53,7 @@ def about(request):
 #  return HttpResponse("File uploaded result")
 
 
-def loadFileList(request):
-  fileList = json.dumps(loadFiles())
-  return HttpResponse(fileList)
+
   
   
 
@@ -107,58 +105,60 @@ def makeGraph(request):
   
   return HttpResponse("Index SSS") 
 
-class UploadFileForm(forms.Form):
-    title = forms.CharField(max_length=50)
-    file = forms.FileField()
 
 @csrf_exempt
 def fileUpload(request):
     
-    if request.method == 'POST':
+  if request.method == 'POST':        
         
-        
-        result = handle_uploaded_file( request.FILES['file'] )
-        
-        #if string is empty we have no errors hence success
-        if not result :
-          fileList = loadFiles()
-    return JsonResponse(fileList)
-        
+    result = handle_uploaded_file( request.FILES['file'] )
+    
+    #if string is empty we have no errors hence success
+    if not result :
+      fileList = loadFiles()
+      #JsonResponse( {'success' : 'File uploading finished'} )
+
+      return JsonResponse({'success' : fileList})
+      
     
     return JsonResponse({'error': result}, status = 403)
 
 def handle_uploaded_file(f):
-    import os.path
-    
-    
-    fname = 'uploads/input/' + f.name
-    
-    print(fname)
-    
-    if(os.path.isfile(fname) ):
-        print "Testing" + fname
-        return "File already exists. Please rename and try to upload."
-    
-    with open('uploads/input/' + f.name, 'wb+') as destination:
-        for chunk in f.chunks():
-            destination.write(chunk)
-    
-    return "";
+  import os.path
+  
+  
+  fname = 'uploads/input/' + f.name
+  
+  print(fname)
+  
+  if(os.path.isfile(fname) ):
+    print "Testing" + fname
+    return "File already exists. Please rename and try to upload."
+  
+  with open('uploads/input/' + f.name, 'wb+') as destination:
+    for chunk in f.chunks():
+      destination.write(chunk)
+  
+  return "";
 
+
+def loadFileList(request):
+  fileList = json.dumps(loadFiles())
+  return HttpResponse(fileList)
 
 def loadFiles():
-    import glob   
-    #print glob.glob("upload/adam/*.txt")
-    types = ('*.data', '*.sqlite') # the tuple of file types
-    files_grabbed = []
-    for type in types:
-        files_grabbed.extend(glob.glob('uploads/input/' + type))
-    fileList = []
+  import glob   
+  #print glob.glob("upload/adam/*.txt")
+  types = ('*.data', '*.sqlite') # the tuple of file types
+  files_grabbed = []
+  for type in types:
+      files_grabbed.extend(glob.glob('uploads/input/' + type))
+  fileList = []
 
-    for file in files_grabbed:
-      fileList.append(os.path.basename(file))
+  for file in files_grabbed:
+    fileList.append(os.path.basename(file))
 
-    return fileList;
+  return fileList;
 
     
 
