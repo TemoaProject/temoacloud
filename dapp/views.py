@@ -143,7 +143,7 @@ def handle_uploaded_file(f):
 
 
 def loadFileList(request):
-  fileList = { "data" : loadFiles() }
+  fileList = { "success" : loadFiles() }
   return JsonResponse(fileList)
 
 def loadFiles():

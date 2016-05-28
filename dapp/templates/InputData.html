@@ -196,7 +196,7 @@
                 /* Maybe display some more file information on your page */
                 //alert("hi");
                 var options = '<option value="0">--Select Input File--</option>';
-                $.each(fileList.data, function(index, obj){
+                $.each(fileList.success, function(index, obj){
                       options += "<option value="+obj+">"+obj+"</option>";
                  });
                 $("#file-list").html(options);
@@ -212,7 +212,7 @@
               cache: false,
               success: function(result){
                 var options = '<option value="0">--Select Input File--</option>';
-                $.each(result.data, function(index, obj){
+                $.each(result.success, function(index, obj){
                    options += "<option value="+obj+">"+obj+"</option>";
                 });
                 $("#file-list").html(options);
