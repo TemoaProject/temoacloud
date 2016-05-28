@@ -54,8 +54,10 @@ def about(request):
 
 
 def loadFileList(request):
-  fileList = json.dumps(loadFiles())
-  return HttpResponse(fileList)
+  fileList = {
+             "data":loadFiles()
+             }
+  return JsonResponse(fileList)
   
   
 
