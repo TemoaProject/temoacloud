@@ -1,29 +1,5 @@
 {% extends 'layout.html' %} 
 {% block body_block %}
-<div class="navbar navbar-default navbar-fixed-top" id="navbar"> 
-  <script type="text/javascript">
-				try{ace.settings.check('navbar' , 'fixed')}catch(e){}
-        </script>
-  <div class="">
-    <div class="navbar-header pull-left"> <a href="#" target="_blank" class="navbar-brand no-padding-top no-padding-bottom">
-    <i> <img src="/static/assets/css/images/smallLogo.png"></i> <span style="vertical-align:middle">TEMOA</span></a><!-- /.brand --> 
-    </div>
-    <div class="navbar-header pull-right " role="navigation">
-      <ul id="nav" class="nav ace-nav   autosize-transition ">
-        
-        <li><a href="{% url 'input' %}">Input Data</a></li>
-        <li><a href="{% url 'modelrun' %}">Model Run</a></li>
-        <li class="clearfix et"> <a href="{% url 'output' %}"> Output Data </a> </li>
-        <li  class="active clearfix et"> <a href="{% url 'about' %}"> About us</a> </li>
-        <li class=""> <a data-toggle="dropdown" href="#" class="dropdown-toggle"> <img class="nav-user-photo" src="/static/assets/avatars/avatar2.png" alt="Jason's Photo" /> <span class="user-info"> <small>Welcome,</small> Jason </span> <i class="icon-caret-down"></i> </a>
-          <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
-            <li> <a href="{% url 'login' %}"> <i class="icon-off"></i> Logout </a> </li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-  </div>
-</div>
 <div class="main-container" id="main-container"> 
   <script type="text/javascript">
 				try{ace.settings.check('main-container' , 'fixed')}catch(e){}
