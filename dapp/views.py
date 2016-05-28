@@ -6,6 +6,7 @@ import json
 import os
 import re
 import urllib
+import json
 
 from django import forms
 
@@ -50,6 +51,11 @@ def about(request):
 #def fileUpload(request):
 #  upload_file(request)
 #  return HttpResponse("File uploaded result")
+
+
+def loadFileList(request):
+  fileList = json.dumps(loadFiles())
+  return HttpResponse(fileList)
   
   
 
@@ -115,7 +121,8 @@ def fileUpload(request):
         
         #if string is empty we have no errors hence success
         if not result :
-            return HttpResponse("Success")
+          fileList = loadFiles()
+    return JsonResponse(fileList)
         
     
     return JsonResponse({'error': result}, status = 403)
@@ -135,22 +142,23 @@ def handle_uploaded_file(f):
     with open('uploads/input/' + f.name, 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
-            
-    loadFiles()
     
     return "";
 
 
 def loadFiles():
-    import glob
-    
+    import glob   
     #print glob.glob("upload/adam/*.txt")
-    
     types = ('*.data', '*.sqlite') # the tuple of file types
     files_grabbed = []
     for type in types:
         files_grabbed.extend(glob.glob('uploads/input/' + type))
+    fileList = []
 
-    print (files_grabbed)
+    for file in files_grabbed:
+      fileList.append(os.path.basename(file))
+
+    return fileList;
+
     
 
