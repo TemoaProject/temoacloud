@@ -9,7 +9,7 @@
             <div class="">
                 <div class="page-content" style="background-color:#f7f7f7;">
 
-                    <form class="form-horizontal" action="/dapp/runinput" method="POST" enctype="multipart/form-data" role="form">
+                    <form id="input-form" class="form-horizontal" action="/dapp/runinput" method="POST" enctype="multipart/form-data" role="form">
                     <div class="row">
                         <div class="col-xs-12">
                             <!-- PAGE CONTENT BEGINS -->
@@ -76,11 +76,11 @@
                                             <div class="col-sm-1"></div>
                                             <div class="col-sm-5">
                                                 Commodity Input Limit
-                                                <input type="text" class="form-control" placeholder="COAL" name="commodityinputlimit" />
+                                                <input id="comomodity-input-text"type="text" class="form-control" placeholder="COAL" name="commodityinputlimit" />
                                             </div>
                                             <div class="col-sm-5">
                                                 Commodity Output Limit
-                                                <input type="text" class="form-control" placeholder="ELC" name="commodityoutputlimit" />
+                                                <input id="comomodity-output-text"type="text" class="form-control" placeholder="ELC" name="commodityoutputlimit" />
                                             </div>
                                         </div>
                                         <div class="space-8"></div>
@@ -93,12 +93,12 @@
 
 
                                                     <label style="margin-right:20px;">
-                                                        <input name="colorscheme" type="radio" class="ace" value="grey">
+                                                        <input id="color-scheme"name="colorscheme" selected type="radio" class="ace" value="grey">
                                                         <span class="lbl"> Grey Scale </span>
                                                     </label>
 
                                                     <label>
-                                                        <input name="colorscheme" type="radio" class="ace" value="color">
+                                                        <input d="color-scheme"name="colorscheme" type="radio" class="ace" value="color">
                                                         <span class="lbl"> Color</span>
                                                     </label>
 
@@ -109,8 +109,7 @@
                                             </div>
                                             <div class="col-sm-5">
                                                 Output Format
-                                                <select class="form-control" id="" name="format"  data-placeholder="Choose a Format...">
-                                                    <option value="">&nbsp;</option>
+                                                <select class="form-control" id="output-format" name="format"  data-placeholder="Choose a Format...">
                                                     <option value="svg">SVG</option>
                                                     <option value="canvas">Canvas</option>
                                                 </select>
@@ -139,7 +138,7 @@
 
 
                                                     <span class="btn-toolbar inline middle no-margin">
-                                                        <input type="submit" class="btn btn-success btn-sm" value="Render Network Diagram" />
+                                                        <input id="input-submit-button"type="submit" class="btn btn-success btn-sm" value="Render Network Diagram" />
                                                     </span>
                                                 </span>
                                             </span>
@@ -189,6 +188,10 @@
                 //
             });
             
+              $("#input-form").submit(function(e){
+                e.preventDefault();
+                inputFormSubmit();
+});
             // Dropzone class:
             var myDropzone = new Dropzone("div#dropArea", { url: "/dapp/fileupload"});
 
@@ -310,6 +313,30 @@
             });
         });
 
+     function inputFormSubmit(){
+      fileInput = $("#file-list option:selected").text();
+      if(fileInput == '--Select Input File--'){
+        alert("Error: Please select input file");
+        return false;
+      }
+      comInput = $("#comomodity-input-text").val();
+      comOutput = $("#comomodity-output-text").val();
+      colorScheme = $("input[name=qcolorscheme]:checked").val();
+      outputFormat = $("#output-format").text();
+      formData = "datafile="+fileInput+"&commodityoutputlimit"+comInput+"&commodityinputlimit="+comOutput+"&ccolorscheme="+colorScheme+"&format="+outputFormat;
+      
+      var url = '/dapp/runinput';
+      $.ajax({ 
+              url: url,
+              method:"post",
+              data:formData,
+              dataType:'json',
+              success:function(result){
+                alert(result);
+              }
+            }); 
+      
+     }
 
     </script>
     {% endblock %}
