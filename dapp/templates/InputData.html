@@ -9,6 +9,7 @@
             <div class="">
                 <div class="page-content" style="background-color:#f7f7f7;">
 
+                    <form class="form-horizontal" action="/dapp/runinput" method="POST" enctype="multipart/form-data" role="form">
                     <div class="row">
                         <div class="col-xs-12">
                             <!-- PAGE CONTENT BEGINS -->
@@ -20,15 +21,13 @@
                                     <div class="widget-box width-95" style="border-bottom:none; margin:auto;  background-color:#fff; padding:10px;">
                                        
                                         <div class="space-10"></div>
-                                        <form class="form-horizontal" action="/dapp/runinput" method="POST" enctype="multipart/form-data" role="form">
+                                        
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label no-padding-right" for="form-field-1">Select a Database or text file </label>
                                                <div class="col-sm-5">
                                                  <div id="dropArea" class="dropzone">
-                                                 <select class="form-control" id="file-list" data-placeholder="Choose a Format...">
-                                                    <option value="">&nbsp;</option>
-                                                    <option value="AL">SVG</option>
-                                                    <option value="AK">Canvas</option>
+                                                 <select class="form-control" id="file-list" name="datafile" data-placeholder="">
+                                                 
                                                 </select>
                                                     <!-- <input type="file" name="file"id="id-input-file-2" class="form-control" /> -->
                                                 </div>
@@ -53,7 +52,7 @@
                                                     <div class="progress-bar progress-bar-success"></div>
                                                 </div>
 
-                                        </form>
+                                       
 
 
 
@@ -68,7 +67,7 @@
 
                                         <h4 class="row header lighter brown no-margin-top no-margin-left no-margin-right ">
                                             <span class="col-xs-6"> Network Diagram Options  </span><!-- /.col -->
-
+                                            
                               
                                         </h4>
 
@@ -77,11 +76,11 @@
                                             <div class="col-sm-1"></div>
                                             <div class="col-sm-5">
                                                 Commodity Input Limit
-                                                <input type="text" class="form-control" placeholder="COAL" />
+                                                <input type="text" class="form-control" placeholder="COAL" name="commodityinputlimit" />
                                             </div>
                                             <div class="col-sm-5">
                                                 Commodity Output Limit
-                                                <input type="text" class="form-control" placeholder="ELC" />
+                                                <input type="text" class="form-control" placeholder="ELC" name="commodityoutputlimit" />
                                             </div>
                                         </div>
                                         <div class="space-8"></div>
@@ -94,12 +93,12 @@
 
 
                                                     <label style="margin-right:20px;">
-                                                        <input name="form-field-radio" type="radio" class="ace">
+                                                        <input name="colorscheme" type="radio" class="ace" value="grey">
                                                         <span class="lbl"> Grey Scale </span>
                                                     </label>
 
                                                     <label>
-                                                        <input name="form-field-radio" type="radio" class="ace">
+                                                        <input name="colorscheme" type="radio" class="ace" value="color">
                                                         <span class="lbl"> Color</span>
                                                     </label>
 
@@ -110,10 +109,10 @@
                                             </div>
                                             <div class="col-sm-5">
                                                 Output Format
-                                                <select class="form-control" id="" data-placeholder="Choose a Format...">
+                                                <select class="form-control" id="" name="format"  data-placeholder="Choose a Format...">
                                                     <option value="">&nbsp;</option>
-                                                    <option value="AL">SVG</option>
-                                                    <option value="AK">Canvas</option>
+                                                    <option value="svg">SVG</option>
+                                                    <option value="canvas">Canvas</option>
                                                 </select>
                                             </div>
 
@@ -140,10 +139,10 @@
 
 
                                                     <span class="btn-toolbar inline middle no-margin">
-                                                        <button class="btn btn-success btn-sm">Render Network Diagram</button>
+                                                        <input type="submit" class="btn btn-success btn-sm" value="Render Network Diagram" />
                                                     </span>
                                                 </span>
-                                            </sp
+                                            </span>
                                         <div class="space-16"></div>
 
                                     </div>
@@ -156,6 +155,10 @@
                         </div>
                         <!-- /.col -->
                     </div>
+                    
+                     </form>
+                    
+                    
                     <!-- /.row -->
                 </div>
                 <!-- /.page-content -->

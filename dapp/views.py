@@ -7,6 +7,8 @@ import os
 import re
 import urllib
 import json
+from django.conf import settings
+
 
 from django import forms
 
@@ -15,7 +17,7 @@ from django.views.decorators.csrf import csrf_exempt
 #from .models import ModelWithFileField
 
 from thirdparty.temoa.db_io import Make_Graphviz
-from thirdparty.temoa.temoa_model import temoa_model
+#from thirdparty.temoa.temoa_model import temoa_model
 
 
 import os
@@ -34,7 +36,7 @@ def modelRun(request):
 
 def runModel(request):
   
-  temoa_model.runModel()
+  #temoa_model.runModel()
   
   return HttpResponse("Generating model...")
 
@@ -53,25 +55,50 @@ def about(request):
 #  return HttpResponse("File uploaded result")
 
 
-
-  
-  
-
-# Create your views here.
-def makeGraph(request):
-  print test.tryme()
-  
-  #So we have to pass inputs to Make_Graphviz to generate graph
-  #After getting response run a ajax call to get that
-  
-  filename = "/home/yash/Projects/dapp/thirdparty/temoa/db_io/temoa_utopia.sqlite"
-  
-  inputs = { 
-            "-i" : filename , 
+#get posted data
+def runInput(request):
+  if request.method == 'POST':
+    format = request.POST.get("format", "svg")
+    colorscheme = request.POST.get("colorscheme", "color")
+    commodityoutputlimit =request.POST.get("commodityoutputlimit", "")
+    commodityinputlimit =request.POST.get("commodityinputlimit", "")
+    filename =request.POST.get("datafile", "")
+    
+    #fulldirpath = os.path.dirname(os.path.abspath(__file__))
+    
+    #print settings.BASE_DIR
+    
+    #filename = "/home/yash/Projects/dapp/thirdparty/temoa/db_io/temoa_utopia.sqlite"
+    
+    inputs = { 
+            "-i" : settings.BASE_DIR + "/uploads/input/" + filename , 
             "-f" : "svg",
             "--scenario" : "sname" ,
             "-o" : "result"
           }
+          
+    if( colorscheme == "grey"):
+      inputs['-g'] = colorscheme
+    
+    print inputs
+    
+    makeGraph(inputs)
+    
+    return HttpResponse("Running... :)")
+    
+    
+  
+
+# Create your views here.
+def makeGraph(inputs):
+  #print test.tryme()
+  
+  #So we have to pass inputs to Make_Graphviz to generate graph
+  #After getting response run a ajax call to get that
+  
+  
+  
+  
   
   Make_Graphviz.createGraphBasedOnInput(inputs)
   
@@ -109,8 +136,11 @@ def makeGraph(request):
 @csrf_exempt
 def fileUpload(request):
     
-  if request.method == 'POST':        
-        
+  if request.method == 'POST':
+    
+    
+    
+
     result = handle_uploaded_file( request.FILES['file'] )
     
     #if string is empty we have no errors hence success
