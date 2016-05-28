@@ -38,17 +38,16 @@
                                                 </div>
                                             </div>
                                             <div class="space-4"></div>
-                                            <div class="form-group">
+                                  <!--          <div class="form-group ">
                                                 <label class="col-sm-3 control-label no-padding-right" for="form-field-2"> Upload Data </label>
                                                 <div class="col-sm-5">
                                                     <input type="file" id="id-input-file-2" class="form-control" />
                                                 </div>
-                                                  <!-- The global progress bar -->
                                                 
                                                 <div class="col-sm-1 no-padding">
                                                     <button id="file-upload-button"class="btn btn-primary btn-sm form-control">Upload Data</button>
                                                 </div>
-                                            </div>
+                                            </div>-->
                                             <div id="progress" class="progress">
                                                     <div class="progress-bar progress-bar-success"></div>
                                                 </div>
@@ -189,15 +188,26 @@
 
             //$("div#dropArea").dropzone({ url: "/dapp/fileupload" });
 
-            myDropzone.on("success", function(fileList) {
+            myDropzone.on("success", function(fileList, response) {
                 /* Maybe display some more file information on your page */
                 //alert("hi");
+                //console.log(fileList);
+                //console.log(response.data);
                 var options = '<option value="0">--Select Input File--</option>';
-                $.each(fileList.data, function(index, obj){
-                      options += "<option value="+obj+">"+obj+"</option>";
+                $.each(response.data, function(index, obj){
+                    
+                    options += fileList.name == obj ? "<option selected='selected' value="+obj+">"+obj+"</option>" :
+                     "<option value="+obj+">"+obj+"</option>";
+                    
+                    
+                    
                  });
                 $("#file-list").html(options);
+
+              myDropzone.removeAllFiles();
+                
             });
+            
             
             
             

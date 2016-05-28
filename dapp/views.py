@@ -115,10 +115,10 @@ def fileUpload(request):
     
     #if string is empty we have no errors hence success
     if not result :
-      fileList = loadFiles()
+      #fileList = loadFiles()
       #JsonResponse( {'success' : 'File uploading finished'} )
 
-      return JsonResponse({'success' : fileList})
+      return JsonResponse( {"data" : loadFiles() })
       
     
     return JsonResponse({'error': result}, status = 403)
@@ -129,7 +129,14 @@ def handle_uploaded_file(f):
   
   fname = 'uploads/input/' + f.name
   
+  
+  filename, file_extension = os.path.splitext(f.name)
   print(fname)
+  print file_extension
+  
+  if file_extension != ".data" and file_extension != ".sqlite" :
+    return "Please select a valid file. Supported files are data and sqlite"
+     
   
   if(os.path.isfile(fname) ):
     print "Testing" + fname

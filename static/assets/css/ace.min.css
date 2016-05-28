@@ -2497,8 +2497,7 @@ li [class*=" icon-"],
     }
     .menu-toggler {
         display: inline-block;
-        position: absolute;        left: 0;
-        z-index: 998;
+        position: absolute;        left: 0;        z-index: 998;
         width: 52px;
         height: 32px;
         margin-right: 2px;
@@ -4855,7 +4854,8 @@ select {
     border-radius: 0;
     -webkit-box-shadow: none!important;
     box-shadow: none!important;
-    color: #858585;
+    color: #333;
+    font-weight:  bold;
     background-color: #fff;
     border: 1px solid #d5d5d5
 }
@@ -4997,8 +4997,7 @@ span.input-icon {
 .form-search .checkbox [type=checkbox]+label,
 .form-inline .checkbox [type=checkbox]+label {
     float: left;    margin-left: -20px
-}
-.form-search .form-search .radio [type=radio]+label,
+}.form-search .form-search .radio [type=radio]+label,
 .form-search .form-inline .radio [type=radio]+label,
 .form-search .form-search .checkbox [type=checkbox]+label,
 .form-search .form-inline .checkbox [type=checkbox]+label,
@@ -7497,8 +7496,7 @@ td .lbl:only-child {
     background-color: #ed9421;
     color: #FFF;    text-shadow: 1px 1px 0 rgba(100, 90, 10, 0.3);
     border-radius: 0
-}
-.tooltip-warning+.tooltip.top .tooltip-arrow {
+}.tooltip-warning+.tooltip.top .tooltip-arrow {
     border-top-color: #ed9421
 }
 .tooltip-warning+.tooltip.right .tooltip-arrow {
@@ -9997,8 +9995,7 @@ ul.attachment-list>li {
     margin-left: 112px}
 .timeline-style2 .timeline-label {
     width: 75px;
-    text-align: center;
-    margin-left: 0;
+    text-align: center;    margin-left: 0;
     margin-bottom: 10px;
     text-align: right;
     color: #666;
@@ -12497,8 +12494,7 @@ th[aria-selected=true] .ui-jqgrid-sortable {
     color: #699ab5;
     border-color: #699ab5
 }
-.EditTable .navButton .fm-button.ui-state-disabled [class*="icon-"],
-.EditTable .navButton .fm-button.ui-state-disabled:hover [class*="icon-"] {
+.EditTable .navButton .fm-button.ui-state-disabled [class*="icon-"],.EditTable .navButton .fm-button.ui-state-disabled:hover [class*="icon-"] {
     color: #BBB;
     border-color: #CCC;
     -moz-transform: scale(0.88);
