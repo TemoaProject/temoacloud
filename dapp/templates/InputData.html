@@ -36,6 +36,10 @@
                                                     <button class="btn btn-primary btn-sm form-control">View/Edit Data</button>
                                                 </div>
                                             </div>
+                                            <div id ="input-file-error">
+                                            <span style="padding:100px;color:red;">
+                                                <strong>Error: Please select input data file </strong></span>
+                                        </div>
                                             <div class="space-4"></div>
                                   <!--          <div class="form-group ">
                                                 <label class="col-sm-3 control-label no-padding-right" for="form-field-2"> Upload Data </label>
@@ -116,6 +120,19 @@
                                             </div>
 
                                         </div>
+                                        <div class="space-8"></div>
+                                        <div class="row">
+                                            <span class="col-xs-6"> </span>
+                                            <span class="col-xs-6">
+                                                <span class="pull-right inline">
+
+
+                                                    <span class="btn-toolbar inline middle no-margin">
+                                                        <input id="input-submit-button"type="submit" class="btn btn-success btn-sm" value="Render Network Diagram" />
+                                                    </span>
+                                                </span>
+                                            </span>
+                                        </div>
 
 
                                     </div>
@@ -133,22 +150,24 @@
                                          <h4 class="row header lighter brown no-margin-top no-margin-left no-margin-right ">
                                             <span class="col-xs-6"> Energy Network Diagram Options  </span><!-- /.col -->
 
-                                            <span class="col-xs-6">
-                                                <span class="pull-right inline">
-
-
-                                                    <span class="btn-toolbar inline middle no-margin">
-                                                        <input id="input-submit-button"type="submit" class="btn btn-success btn-sm" value="Render Network Diagram" />
-                                                    </span>
-                                                </span>
-                                            </span>
-                                        <div class="space-16"></div>
-
+                
+                                        <div class="space-16">
+                                        </div>
+                                      </h4> 
+                                      <div class="space-8"></div>
+                            <div class="row">
+                                <div class="col-sm-3"></div>
+                                <div id="networkDiagram" class="col-sm-5"> 
                                     </div>
+
+                            </div>
+                            </div>
+
                                 </div>
 
                                 <!-- /span -->
                             </div>
+
 
                             <!-- PAGE CONTENT ENDS -->
                         </div>
@@ -187,7 +206,7 @@
                 //onchange:''
                 //
             });
-            
+            $("#input-file-error").hide();
               $("#input-form").submit(function(e){
                 e.preventDefault();
                 inputFormSubmit();
@@ -314,17 +333,21 @@
         });
 
      function inputFormSubmit(){
+
       fileInput = $("#file-list option:selected").text();
       if(fileInput == '--Select Input File--'){
         alert("Error: Please select input file");
+        $("#input-file-error").show();
         return false;
+      } else{
+        $("#input-file-error").hide();
       }
       comInput = $("#comomodity-input-text").val();
       comOutput = $("#comomodity-output-text").val();
       colorScheme = $("input[name=qcolorscheme]:checked").val();
       outputFormat = $("#output-format").text();
       formData = "datafile="+fileInput+"&commodityoutputlimit"+comInput+"&commodityinputlimit="+comOutput+"&ccolorscheme="+colorScheme+"&format="+outputFormat;
-      
+      displayNetworkDiagram(); alert("hi");
       var url = '/dapp/runinput';
       $.ajax({ 
               url: url,
@@ -333,9 +356,15 @@
               dataType:'json',
               success:function(result){
                 alert(result);
+                displayNetworkDiagram();
               }
             }); 
       
+     }
+
+     function displayNetworkDiagram(){
+        imgPath = "/result/input/a/o.jpg";
+      $('#networkDiagram').html('<img src="'+ imgPath +'" width=400 height=200 alt="Output" />');
      }
 
     </script>
