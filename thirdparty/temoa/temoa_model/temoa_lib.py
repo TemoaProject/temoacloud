@@ -1177,212 +1177,6 @@ For copy and paste or BibTex use:
 	raise SystemExit
 
 
-def parse_args ( ):
-	from temoa_config import TemoaConfig
-	import argparse, platform, sys
-
-	from pyomo.opt import SolverFactory as SF
-	from logging import getLogger
-
-	# used for some error messages below.
-	red_bold = cyan_bold = reset = ''
-	if platform.system() != 'Windows' and SE.isatty():
-		red_bold  = '\x1b[1;31m'
-		cyan_bold = '\x1b[1;36m'
-		reset     = '\x1b[0m'
-
-	logger = getLogger('pyomo.solvers')
-	logger_status = logger.disabled
-	logger.disabled = True  # no need for warnings: it's what we're testing!
-
-	available_solvers = set()
-	for sname in SF.services():   # list of solver interface names
-		# initial underscore ('_'): Coopr's method to mark non-public plugins
-		if '_' == sname[0]: continue
-
-		solver = SF( sname )
-		if not solver: continue
-
-		if 'os' == sname: continue     # Workaround current bug in Coopr
-		if not solver.available( exception_flag=False ): continue
-		available_solvers.add( sname )
-
-	logger.disabled = logger_status  # put back the way it was.
-
-	if available_solvers:
-		if 'cplex' in available_solvers:
-			default_solver = 'cplex'
-		elif 'gurobi' in available_solvers:
-			default_solver = 'gurobi'
-		elif 'cbc' in available_solvers:
-			default_solver = 'cbc'
-		elif 'glpk' in available_solvers:
-			default_solver = 'glpk'
-		else:
-			default_solver = iter(available_solvers).next()
-	else:
-		default_solver = 'NONE'
-		SE.write('\nNOTICE: Pyomo did not find any suitable solvers.  Temoa will '
-		   'not be able to solve any models.  If you need help, ask on the '
-		   'Temoa Project forum: http://temoaproject.org/\n\n' )
-
-	parser = argparse.ArgumentParser()
-	parser.prog = path.basename( argv[0].strip('/') )
-
-	solver      = parser.add_argument_group('Solver Options')
-	stochastic  = parser.add_argument_group('Stochastic Options')
-	postprocess = parser.add_argument_group('Postprocessing Options')
-	mga         = parser.add_argument_group('MGA Options')
-
-	parser.add_argument('dot_dat',
-	  type=str,
-	  nargs='*',
-	  help='AMPL-format data file(s) with which to create a model instance. '
-	       'e.g. "data.dat"'
-	)
-
-
-	parser.add_argument( '--fix_variables',
-	  help='Path to file containing variables to fix.  The file format is the '
-	    'same as the default Temoa output.',
-	  action='store',
-	  dest='fix_variables',
-	  default=None)
-
-	parser.add_argument( '--how_to_cite',
-	  help='Bibliographical information for citation, in the case that Temoa '
-	    'contributes to a project that leads to a scientific publication.',
-	  action='store_true',
-	  dest='how_to_cite',
-	  default=False)
-
-	parser.add_argument( '-V', '--version',
-	  help='Display the Temoa version information, then exit.',
-	  action='store_true',
-	  dest='version',
-	  default=False
-	)
-
-	parser.add_argument( '--config',
-	 help='Path to file containing configuration information.',
-	 action='store',
-	 dest='config',
-	 default=None
-	 )
-
-	solver.add_argument('--solver',
-	  help="Which backend solver to use.  See 'pyomo --help-solvers' for a list "
-	       'of solvers with which Coopr can interface.  The list shown here is '
-	       'what Coopr can currently find on this system.  [Default: {}]'
-	       .format(default_solver),
-	  action='store',
-	  choices=sorted(available_solvers),
-	  dest='solver',
-	  default=default_solver)
-
-	solver.add_argument('--generate_solver_lp_file',
-	  help='Request that solver create an LP representation of the optimization '
-	       'problem.  Mainly used for model debugging purposes.  The file name '
-	       'will have the same base name as the first dot_dat file specified.  '
-	       '[Note: this option currently only works with the GLPK solver.] '
-	       '[Default: do not create solver LP file]',
-	  action='store_true',
-	  dest='generateSolverLP',
-	  default=False)
-
-	solver.add_argument('--keep_pyomo_lp_file',
-	  help='Save the LP file as written by Pyomo.  This is distinct from the '
-	       "solver's generated LP file, but /should/ represent the same model.  "
-	       'Mainly used for debugging purposes.  '
-	       '[Default: remove Pyomo LP file]',
-	  action='store_true',
-	  dest='keepPyomoLP',
-	  default=False)
-
-	stochastic.add_argument('--eciu',
-	  help='"Expected Cost of Ignoring Uncertainty" -- Calculate the costs of '
-	       'ignoring the uncertainty of a stochastic tree.  Specify the path '
-	       'to the stochastic scenario directory.  (i.e., where to find '
-	       'ScenarioStructure.dat)',
-	  metavar='STOCHASTIC_DIRECTORY',
-	  dest='eciu',
-	  default=None)
-
-	#An optional argument with the ability to take a flag (--MGA) and a
-	#numeric slack value
-	mga.add_argument('--mga',
-	  help='Include the flag --MGA and supply a slack-value and recieve a '
-	    'Modeling to generate alternatives solution',
-	  dest='mga',
-	  type=float)
-
-	options = parser.parse_args()
-	# Use the Temoa configuration file to overwrite Kevin's argument parser
-	if options.config:
-		try:
-			temoa_config = TemoaConfig(d_solver=default_solver)
-			temoa_config.build(config=options.config)
-			SE.write(repr(temoa_config))
-			options = temoa_config
-			SE.write('\nPlease press enter to continue or Ctrl+C to quit.\n')
-			raw_input() # Give the user a chance to confirm input
-		except KeyboardInterrupt:
-			SE.write('\n\nUser requested quit.  Exiting Temoa ...\n')
-			raise SystemExit()
-
-	# First, the options that exit or do not perform any "real" computation
-	if options.version:
-		version()
-		# this function exits
-
-	if options.how_to_cite:
-		bibliographicalInformation()
-		# this function exits.
-
-	# It would be nice if this implemented with add_mutually_exclusive_group
-	# but I /also/ want them in separate groups for display.  Bummer.
-	if not (options.dot_dat or options.eciu or options.mga):
-		usage = parser.format_usage()
-		msg = ('Missing a data file to optimize (e.g., test.dat)')
-		msg = '{}\n{}{}{}'.format( usage, red_bold, msg, reset )
-		raise TemoaCommandLineArgumentError( msg )
-
-	elif options.dot_dat and options.eciu:
-		usage = parser.format_usage()
-		msg = ('Conflicting option and arguments: --eciu and data files\n\n'
-		       '--eciu is for performing an analysis on a directory of data '
-		       'files, as are used in a stochastic analysis with PySP.  Please '
-		       'remove either of --eciu or the data files from the command '
-		       'line.')
-		msg = '{}\n{}{}{}'.format( usage, red_bold, msg, reset )
-		raise TemoaCommandLineArgumentError( msg )
-
-	elif options.eciu:
-		# can this be subsumed directly into the argparse module functionality?
-		from os.path import isdir, isfile, join
-		edir = options.eciu
-
-		if not isdir( options.eciu ):
-			msg = "{}--eciu requires a directory.{}".format( red_bold, reset )
-			msg = "{}\n\nSupplied path: '{}'".format( msg, edir )
-			raise TemoaCommandLineArgumentError( msg )
-
-		structure_file = join( edir, 'ScenarioStructure.dat' )
-		if not isfile( structure_file ):
-			msg = "'{}{}{}' does not appear to contain a PySP stochastic program."
-			msg = '{}{}{}'.format( red_bold, msg, reset )
-			raise TemoaCommandLineArgumentError(
-			   msg.format( reset, edir, red_bold ))
-
-	if options.mga:
-		msg = 'MGA specified (slack value: {})\n'.format( options.mga )
-		SE.write( msg )
-
-	s_choice = str( options.solver ).upper()
-	SE.write('Notice: Using the {} solver interface.\n'.format( s_choice ))
-	SE.flush()
-
-	return options
 
 # End miscellaneous routines
 ###############################################################################
@@ -2155,6 +1949,216 @@ def solve_true_cost_of_guessing ( optimizer, options, epsilon=1e-6 ):
 	writer = csv.writer( csvdata ); writer.writerows( data )
 	print csvdata.getvalue()
 	chdir( pwd )
+
+
+# Lets split it and work
+
+def parse_args ( ):
+	from temoa_config import TemoaConfig
+	import argparse, platform, sys
+
+	from pyomo.opt import SolverFactory as SF
+	from logging import getLogger
+
+	# used for some error messages below.
+	red_bold = cyan_bold = reset = ''
+	if platform.system() != 'Windows' and SE.isatty():
+		red_bold  = '\x1b[1;31m'
+		cyan_bold = '\x1b[1;36m'
+		reset     = '\x1b[0m'
+
+	logger = getLogger('pyomo.solvers')
+	logger_status = logger.disabled
+	logger.disabled = True  # no need for warnings: it's what we're testing!
+
+	available_solvers = set()
+	for sname in SF.services():   # list of solver interface names
+		# initial underscore ('_'): Coopr's method to mark non-public plugins
+		if '_' == sname[0]: continue
+
+		solver = SF( sname )
+		if not solver: continue
+
+		if 'os' == sname: continue     # Workaround current bug in Coopr
+		if not solver.available( exception_flag=False ): continue
+		available_solvers.add( sname )
+
+	logger.disabled = logger_status  # put back the way it was.
+
+	if available_solvers:
+		if 'cplex' in available_solvers:
+			default_solver = 'cplex'
+		elif 'gurobi' in available_solvers:
+			default_solver = 'gurobi'
+		elif 'cbc' in available_solvers:
+			default_solver = 'cbc'
+		elif 'glpk' in available_solvers:
+			default_solver = 'glpk'
+		else:
+			default_solver = iter(available_solvers).next()
+	else:
+		default_solver = 'NONE'
+		SE.write('\nNOTICE: Pyomo did not find any suitable solvers.  Temoa will '
+		   'not be able to solve any models.  If you need help, ask on the '
+		   'Temoa Project forum: http://temoaproject.org/\n\n' )
+
+	parser = argparse.ArgumentParser()
+	parser.prog = path.basename( argv[0].strip('/') )
+
+	solver      = parser.add_argument_group('Solver Options')
+	stochastic  = parser.add_argument_group('Stochastic Options')
+	postprocess = parser.add_argument_group('Postprocessing Options')
+	mga         = parser.add_argument_group('MGA Options')
+
+	parser.add_argument('dot_dat',
+	  type=str,
+	  nargs='*',
+	  help='AMPL-format data file(s) with which to create a model instance. '
+	       'e.g. "data.dat"'
+	)
+
+
+	parser.add_argument( '--fix_variables',
+	  help='Path to file containing variables to fix.  The file format is the '
+	    'same as the default Temoa output.',
+	  action='store',
+	  dest='fix_variables',
+	  default=None)
+
+	parser.add_argument( '--how_to_cite',
+	  help='Bibliographical information for citation, in the case that Temoa '
+	    'contributes to a project that leads to a scientific publication.',
+	  action='store_true',
+	  dest='how_to_cite',
+	  default=False)
+
+	parser.add_argument( '-V', '--version',
+	  help='Display the Temoa version information, then exit.',
+	  action='store_true',
+	  dest='version',
+	  default=False
+	)
+
+	parser.add_argument( '--config',
+	 help='Path to file containing configuration information.',
+	 action='store',
+	 dest='config',
+	 default=None
+	 )
+
+	solver.add_argument('--solver',
+	  help="Which backend solver to use.  See 'pyomo --help-solvers' for a list "
+	       'of solvers with which Coopr can interface.  The list shown here is '
+	       'what Coopr can currently find on this system.  [Default: {}]'
+	       .format(default_solver),
+	  action='store',
+	  choices=sorted(available_solvers),
+	  dest='solver',
+	  default=default_solver)
+
+	solver.add_argument('--generate_solver_lp_file',
+	  help='Request that solver create an LP representation of the optimization '
+	       'problem.  Mainly used for model debugging purposes.  The file name '
+	       'will have the same base name as the first dot_dat file specified.  '
+	       '[Note: this option currently only works with the GLPK solver.] '
+	       '[Default: do not create solver LP file]',
+	  action='store_true',
+	  dest='generateSolverLP',
+	  default=False)
+
+	solver.add_argument('--keep_pyomo_lp_file',
+	  help='Save the LP file as written by Pyomo.  This is distinct from the '
+	       "solver's generated LP file, but /should/ represent the same model.  "
+	       'Mainly used for debugging purposes.  '
+	       '[Default: remove Pyomo LP file]',
+	  action='store_true',
+	  dest='keepPyomoLP',
+	  default=False)
+
+	stochastic.add_argument('--eciu',
+	  help='"Expected Cost of Ignoring Uncertainty" -- Calculate the costs of '
+	       'ignoring the uncertainty of a stochastic tree.  Specify the path '
+	       'to the stochastic scenario directory.  (i.e., where to find '
+	       'ScenarioStructure.dat)',
+	  metavar='STOCHASTIC_DIRECTORY',
+	  dest='eciu',
+	  default=None)
+
+	#An optional argument with the ability to take a flag (--MGA) and a
+	#numeric slack value
+	mga.add_argument('--mga',
+	  help='Include the flag --MGA and supply a slack-value and recieve a '
+	    'Modeling to generate alternatives solution',
+	  dest='mga',
+	  type=float)
+
+	options = parser.parse_args()
+	# Use the Temoa configuration file to overwrite Kevin's argument parser
+	if options.config:
+		try:
+			temoa_config = TemoaConfig(d_solver=default_solver)
+			temoa_config.build(config=options.config)
+			SE.write(repr(temoa_config))
+			options = temoa_config
+			SE.write('\nPlease press enter to continue or Ctrl+C to quit.\n')
+			raw_input() # Give the user a chance to confirm input
+		except KeyboardInterrupt:
+			SE.write('\n\nUser requested quit.  Exiting Temoa ...\n')
+			raise SystemExit()
+
+	# First, the options that exit or do not perform any "real" computation
+	if options.version:
+		version()
+		# this function exits
+
+	if options.how_to_cite:
+		bibliographicalInformation()
+		# this function exits.
+
+	# It would be nice if this implemented with add_mutually_exclusive_group
+	# but I /also/ want them in separate groups for display.  Bummer.
+	if not (options.dot_dat or options.eciu or options.mga):
+		usage = parser.format_usage()
+		msg = ('Missing a data file to optimize (e.g., test.dat)')
+		msg = '{}\n{}{}{}'.format( usage, red_bold, msg, reset )
+		raise TemoaCommandLineArgumentError( msg )
+
+	elif options.dot_dat and options.eciu:
+		usage = parser.format_usage()
+		msg = ('Conflicting option and arguments: --eciu and data files\n\n'
+		       '--eciu is for performing an analysis on a directory of data '
+		       'files, as are used in a stochastic analysis with PySP.  Please '
+		       'remove either of --eciu or the data files from the command '
+		       'line.')
+		msg = '{}\n{}{}{}'.format( usage, red_bold, msg, reset )
+		raise TemoaCommandLineArgumentError( msg )
+
+	elif options.eciu:
+		# can this be subsumed directly into the argparse module functionality?
+		from os.path import isdir, isfile, join
+		edir = options.eciu
+
+		if not isdir( options.eciu ):
+			msg = "{}--eciu requires a directory.{}".format( red_bold, reset )
+			msg = "{}\n\nSupplied path: '{}'".format( msg, edir )
+			raise TemoaCommandLineArgumentError( msg )
+
+		structure_file = join( edir, 'ScenarioStructure.dat' )
+		if not isfile( structure_file ):
+			msg = "'{}{}{}' does not appear to contain a PySP stochastic program."
+			msg = '{}{}{}'.format( red_bold, msg, reset )
+			raise TemoaCommandLineArgumentError(
+			   msg.format( reset, edir, red_bold ))
+
+	if options.mga:
+		msg = 'MGA specified (slack value: {})\n'.format( options.mga )
+		SE.write( msg )
+
+	s_choice = str( options.solver ).upper()
+	SE.write('Notice: Using the {} solver interface.\n'.format( s_choice ))
+	SE.flush()
+
+	return options
 
 
 def temoa_solve ( model ):
