@@ -13,6 +13,11 @@ var url = '/dapp/loadfilelist';
                 options += "<option value=" + obj + ">" + obj + "</option>";
             });
             $("#file-list").html(options);
+            if(modeType == 'input'){
+               $("#input-file-list").html(options);
+            } else{
+               $("#output-file-list").html(options);
+            }
         }
     });
 }
