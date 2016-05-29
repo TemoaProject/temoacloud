@@ -63,6 +63,9 @@ def runInput(request):
     commodityoutputlimit =request.POST.get("commodityoutputlimit", "")
     commodityinputlimit =request.POST.get("commodityinputlimit", "")
     filename =request.POST.get("datafile", "")
+    mode =request.POST.get("mode", "")
+    
+    filename2, file_extension = os.path.splitext(filename)
     
     #fulldirpath = os.path.dirname(os.path.abspath(__file__))
     
@@ -71,7 +74,7 @@ def runInput(request):
     #filename = "/home/yash/Projects/dapp/thirdparty/temoa/db_io/temoa_utopia.sqlite"
     
     inputs = { 
-            "-i" : settings.BASE_DIR + "/uploads/input/" + filename , 
+            "-i" : settings.BASE_DIR + "/uploads/" + mode + "/" + filename , 
             "-f" : format,
             #"--scenario" : "" ,
             "-o" : settings.BASE_DIR + "/result"
@@ -84,7 +87,7 @@ def runInput(request):
     
     makeGraph(inputs)
     
-    return HttpResponse("Running... :)")
+    return JsonResponse( {"data" : filename2, "mode" : mode } )
     
     
   
@@ -186,7 +189,7 @@ def loadFileList(request):
   return JsonResponse(fileList)
 
 def loadFiles(mode):
-  #print mode
+  print mode
   #import glob   
   #print glob.glob("upload/adam/*.txt")
   types = ('.data', '.sqlite') # the tuple of file types

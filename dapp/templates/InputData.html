@@ -29,7 +29,7 @@
                                                  <select class="form-control" id="datafilename" name="datafile" data-placeholder="">
                                                  
                                                 </select>
-                                                <input name="mode"type="hidden" value="{{mode}}" />
+                                                <input name="mode" type="hidden" value="{{mode}}" />
                                                     <!--name <inpu
                                                     <!-- <input type="file" name="file"id="id-input-file-2" class="form-control" /> -->
                                                 </div>
@@ -193,34 +193,6 @@ $(document).ready(function() {
     
     initJs('{{mode}}');
     
-    /*populateFileList('input');
-    
-    $("#input-file-error").hide();
-    
-    $("#input-form").submit(function(e) {
-        e.preventDefault();
-        ioFormSubmit();
-    });
-    
-    // Dropzone class:
-    var myDropzone = new Dropzone("div#dropArea", {
-        url: "/dapp/fileupload",
-        params: {
-        mode: 'input'
-    }
-    });
-
-    myDropzone.on("success", function(fileList, response) {
-        var options = '<option value="0">--Select Input File--</option>';
-        $.each(response.data, function(index, obj) {
-            options += fileList.name == obj ? "<option selected='selected' value=" + obj + ">" + obj + "</option>" :
-                "<option value=" + obj + ">" + obj + "</option>";
-        });
-        $("#file-list").html(options);
-
-        myDropzone.removeAllFiles();
-
-    });*/
 });
 
     </script>

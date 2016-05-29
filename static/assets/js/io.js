@@ -1,11 +1,12 @@
-function populateFileList(str){
-var url = '/dapp/loadfilelist';
+function populateFileList(mode){
+    var url = '/dapp/loadfilelist';
+
     $.ajax({
         url: url,
         dataType: 'json',
         method: 'post',
         data: {
-            mode: str
+            mode: mode
         },
         success: function(result) {
             
@@ -53,9 +54,9 @@ var url = '/dapp/loadfilelist';
 */
 
 
-function displayNetworkDiagram() {
-    imgPath = "/result/input/a/o.jpg";
-    $('#networkDiagram').html('<img src="' + imgPath + '" width=400 height=200 alt="Output" />');
+function displayNetworkDiagram(folder, filename) {
+    var imgPath = "/result/" + folder + "/" + filename ;
+    $('#networkDiagram').html('<img src="' + imgPath + '" height=400 alt="Output" />');
 }
 
 
@@ -65,11 +66,12 @@ function initForm() {
     
     
     
-    $('form').submit( function() {
+    $("#input-form").submit(function(e) {
+        
         
         e.preventDefault();
         
-        alert("SOme")
+        
         
         var fileInput = $("#datafilename option:selected").text();
         if (fileInput == '--Select data File--' || fileInput == '') 
@@ -84,8 +86,11 @@ function initForm() {
         
         
         $.post( url, $('form#input-form').serialize(), function(data) {
-            alert(data);
-            //displayNetworkDiagram();
+            
+            alert(data.filename + data.mode);
+            
+            
+            displayNetworkDiagram(data.mode, data.filename );
         },
        'json' // I expect a JSON response
     );
