@@ -26,7 +26,7 @@ def login(request):
   return render_to_response('login.html', context_instance=RequestContext(request))
 
 def inputData(request):
-  return render_to_response('InputData.html', context_instance=RequestContext(request))
+  return render_to_response('InputData.html', { 'mode' : 'input'}, context_instance=RequestContext(request))
 
 def outputData(request):
   return render_to_response('OutputData.html', context_instance=RequestContext(request))
@@ -72,9 +72,9 @@ def runInput(request):
     
     inputs = { 
             "-i" : settings.BASE_DIR + "/uploads/input/" + filename , 
-            "-f" : "svg",
-            "--scenario" : "sname" ,
-            "-o" : "result"
+            "-f" : format,
+            #"--scenario" : "" ,
+            "-o" : settings.BASE_DIR + "/result"
           }
           
     if( colorscheme == "grey"):
@@ -186,19 +186,27 @@ def loadFileList(request):
   return JsonResponse(fileList)
 
 def loadFiles(mode):
-  print mode
-  import glob   
+  #print mode
+  #import glob   
   #print glob.glob("upload/adam/*.txt")
-  types = ('*.data', '*.sqlite') # the tuple of file types
-  files_grabbed = []
-  for type in types:
-      files_grabbed.extend(glob.glob('uploads/'+ mode +'/' + type))
-  fileList = []
+  types = ('.data', '.sqlite') # the tuple of file types
+  
+  return [each for each in os.listdir('uploads/'+ mode) if each.endswith(types)]
+  
+  #files_grabbed = []
+  #for type in types:
+      ##files_grabbed.extend(glob.glob('uploads/'+ mode +'/' + type))
+      #files_grabbed = [each for each in os.listdir('uploads/'+ mode) if each.endswith('.c')]
+  #fileList = []
 
-  for file in files_grabbed:
-    fileList.append(os.path.basename(file))
+  #print files_grabbed
 
-  return fileList;
+  #for file in files_grabbed:
+    #fileList.append(os.path.basename(file))
+
+  #print fileList
+
+  #return fileList;
 
     
 

@@ -13,7 +13,7 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <!-- PAGE CONTENT BEGINS -->
-
+DDDDDDDD
                             <h3 class="header lighter  blue no-margin-top ">Input Data </h3>
                             <div class="space-10"></div>
                             <div class="row">
@@ -190,31 +190,7 @@
    <script src="/static/assets/js/io.js"></script>
 <script>
 $(document).ready(function() {
-    populateFileList('output');
-    $("#input-file-error").hide();
-    $("#input-form").submit(function(e) {
-        e.preventDefault();
-        ioFormSubmit();
-    });
-    // Dropzone class:
-    var myDropzone = new Dropzone("div#dropArea", {
-        url: "/dapp/fileupload",
-        params: {
-        mode: 'output'
-    }
-    });
-
-    myDropzone.on("success", function(fileList, response) {
-        var options = '<option value="0">--Select Input File--</option>';
-        $.each(response.data, function(index, obj) {
-            options += fileList.name == obj ? "<option selected='selected' value=" + obj + ">" + obj + "</option>" :
-                "<option value=" + obj + ">" + obj + "</option>";
-        });
-        $("#file-list").html(options);
-
-        myDropzone.removeAllFiles();
-
-    });
+    initJs('input');
 });
 
     </script>

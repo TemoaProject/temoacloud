@@ -13,7 +13,7 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <!-- PAGE CONTENT BEGINS -->
-
+{{mode}} HHH
                             <h3 class="header lighter  blue no-margin-top ">Input Data </h3>
                             <div class="space-10"></div>
                             <div class="row">
@@ -26,7 +26,7 @@
                                                 <label class="col-sm-3 control-label no-padding-right" for="form-field-1">Select a Database or text file </label>
                                                <div class="col-sm-5">
                                                  <div id="dropArea" class="dropzone">
-                                                 <select class="form-control" id="file-list" name="datafile" data-placeholder="">
+                                                 <select class="form-control" id="datafilename" name="datafile" data-placeholder="">
                                                  
                                                 </select>
                                                 <input name="mode"type="hidden" value="input"/>
@@ -130,7 +130,7 @@
 
 
                                                     <span class="btn-toolbar inline middle no-margin">
-                                                        <input id="input-submit-button"type="submit" class="btn btn-success btn-sm" value="Render Network Diagram" />
+                                                        <input id="submit-button" type="submit" class="btn btn-success btn-sm" value="Render Network Diagram" />
                                                     </span>
                                                 </span>
                                             </span>
@@ -190,12 +190,18 @@
 <script src="/static/assets/js/io.js"></script>
 <script>
 $(document).ready(function() {
-    populateFileList('input');
+    
+    initJs('input');
+    
+    /*populateFileList('input');
+    
     $("#input-file-error").hide();
+    
     $("#input-form").submit(function(e) {
         e.preventDefault();
         ioFormSubmit();
     });
+    
     // Dropzone class:
     var myDropzone = new Dropzone("div#dropArea", {
         url: "/dapp/fileupload",
@@ -214,7 +220,7 @@ $(document).ready(function() {
 
         myDropzone.removeAllFiles();
 
-    });
+    });*/
 });
 
     </script>
