@@ -2,63 +2,78 @@
 {% block body_block %}
     <div class="main-container" id="main-container">
         <script type="text/javascript">
-				try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+                try{ace.settings.check('main-container' , 'fixed')}catch(e){}
         </script>
         <div class="main-container-inner">
 
             <div class="">
                 <div class="page-content" style="background-color:#f7f7f7;">
 
+                    <form id="input-form" class="form-horizontal" action="/dapp/runinput" method="POST" enctype="multipart/form-data" role="form">
                     <div class="row">
                         <div class="col-xs-12">
                             <!-- PAGE CONTENT BEGINS -->
 
-                            <h3 class="header lighter  blue no-margin-top ">Output Data </h3>
+                            <h3 class="header lighter  blue no-margin-top ">Input Data </h3>
                             <div class="space-10"></div>
                             <div class="row">
-                            <div class="col-xs-12 col-sm-12 widget-container-span">
-                                <div class="widget-box width-95" style="border-bottom:none; margin:auto;  background-color:#fff; padding:10px;">
-
-                                    <div class="space-10"></div>
-
-                                    <form class="form-horizontal" role="form">
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1">Select a Database or text file </label>
-                                            <div class="col-sm-5">
-                                              <input type="file" id="id-input-file-2" class="form-control" />
+                                <div class="col-xs-12 col-sm-12 widget-container-span">
+                                    <div class="widget-box width-95" style="border-bottom:none; margin:auto;  background-color:#fff; padding:10px;">
+                                       
+                                        <div class="space-10"></div>
+                                        
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1">Select a Database or text file </label>
+                                               <div class="col-sm-5">
+                                                 <div id="dropArea" class="dropzone">
+                                                 <select class="form-control" id="file-list" name="datafile" data-placeholder="">
+                                                 
+                                                </select>
+                                                <input name="mode" type="hidden" value="output"/>
+                                                    <!--name <input type="file" name="file"id="id-input-file-2" class="form-control" /> -->
+                                                </div>
+                                                </div>
+                                                <div class="col-sm-1 no-padding">
+                                                    <button class="btn btn-primary btn-sm form-control">View/Edit Data</button>
+                                                </div>
                                             </div>
-                                            <div class="col-sm-1 no-padding">
-                                                <button class="btn btn-primary btn-sm form-control">View/Edit Data</button>
-                                            </div>
+                                            <div id ="input-file-error">
+                                            <span style="padding:100px;color:red;">
+                                                <strong>Error: Please select output data file </strong></span>
                                         </div>
+                                            <div class="space-4"></div>
+                                  <!--          <div class="form-group ">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-2"> Upload Data </label>
+                                                <div class="col-sm-5">
+                                                    <input type="file" id="id-input-file-2" class="form-control" />
+                                                </div>
+                                                  
+                                                
+                                                <div class="col-sm-1 no-padding">
+                                                    <button id="file-upload-button"class="btn btn-primary btn-sm form-control">Upload Data</button>
+                                                </div>
+                                            </div>-->
+                                            <div id="progress" class="progress">
+                                                    <div class="progress-bar progress-bar-success"></div>
+                                                </div>
+
+                                       
 
 
 
-                                    </form>
 
-
-
-
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                            <div class="space-14"></div>
+                            <div class="space-10"></div>
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 widget-container-span">
                                     <div class="widget-box width-95" style="background-color:#fff; margin:auto !important; border-bottom:none;  height:265px; padding:10px;">
 
                                         <h4 class="row header lighter brown no-margin-top no-margin-left no-margin-right ">
                                             <span class="col-xs-6"> Network Diagram Options  </span><!-- /.col -->
-
-                                            <span class="col-xs-6">
-                                                <span class="pull-right inline">
-
-
-                                                    <span class="btn-toolbar inline middle no-margin">
-                                                        <button class="btn btn-success btn-sm">Render Network Diagram</button>
-                                                    </span>
-                                                </span>
-                                            </span><!-- /.col -->
+                                            
+                              
                                         </h4>
 
                                         <div class="space-16"></div>
@@ -66,11 +81,11 @@
                                             <div class="col-sm-1"></div>
                                             <div class="col-sm-5">
                                                 Commodity Input Limit
-                                                <input type="text" class="form-control" placeholder="COAL" />
+                                                <input id="comomodity-input-text"type="text" class="form-control" placeholder="COAL" name="commodityinputlimit" />
                                             </div>
                                             <div class="col-sm-5">
                                                 Commodity Output Limit
-                                                <input type="text" class="form-control" placeholder="ELC" />
+                                                <input id="comomodity-output-text"type="text" class="form-control" placeholder="ELC" name="commodityoutputlimit" />
                                             </div>
                                         </div>
                                         <div class="space-8"></div>
@@ -83,12 +98,12 @@
 
 
                                                     <label style="margin-right:20px;">
-                                                        <input name="form-field-radio" type="radio" class="ace">
+                                                        <input id="color-scheme"name="colorscheme" selected type="radio" class="ace" value="grey">
                                                         <span class="lbl"> Grey Scale </span>
                                                     </label>
 
                                                     <label>
-                                                        <input name="form-field-radio" type="radio" class="ace">
+                                                        <input d="color-scheme"name="colorscheme" type="radio" class="ace" value="color">
                                                         <span class="lbl"> Color</span>
                                                     </label>
 
@@ -99,13 +114,25 @@
                                             </div>
                                             <div class="col-sm-5">
                                                 Output Format
-                                                <select class="form-control" id="" data-placeholder="Choose a Format...">
-                                                    <option value="">&nbsp;</option>
-                                                    <option value="AL">SVG</option>
-                                                    <option value="AK">Canvas</option>
+                                                <select class="form-control" id="output-format" name="format"  data-placeholder="Choose a Format...">
+                                                    <option value="svg">SVG</option>
+                                                    <option value="canvas">Canvas</option>
                                                 </select>
                                             </div>
 
+                                        </div>
+                                        <div class="space-8"></div>
+                                        <div class="row">
+                                            <span class="col-xs-6"> </span>
+                                            <span class="col-xs-6">
+                                                <span class="pull-right inline">
+
+
+                                                    <span class="btn-toolbar inline middle no-margin">
+                                                        <input id="input-submit-button"type="submit" class="btn btn-success btn-sm" value="Render Network Diagram" />
+                                                    </span>
+                                                </span>
+                                            </span>
                                         </div>
 
 
@@ -117,23 +144,40 @@
                             </div>
                             <!-- /row -->
 
-                            <div class="space-14"></div>
+                            <div class="space-10"></div>
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 widget-container-span">
                                     <div class="widget-box width-95" style="background-color:#fff; margin:auto !important; padding:10px;">
-                                        <h4 class="header lighter brown no-margin-top "> Energy Network Diagram </h4>
-                                        <div class="space-16"></div>
+                                         <h4 class="row header lighter brown no-margin-top no-margin-left no-margin-right ">
+                                            <span class="col-xs-6"> Energy Network Diagram Options  </span><!-- /.col -->
 
+                
+                                        <div class="space-16">
+                                        </div>
+                                      </h4> 
+                                      <div class="space-8"></div>
+                            <div class="row">
+                                <div class="col-sm-3"></div>
+                                <div id="networkDiagram" class="col-sm-5"> 
                                     </div>
+
+                            </div>
+                            </div>
+
                                 </div>
 
                                 <!-- /span -->
                             </div>
 
+
                             <!-- PAGE CONTENT ENDS -->
                         </div>
                         <!-- /.col -->
                     </div>
+                    
+                     </form>
+                    
+                    
                     <!-- /.row -->
                 </div>
                 <!-- /.page-content -->
@@ -141,139 +185,38 @@
             <!-- /.main-content -->
             <!-- /#ace-settings-container -->
         </div>
-        <!-- /.main-container-inner -->
-<div id="Run" class="modal fade" role="dialog">
-  <div class="modal-dialog">
+      <div class="space-32"></div>     <!-- /.main-container-inner -->
 
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Modal Header</h4>
-      </div>
-      <div class="modal-body">
-        <p>Some text in the modal.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
+   <script src="/static/assets/js/io.js"></script>
+<script>
+$(document).ready(function() {
+    populateFileList('output');
+    $("#input-file-error").hide();
+    $("#input-form").submit(function(e) {
+        e.preventDefault();
+        ioFormSubmit();
+    });
+    // Dropzone class:
+    var myDropzone = new Dropzone("div#dropArea", {
+        url: "/dapp/fileupload",
+        params: {
+        mode: 'output'
+    }
+    });
 
-  </div>
-</div>
-<div class="space-32"></div> 
-
-    <script type="text/javascript">
-        jQuery(function ($) {
-             $(".chosen-select").chosen();
-             $('[data-rel=tooltip]').tooltip({ container: 'body' });
-             $('[data-rel=popover]').popover({ container: 'body' });
-             $('#id-input-file-1 , #id-input-file-2').ace_file_input({
-                no_file: 'No File ...',
-                btn_choose: 'Choose',
-                btn_change: 'Change',
-                droppable: false,
-                onchange: null,
-                thumbnail: false //| true | large
-                //whitelist:'gif|png|jpg|jpeg'
-                //blacklist:'exe|php'
-                //onchange:''
-                //
-            });
-
-            $('#id-input-file-3').ace_file_input({
-                style: 'well',
-                btn_choose: 'Drop files here or click to choose',
-                btn_change: null,
-                no_icon: 'icon-cloud-upload',
-                droppable: true,
-                thumbnail: 'small'//large | fit
-                //,icon_remove:null//set null, to hide remove/reset button
-                /**,before_change:function(files, dropped) {
-                    //Check an example below
-                    //or examples/file-upload.html
-                    return true;
-                }*/
-                /**,before_remove : function() {
-                    return true;
-                }*/
-                ,
-                preview_error: function (filename, error_code) {
-                    //name of the file that failed
-                    //error_code values
-                    //1 = 'FILE_LOAD_FAILED',
-                    //2 = 'IMAGE_LOAD_FAILED',
-                    //3 = 'THUMBNAIL_FAILED'
-                    //alert(error_code);
-                }
-
-            }).on('change', function () {
-                //console.log($(this).data('ace_input_files'));
-                //console.log($(this).data('ace_input_method'));
-            });
-
-
-            //dynamically change allowed formats by changing before_change callback function
-            $('#id-file-format').removeAttr('checked').on('change', function () {
-                var before_change
-                var btn_choose
-                var no_icon
-                if (this.checked) {
-                    btn_choose = "Drop images here or click to choose";
-                    no_icon = "icon-picture";
-                    before_change = function (files, dropped) {
-                        var allowed_files = [];
-                        for (var i = 0 ; i < files.length; i++) {
-                            var file = files[i];
-                            if (typeof file === "string") {
-                                //IE8 and browsers that don't support File Object
-                                if (!(/\.(jpe?g|png|gif|bmp)$/i).test(file)) return false;
-                            }
-                            else {
-                                var type = $.trim(file.type);
-                                if ((type.length > 0 && !(/^image\/(jpe?g|png|gif|bmp)$/i).test(type))
-                                        || (type.length == 0 && !(/\.(jpe?g|png|gif|bmp)$/i).test(file.name))//for android's default browser which gives an empty string for file.type
-                                    ) continue;//not an image so don't keep this file
-                            }
-
-                            allowed_files.push(file);
-                        }
-                        if (allowed_files.length == 0) return false;
-
-                        return allowed_files;
-                    }
-                }
-                else {
-                    btn_choose = "Drop files here or click to choose";
-                    no_icon = "icon-cloud-upload";
-                    before_change = function (files, dropped) {
-                        return files;
-                    }
-                }
-                var file_input = $('#id-input-file-3');
-                file_input.ace_file_input('update_settings', { 'before_change': before_change, 'btn_choose': btn_choose, 'no_icon': no_icon })
-                file_input.ace_file_input('reset_input');
-            });
-
-
-
-
-
-
-            
-           
-          
-
-            //we could just set the data-provide="tag" of the element inside HTML, but IE8 fails!
-            
-
-
-
-            /////////
-          
-
-            
-
+    myDropzone.on("success", function(fileList, response) {
+        var options = '<option value="0">--Select Input File--</option>';
+        $.each(response.data, function(index, obj) {
+            options += fileList.name == obj ? "<option selected='selected' value=" + obj + ">" + obj + "</option>" :
+                "<option value=" + obj + ">" + obj + "</option>";
         });
+        $("#file-list").html(options);
+
+        myDropzone.removeAllFiles();
+
+    });
+});
+
     </script>
- {% endblock %}
+    {% endblock %}
+

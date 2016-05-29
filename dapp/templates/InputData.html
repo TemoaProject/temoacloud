@@ -29,6 +29,8 @@
                                                  <select class="form-control" id="file-list" name="datafile" data-placeholder="">
                                                  
                                                 </select>
+                                                <input name="mode"type="hidden" value="input"/>
+                                                    <!--name <inpu
                                                     <!-- <input type="file" name="file"id="id-input-file-2" class="form-control" /> -->
                                                 </div>
                                                 </div>
@@ -185,187 +187,35 @@
             <!-- /#ace-settings-container -->
         </div>
       <div class="space-32"></div>     <!-- /.main-container-inner -->
+<script src="/static/assets/js/io.js"></script>
+<script>
+$(document).ready(function() {
+    populateFileList('input');
+    $("#input-file-error").hide();
+    $("#input-form").submit(function(e) {
+        e.preventDefault();
+        ioFormSubmit();
+    });
+    // Dropzone class:
+    var myDropzone = new Dropzone("div#dropArea", {
+        url: "/dapp/fileupload",
+        params: {
+        mode: 'input'
+    }
+    });
 
-    <script>
-
-        jQuery(function ($) {
-            
-             $(".chosen-select").chosen();
-             $('[data-rel=tooltip]').tooltip({ container: 'body' });
-             $('[data-rel=popover]').popover({ container: 'body' });
-             
-            $('#id-input-file-1 , #id-input-file-2').ace_file_input({
-                no_file: 'No File ...',
-                btn_choose: 'Choose',
-                btn_change: 'Change',
-                droppable: false,
-                onchange: null,
-                thumbnail: false //| true | large
-                //whitelist:'gif|png|jpg|jpeg'
-                //blacklist:'exe|php'
-                //onchange:''
-                //
-            });
-            $("#input-file-error").hide();
-              $("#input-form").submit(function(e){
-                e.preventDefault();
-                inputFormSubmit();
-});
-            // Dropzone class:
-            var myDropzone = new Dropzone("div#dropArea", { url: "/dapp/fileupload"});
-
-
-            //$("div#dropArea").dropzone({ url: "/dapp/fileupload" });
-
-            myDropzone.on("success", function(fileList, response) {
-                /* Maybe display some more file information on your page */
-                //alert("hi");
-                //console.log(fileList);
-                //console.log(response.data);
-                var options = '<option value="0">--Select Input File--</option>';
-                $.each(response.data, function(index, obj){
-                    
-                    options += fileList.name == obj ? "<option selected='selected' value="+obj+">"+obj+"</option>" :
-                     "<option value="+obj+">"+obj+"</option>";
-                    
-                    
-                    
-                 });
-                $("#file-list").html(options);
-
-              myDropzone.removeAllFiles();
-                
-            });
-            
-            
-            
-            
-            var url = '/dapp/loadfilelist';
-              $.ajax({ 
-              url: url,
-              dataType : 'json',
-              contentType: 'application/json; charset=UTF-8',
-              cache: false,
-              success: function(result){
-                var options = '<option value="0">--Select Input File--</option>';
-                $.each(result.data, function(index, obj){
-                   options += "<option value="+obj+">"+obj+"</option>";
-                });
-                $("#file-list").html(options);
-              }
-            });
-
-
-
-            $('#id-input-file-3').ace_file_input({
-                style: 'well',
-                btn_choose: 'Drop files here or click to choose',
-                btn_change: null,
-                no_icon: 'icon-cloud-upload',
-                droppable: true,
-                thumbnail: 'small'//large | fit
-                //,icon_remove:null//set null, to hide remove/reset button
-                /**,before_change:function(files, dropped) {
-                    //Check an example below
-                    //or examples/file-upload.html
-                    return true;
-                }*/
-                /**,before_remove : function() {
-                    return true;
-                }*/
-                ,
-                preview_error: function (filename, error_code) {
-                    //name of the file that failed
-                    //error_code values
-                    //1 = 'FILE_LOAD_FAILED',
-                    //2 = 'IMAGE_LOAD_FAILED',
-                    //3 = 'THUMBNAIL_FAILED'
-                    //alert(error_code);
-                }
-
-            }).on('change', function () {
-                //console.log($(this).data('ace_input_files'));
-                //console.log($(this).data('ace_input_method'));
-            });
-
-
-            //dynamically change allowed formats by changing before_change callback function
-            $('#id-file-format').removeAttr('checked').on('change', function () {
-                var before_change
-                var btn_choose
-                var no_icon
-                if (this.checked) {
-                    btn_choose = "Drop images here or click to choose";
-                    no_icon = "icon-picture";
-                    before_change = function (files, dropped) {
-                        var allowed_files = [];
-                        for (var i = 0 ; i < files.length; i++) {
-                            var file = files[i];
-                            if (typeof file === "string") {
-                                //IE8 and browsers that don't support File Object
-                                if (!(/\.(jpe?g|png|gif|bmp)$/i).test(file)) return false;
-                            }
-                            else {
-                                var type = $.trim(file.type);
-                                if ((type.length > 0 && !(/^image\/(jpe?g|png|gif|bmp)$/i).test(type))
-                                        || (type.length == 0 && !(/\.(jpe?g|png|gif|bmp)$/i).test(file.name))//for android's default browser which gives an empty string for file.type
-                                    ) continue;//not an image so don't keep this file
-                            }
-
-                            allowed_files.push(file);
-                        }
-                        if (allowed_files.length == 0) return false;
-
-                        return allowed_files;
-                    }
-                }
-                else {
-                    btn_choose = "Drop files here or click to choose";
-                    no_icon = "icon-cloud-upload";
-                    before_change = function (files, dropped) {
-                        return files;
-                    }
-                }
-                var file_input = $('#id-input-file-3');
-                file_input.ace_file_input('update_settings', { 'before_change': before_change, 'btn_choose': btn_choose, 'no_icon': no_icon })
-                file_input.ace_file_input('reset_input');
-            });
+    myDropzone.on("success", function(fileList, response) {
+        var options = '<option value="0">--Select Input File--</option>';
+        $.each(response.data, function(index, obj) {
+            options += fileList.name == obj ? "<option selected='selected' value=" + obj + ">" + obj + "</option>" :
+                "<option value=" + obj + ">" + obj + "</option>";
         });
+        $("#file-list").html(options);
 
-     function inputFormSubmit(){
+        myDropzone.removeAllFiles();
 
-      fileInput = $("#file-list option:selected").text();
-      if(fileInput == '--Select Input File--'){
-        alert("Error: Please select input file");
-        $("#input-file-error").show();
-        return false;
-      } else{
-        $("#input-file-error").hide();
-      }
-      comInput = $("#comomodity-input-text").val();
-      comOutput = $("#comomodity-output-text").val();
-      colorScheme = $("input[name=qcolorscheme]:checked").val();
-      outputFormat = $("#output-format").text();
-      formData = "datafile="+fileInput+"&commodityoutputlimit"+comInput+"&commodityinputlimit="+comOutput+"&ccolorscheme="+colorScheme+"&format="+outputFormat;
-      displayNetworkDiagram(); alert("hi");
-      var url = '/dapp/runinput';
-      $.ajax({ 
-              url: url,
-              method:"post",
-              data:formData,
-              dataType:'json',
-              success:function(result){
-                alert(result);
-                displayNetworkDiagram();
-              }
-            }); 
-      
-     }
-
-     function displayNetworkDiagram(){
-        imgPath = "/result/input/a/o.jpg";
-      $('#networkDiagram').html('<img src="'+ imgPath +'" width=400 height=200 alt="Output" />');
-     }
+    });
+});
 
     </script>
     {% endblock %}

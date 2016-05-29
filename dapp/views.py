@@ -137,27 +137,28 @@ def makeGraph(inputs):
 def fileUpload(request):
     
   if request.method == 'POST':
+    mode = request.POST.get("mode", "input")
     
     
     
 
-    result = handle_uploaded_file( request.FILES['file'] )
+    result = handle_uploaded_file( request.FILES['file'],  mode)
     
     #if string is empty we have no errors hence success
     if not result :
       #fileList = loadFiles()
       #JsonResponse( {'success' : 'File uploading finished'} )
 
-      return JsonResponse( {"data" : loadFiles() })
+      return JsonResponse( {"data" : loadFiles(mode) })
       
     
     return JsonResponse({'error': result}, status = 403)
 
-def handle_uploaded_file(f):
+def handle_uploaded_file(f, mode):
   import os.path
   
   
-  fname = 'uploads/input/' + f.name
+  fname = 'uploads/'+mode+'/' + f.name
   
   
   filename, file_extension = os.path.splitext(f.name)
@@ -172,7 +173,7 @@ def handle_uploaded_file(f):
     print "Testing" + fname
     return "File already exists. Please rename and try to upload."
   
-  with open('uploads/input/' + f.name, 'wb+') as destination:
+  with open(fname, 'wb+') as destination:
     for chunk in f.chunks():
       destination.write(chunk)
   
@@ -180,16 +181,18 @@ def handle_uploaded_file(f):
 
 
 def loadFileList(request):
-  fileList = { "data" : loadFiles() }
+  mode = request.POST.get('mode')
+  fileList = { "data" : loadFiles(mode) }
   return JsonResponse(fileList)
 
-def loadFiles():
+def loadFiles(mode):
+  print mode
   import glob   
   #print glob.glob("upload/adam/*.txt")
   types = ('*.data', '*.sqlite') # the tuple of file types
   files_grabbed = []
   for type in types:
-      files_grabbed.extend(glob.glob('uploads/input/' + type))
+      files_grabbed.extend(glob.glob('uploads/'+ mode +'/' + type))
   fileList = []
 
   for file in files_grabbed:
