@@ -29,7 +29,7 @@ def inputData(request):
   return render_to_response('InputData.html', { 'mode' : 'input'}, context_instance=RequestContext(request))
 
 def outputData(request):
-  return render_to_response('OutputData.html', context_instance=RequestContext(request))
+  return render_to_response('InputData.html', { 'mode' : 'output'}, context_instance=RequestContext(request))
 
 def modelRun(request):
   return render_to_response('ModelRun.html', context_instance=RequestContext(request))

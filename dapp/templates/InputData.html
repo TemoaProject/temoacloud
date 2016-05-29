@@ -29,7 +29,7 @@
                                                  <select class="form-control" id="datafilename" name="datafile" data-placeholder="">
                                                  
                                                 </select>
-                                                <input name="mode"type="hidden" value="input"/>
+                                                <input name="mode"type="hidden" value="{{mode}}" />
                                                     <!--name <inpu
                                                     <!-- <input type="file" name="file"id="id-input-file-2" class="form-control" /> -->
                                                 </div>
@@ -191,7 +191,7 @@
 <script>
 $(document).ready(function() {
     
-    initJs('input');
+    initJs('{{mode}}');
     
     /*populateFileList('input');
     
