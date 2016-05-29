@@ -57,6 +57,9 @@ def about(request):
 
 #get posted data
 def runInput(request):
+  
+  import uuid; 
+  
   if request.method == 'POST':
     format = request.POST.get("format", "svg")
     colorscheme = request.POST.get("colorscheme", "color")
@@ -66,6 +69,7 @@ def runInput(request):
     mode =request.POST.get("mode", "")
     
     filename2, file_extension = os.path.splitext(filename)
+    random = str(uuid.uuid4().get_hex().upper()[0:6])
     
     #fulldirpath = os.path.dirname(os.path.abspath(__file__))
     
@@ -76,8 +80,8 @@ def runInput(request):
     inputs = { 
             "-i" : settings.BASE_DIR + "/uploads/" + mode + "/" + filename , 
             "-f" : format,
-            #"--scenario" : "" ,
-            "-o" : settings.BASE_DIR + "/result"
+            "--scenario" : random ,
+            "-o" : settings.BASE_DIR + "/result/" + mode
           }
           
     if( colorscheme == "grey"):
@@ -87,7 +91,7 @@ def runInput(request):
     
     makeGraph(inputs)
     
-    return JsonResponse( {"data" : filename2, "mode" : mode } )
+    return JsonResponse( {"filename" : filename2 + "_" + random , "mode" : mode , } )
     
     
   
@@ -161,7 +165,7 @@ def handle_uploaded_file(f, mode):
   import os.path
   
   
-  fname = 'uploads/'+mode+'/' + f.name
+  fname = settings.BASE_DIR + '/uploads/'+mode+'/' + f.name
   
   
   filename, file_extension = os.path.splitext(f.name)
@@ -184,7 +188,7 @@ def handle_uploaded_file(f, mode):
 
 
 def loadFileList(request):
-  mode = request.POST.get('mode')
+  mode = request.GET.get('mode')
   fileList = { "data" : loadFiles(mode) }
   return JsonResponse(fileList)
 
@@ -194,7 +198,7 @@ def loadFiles(mode):
   #print glob.glob("upload/adam/*.txt")
   types = ('.data', '.sqlite') # the tuple of file types
   
-  return [each for each in os.listdir('uploads/'+ mode) if each.endswith(types)]
+  return [each for each in os.listdir(settings.BASE_DIR + '/uploads/'+ mode) if each.endswith(types)]
   
   #files_grabbed = []
   #for type in types:

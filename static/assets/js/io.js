@@ -4,7 +4,7 @@ function populateFileList(mode){
     $.ajax({
         url: url,
         dataType: 'json',
-        method: 'post',
+        method: 'get',
         data: {
             mode: mode
         },
@@ -55,7 +55,9 @@ function populateFileList(mode){
 
 
 function displayNetworkDiagram(folder, filename) {
-    var imgPath = "/result/" + folder + "/" + filename ;
+    
+    //file is inside result/ folder but due to static django we have to say url /static :(  ..enjoy :)
+    var imgPath = "/static/" + folder + "/" + filename + "/simple_model.svg" ;
     $('#networkDiagram').html('<img src="' + imgPath + '" height=400 alt="Output" />');
 }
 
@@ -87,7 +89,7 @@ function initForm() {
         
         $.post( url, $('form#input-form').serialize(), function(data) {
             
-            alert(data.filename + data.mode);
+            //alert(data.filename + data.mode);
             
             
             displayNetworkDiagram(data.mode, data.filename );
@@ -160,7 +162,7 @@ function initJs(str)
                 "<option value=" + obj + ">" + obj + "</option>";
         });
         
-        $("#file-list").html(options);
+        $("#datafilename").html(options);
 
         myDropzone.removeAllFiles();
 
