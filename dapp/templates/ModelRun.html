@@ -25,8 +25,8 @@
                           <div class="form-group no-margin-bottom">
                           <label class="col-sm-4 control-label no-padding-right" for="form-field-1">Please Select Your Model Input  </label>
                           <div class="col-sm-5">
-                          <div id="inputDropArea" class="dropzone">
-                          <select class="form-control" id="input-file-list" name="datafile" data-placeholder=""></select>
+                          <div id="inputdropArea" class="dropzone">
+                          <select class="form-control" id="inputdatafilename" name="datafile" data-placeholder=""></select>
                                                 </div>
                                                 </div>
                             <div class="col-sm-3 text-left"> <span class="help-button" data-rel="popover" data-trigger="hover" data-placement="right" data-content="To run Temoa, you must select an input dataset from your 'data' folder. You must either select a relational database (sqlite) or a text (DAT) file.." title="Input Data Textbox">?</span> </div>
@@ -35,8 +35,8 @@
                           <div class="form-group no-margin-bottom">
                             <label class="col-sm-4 control-label no-padding-right" for="form-field-2"> Please Select Your Model Output </label>
                             <div class="col-sm-5">
-                            <div id="outputDropArea" class="dropzone">
-                            <select class="form-control" id="output-file-list" name="datafile" data-placeholder=""></select>
+                            <div id="outputdropArea" class="dropzone">
+                            <select class="form-control" id="output" name="datafile" data-placeholder=""></select>
                                                 </div>
                                                 </div>
                             <div class="col-sm-3 text-left"> <span class="help-button" data-rel="popover" data-trigger="hover" data-placement="right" data-content="Regardless of whether Temoa is run with an input database or text (DAT) file, model outputs can either be stored in a text file or in a database. Users who opt to run with database input will typically store the model outputs in the same database, which will include a set of output tables that track model outputs by scenario." title="Output Input Textbox">?</span> </div>
@@ -400,48 +400,9 @@ file:///home/yash/Projects/dapp/dapp/templates/master.html
 <script src="/static/assets/js/io.js"></script>
 <script>
 $(document).ready(function() {
-
- populateFileList('input');
- populateFileList('output');
-    // Input Dropzone class:
-    var myInputDropzone = new Dropzone("div#inputDropArea", {
-        url: "/dapp/fileupload",
-        params: {
-        mode: 'input'
-    }
-    });
-
-    myInputDropzone.on("success", function(fileList, response) {
-        var options = '<option value="0">--Select Input File--</option>';
-        $.each(response.data, function(index, obj) {
-            options += fileList.name == obj ? "<option selected='selected' value=" + obj + ">" + obj + "</option>" :
-                "<option value=" + obj + ">" + obj + "</option>";
-        });
-        $("#input-file-list").html(options);
-
-        myInputDropzone.removeAllFiles();
-
-    });
-
-    // Output Dropzone class:
-    var myOutputDropzone = new Dropzone("div#outputDropArea", {
-        url: "/dapp/fileupload",
-        params: {
-        mode: 'output'
-    }
-    });
-
-    myOutputDropzone.on("success", function(fileList, response) {
-        var options = '<option value="0">--Select Input File--</option>';
-        $.each(response.data, function(index, obj) {
-            options += fileList.name == obj ? "<option selected='selected' value=" + obj + ">" + obj + "</option>" :
-                "<option value=" + obj + ">" + obj + "</option>";
-        });
-        $("#output-file-list").html(options);
-
-        myOutputDropzone.removeAllFiles();
-
-    });
+    
+    initJs();
+    
 });
 
     </script>
