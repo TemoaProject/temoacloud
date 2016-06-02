@@ -35,6 +35,24 @@ def modelRun(request):
   return render_to_response('ModelRun.html', context_instance=RequestContext(request))
 
 def runModel(request):
+  #need to create config with form post data
+  if request.method == 'POST':
+    inputdatafilename = request.POST.get("inputdatafilename", "")
+    print inputdatafilename
+    outputdatafilename = request.POST.get("outputdatafilename", "")
+    print outputdatafilename
+    createspreadsheetoption =request.POST.get("createspreadsheetoption", "")
+    print createspreadsheetoption
+    createtextfileoption =request.POST.get("createtextfileoption", "")
+    print createtextfileoption
+    generatelpfileoption =request.POST.get("generatelpfileoption", "")
+    print generatelpfileoption
+    scenarioname =request.POST.get("scenarioname", "")
+    print scenarioname
+    solver =request.POST.get("solver", "")
+    print solver
+    runoption =request.POST.get("runoption", "")
+    print runoption
   
   #temoa_model.runModel()
   
@@ -188,7 +206,7 @@ def handle_uploaded_file(f, mode):
 
 
 def loadFileList(request):
-  mode = request.GET.get('mode')
+  mode = request.GET.get('mode','input')
   fileList = { "data" : loadFiles(mode) }
   return JsonResponse(fileList)
 

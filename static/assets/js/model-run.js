@@ -1,6 +1,5 @@
-function populateFileList(str){
+ function populateFileList(str) {
     var url = '/dapp/loadfilelist';
-
     $.ajax({
         url: url,
         dataType: 'json',
@@ -14,14 +13,13 @@ function populateFileList(str){
             $.each(result.data, function(index, obj) {
                 options += "<option value=" + obj + ">" + obj + "</option>";
             });
-            
             $("#"+str+"datafilename").html(options);
             
         }
     });
 }
-
-   public function initDropZone(str){
+ 
+ function initDropZone(str){
     // Dropzone class:
     var myDropzone = new Dropzone("div#"+str+"dropArea", {
         url: "/dapp/fileupload",
@@ -46,11 +44,57 @@ function populateFileList(str){
 
     });
 
-   }   
+   } 
+
 function initJs()
-{
+{ 
     populateFileList('input');
     populateFileList('output');
     initDropZone('input');
     initDropZone('output');
+    $("#input-file-error").hide();
+    $("#output-file-error").hide();
+    initForm();
+}
+
+function initForm() { 
+    
+    var url = '/dapp/model';
+    
+    
+    
+    $("#model-run-form").submit(function(e) {
+            
+        e.preventDefault();
+        
+        var fileInput = $("#inputdatafilename option:selected").text();
+        if (fileInput == '--Select data File--' || fileInput == '') 
+        {
+            $("#input-file-error").show();
+            return false;
+        } 
+        else 
+        {
+            $("#input-file-error").hide();
+        }
+
+        var fileOutput = $("#outputdatafilename option:selected").text();
+        if (fileOutput == '--Select data File--' || fileOutput == '') 
+        {
+            $("#output-file-error").show();
+            return false;
+        } 
+        else 
+        {
+            $("#output-file-error").hide();
+        }
+        
+        
+        $.post( url, $('form#model-run-form').serialize(), function(data) {
+            
+            alert("model-run-submit");
+        },
+       'json' // I expect a JSON response
+    );
+});
 }
