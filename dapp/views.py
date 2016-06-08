@@ -15,9 +15,9 @@ import json
 import os
 
 #Custom / Thirdparty
-from thirdparty import test
-from thirdparty.temoa.db_io import Make_Graphviz
-from handle_modelrun import run_model
+#from thirdparty import test
+#from thirdparty.temoa.db_io import Make_Graphviz
+#from handle_modelrun import run_model
 
 
 def login(request):
@@ -36,7 +36,7 @@ def runModel(request):
   
   #This function will handle 
   #TODO try catch handling
-  run_model(request)
+  #run_model(request)
   
   return HttpResponse("Generating model...")
 

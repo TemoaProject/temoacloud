@@ -129,12 +129,27 @@ function initForm() {
 
 }
 
+function showHideCommodityTechnology(){
+    $('#commodity-technology-type').change(function(){
+    if($('#commodity-technology-type').val() == 'none'){
+        $('#commodity-technology-value').hide();
+        $('#commodity-label').hide();
+    } else {
+        $('#commodity-technology-value').show();
+        $('#commodity-label').show();
+}
+});
+}
+
+
 
 function initJs(str)
 {
     initForm();
-    
+    $('#commodity-technology-value').hide();
+    $('#commodity-label').hide();
     populateFileList(str);
+    showHideCommodityTechnology();
     
     $("#input-file-error").hide();
     

@@ -81,12 +81,19 @@
                                         <div class="row">
                                             <div class="col-sm-1"></div>
                                             <div class="col-sm-5">
-                                                Commodity Input Limit
-                                                <input id="comomodity-input-text"type="text" class="form-control" placeholder="COAL" name="commodityinputlimit" />
+                                                Select Commodity/Technology Type
+                                                <select class="form-control" id="commodity-technology-type" name="format"  data-placeholder="Choose a Format...">
+                                                    <option value="none">NONE</option>
+                                                    <option value="commodity">Commodity</option>
+                                                    <option value="technology">Technology</option>
+                                                </select>
                                             </div>
                                             <div class="col-sm-5">
-                                                Commodity Output Limit
-                                                <input id="comomodity-output-text"type="text" class="form-control" placeholder="ELC" name="commodityoutputlimit" />
+                                                <span id = "commodity-label">Commodity/Technology Value</span>
+                                                <select class="form-control" id="commodity-technology-value" name="format"  data-placeholder="Choose a Commodity/Technology...">
+                                                    <option value="1">COAL</option>
+                                                    <option value="1">COAL</option>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="space-8"></div>
