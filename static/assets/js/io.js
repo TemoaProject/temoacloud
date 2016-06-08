@@ -129,19 +129,47 @@ function initForm() {
 
 }
 
-function showHideCommodityTechnology(){
+function showHideCommodityTechnology(mode){
     $('#commodity-technology-type').change(function(){
-    if($('#commodity-technology-type').val() == 'none'){
+
+        type = $('#commodity-technology-type').val();
+     
+    if(type == 'none'){
         $('#commodity-technology-value').hide();
         $('#commodity-label').hide();
     } else {
         $('#commodity-technology-value').show();
-        $('#commodity-label').html("Select "+$('#commodity-technology-type').val()+" value");
+        $('#commodity-label').html("Select "+type+" value");
         $('#commodity-label').show();
+        getCTList(mode, type);
 }
 });
 }
 
+function getCTList(mode, type){
+    var url = '/dapp/loadctlist';
+
+    $.ajax({
+        url: url,
+        dataType: 'json',
+        method: 'get',
+        data: {
+            mode: mode,
+            filename:'abc',
+            'type':type
+        },
+        success: function(result) {
+            
+            var options = '<option value="0">--Select '+ type +' value--</option>';
+            $.each(result.data, function(index, obj) {
+                options += "<option value=" + obj + ">" + obj + "</option>";
+            });
+            
+            $("#commodity-technology-value").html(options);
+            
+        }
+    });
+}
 
 
 function initJs(str)
@@ -150,7 +178,7 @@ function initJs(str)
     $('#commodity-technology-value').hide();
     $('#commodity-label').hide();
     populateFileList(str);
-    showHideCommodityTechnology();
+    showHideCommodityTechnology(str);
     
     $("#input-file-error").hide();
     

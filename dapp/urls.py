@@ -12,5 +12,6 @@ urlpatterns = [
     url(r'^model$', views.runModel, name='model'),
     url(r'^fileupload$', views.fileUpload, name='fileupload'),
     url(r'^runinput$', views.runInput, name='runinput'),
-    url(r'^loadfilelist$', views.loadFileList, name='loadfilelist')
+    url(r'^loadfilelist$', views.loadFileList, name='loadfilelist'),
+    url(r'^loadctlist$', views.loadCTList, name='loadctlist')
 ]

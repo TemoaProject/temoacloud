@@ -215,5 +215,22 @@ def loadFiles(mode):
 
   #return fileList;
 
+def loadCTList(request):
+  mode = request.GET.get('mode','input')
+  fileName = request.GET.get('filename')
+  listType = request.GET.get('type','commodity')
+
+  if listType == 'commodity':
+    ctList = { "data" : {"0":"COAL",
+                           "1": "METAL",
+                           "2":"SOIL"}}
+
+  if listType == 'technology':
+    ctList = { "data" : {"0":"ELEC",
+                           "1": "AIR",
+                           "2":"FIRE"}} 
+
+  return JsonResponse(ctList)
+
     
 
