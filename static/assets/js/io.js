@@ -136,6 +136,7 @@ function showHideCommodityTechnology(){
         $('#commodity-label').hide();
     } else {
         $('#commodity-technology-value').show();
+        $('#commodity-label').html("Select "+$('#commodity-technology-type').val()+" value");
         $('#commodity-label').show();
 }
 });
