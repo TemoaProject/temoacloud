@@ -19,6 +19,7 @@ in LICENSE.txt.  Users uncompressing this from an archive may not have
 received this license file.  If not, see <http://www.gnu.org/licenses/>.
 """
 
+from temoa_common import *
 
 from cStringIO import StringIO
 from itertools import product as cross_product, islice, izip
@@ -26,6 +27,11 @@ from operator import itemgetter as iget
 from os import path, close as os_close
 from sys import argv, stderr as SE, stdout as SO
 from signal import signal, SIGINT, default_int_handler
+
+
+from pyomo.opt import SolverFactory as SF
+from temoa_config import TemoaConfig
+
 
 import errno, warnings
 
@@ -58,52 +64,7 @@ explicitly use the Pyomo path.
 	raise ImportError( msg )
 
 
-class TemoaError ( Exception ): pass
-class TemoaCommandLineArgumentError ( TemoaError ): pass
-class TemoaKeyError ( TemoaError ): pass
-class TemoaObjectNotFoundError ( TemoaError ): pass
-class TemoaFlowError ( TemoaError ): pass
-class TemoaValidationError ( TemoaError ): pass
-class TemoaNoExecutableError ( TemoaError ): pass
-class TemoaInfeasibleError ( TemoaError ): pass
 
-def get_str_padding ( obj ):
-	return len(str( obj ))
-
-def iter_in_chunks ( iterable, chunk_size ):
-	"""
-Group iterable items into chunks.
-
-Given an iterable, e.g. ('a', 1, 'b', 2, 'c', 3), this function converts this
-length / chunk_size tuples.  The 'length' in the previous sentence is a
-misnomer, however, as this function works with any iterable.
-
-Caveat emptor: with the last example (below), note that incomplete tuples are
-   silently discarded.  This function assumes an there are only "complete"
-   chunks within the iterable; there are no 'partial chunks'.
-
-For example:
-
-    >>> some_tuple = ('a', 1, 'b', 2, 'c', 3)
-    >>> for i in iter_in_chunks( some_tuple, 2 )
-    >>>    print i
-    ('a', 1)
-    ('b', 2)
-    ('c', 3)
-
-    >>> for i in iter_in_chunks( some_tuple, 3 )
-    >>>    print i
-    ('a', 1, 'b')
-    (2, 'c', 3)
-
-    >>> for i in iter_in_chunks( some_tuple, 4 )
-    >>>    print i
-    ('a', 1, 'b', 2)
-
-"""
-
-	return izip( *[islice(iterable, i, None, chunk_size)
-	             for i in xrange(chunk_size)] )
 
 ###############################################################################
 # Temoa rule "partial" functions (excised from indidivual constraints for
@@ -1953,24 +1914,14 @@ def solve_true_cost_of_guessing ( optimizer, options, epsilon=1e-6 ):
 
 # Lets split it and work
 
-def parse_args ( ):
-	from temoa_config import TemoaConfig
-	import argparse, platform, sys
-
-	from pyomo.opt import SolverFactory as SF
+def get_solvers():
+	
 	from logging import getLogger
-
-	# used for some error messages below.
-	red_bold = cyan_bold = reset = ''
-	if platform.system() != 'Windows' and SE.isatty():
-		red_bold  = '\x1b[1;31m'
-		cyan_bold = '\x1b[1;36m'
-		reset     = '\x1b[0m'
-
+	
 	logger = getLogger('pyomo.solvers')
 	logger_status = logger.disabled
 	logger.disabled = True  # no need for warnings: it's what we're testing!
-
+	
 	available_solvers = set()
 	for sname in SF.services():   # list of solver interface names
 		# initial underscore ('_'): Coopr's method to mark non-public plugins
@@ -2002,6 +1953,28 @@ def parse_args ( ):
 		   'not be able to solve any models.  If you need help, ask on the '
 		   'Temoa Project forum: http://temoaproject.org/\n\n' )
 
+	return (available_solvers, default_solver)
+
+
+
+def parse_args ( ):
+	
+	import argparse, platform, sys
+
+	
+	
+
+	# used for some error messages below.
+	red_bold = cyan_bold = reset = ''
+	if platform.system() != 'Windows' and SE.isatty():
+		red_bold  = '\x1b[1;31m'
+		cyan_bold = '\x1b[1;36m'
+		reset     = '\x1b[0m'
+
+	
+
+	available_solvers, default_solver = get_solvers()
+	
 	parser = argparse.ArgumentParser()
 	parser.prog = path.basename( argv[0].strip('/') )
 
@@ -2093,15 +2066,20 @@ def parse_args ( ):
 	  type=float)
 
 	options = parser.parse_args()
+	print options
+	#Namespace(config='config_sample', dot_dat=[], eciu=None, fix_variables=None, generateSolverLP=False, how_to_cite=False, keepPyomoLP=False, mga=None, solver='mpec_nlp', version=False)
+
 	# Use the Temoa configuration file to overwrite Kevin's argument parser
 	if options.config:
 		try:
 			temoa_config = TemoaConfig(d_solver=default_solver)
 			temoa_config.build(config=options.config)
-			SE.write(repr(temoa_config))
+			#SE.write(repr(temoa_config))
 			options = temoa_config
+			#print "GGGGGGG"
+			#print options
 			SE.write('\nPlease press enter to continue or Ctrl+C to quit.\n')
-			raw_input() # Give the user a chance to confirm input
+			#raw_input() # Give the user a chance to confirm input
 		except KeyboardInterrupt:
 			SE.write('\n\nUser requested quit.  Exiting Temoa ...\n')
 			raise SystemExit()
@@ -2157,12 +2135,19 @@ def parse_args ( ):
 	s_choice = str( options.solver ).upper()
 	SE.write('Notice: Using the {} solver interface.\n'.format( s_choice ))
 	SE.flush()
+	
+	#print "TEST"
+	#print options
+	
+	raw_input() # Give the user a chance to confirm input
 
 	return options
 
 
-def temoa_solve ( model ):
-	from sys import argv, version_info
+def temoa_solve ( model, config_filename ):
+	from sys import argv, version_info, exit
+	from argparse import Namespace
+
 
 	if version_info < (2, 7):
 		msg = ("Temoa requires Python v2.7 to run.\n\nIf you've "
@@ -2171,7 +2156,23 @@ def temoa_solve ( model ):
 		  'executable.')
 		raise SystemExit( msg )
 
-	options = parse_args()
+	
+	#options = parse_args()
+	
+	#options = Namespace(config='config_sample', dot_dat=[], eciu=None, fix_variables=None, generateSolverLP=False, how_to_cite=False, keepPyomoLP=False, mga=None, solver='mpec_nlp', version=False)
+	
+	available_solvers, default_solver = get_solvers()
+	
+	temoa_config = TemoaConfig(d_solver=default_solver)
+	temoa_config.build(config=config_filename)
+	#SE.write(repr(temoa_config))
+	options = temoa_config
+
+
+	
+	#print "BIG"
+	print options
+	#exit()
 
 	from pyomo.opt import SolverFactory
 

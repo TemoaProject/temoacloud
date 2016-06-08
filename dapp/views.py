@@ -17,7 +17,7 @@ from django.views.decorators.csrf import csrf_exempt
 #from .models import ModelWithFileField
 
 from thirdparty.temoa.db_io import Make_Graphviz
-#from thirdparty.temoa.temoa_model import temoa_model
+from thirdparty.temoa.temoa_model import temoa_model
 
 
 import os
@@ -54,7 +54,7 @@ def runModel(request):
     runoption =request.POST.get("runoption", "")
     print runoption
   
-  #temoa_model.runModel()
+  temoa_model.runModel()
   
   return HttpResponse("Generating model...")
 

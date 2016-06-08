@@ -19,7 +19,8 @@ in LICENSE.txt.  Users uncompressing this from an archive may not have
 received this license file.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from temoa_lib import TemoaError
+from temoa_common import *
+
 from os.path import abspath, isfile, splitext
 
 def db_2_dat(ifile, ofile, options):
@@ -28,6 +29,8 @@ def db_2_dat(ifile, ofile, options):
 	import sys
 	import re
 	import getopt
+	
+	#print "TEST"
 
 	def write_tech_mga(f):
 		cur.execute("SELECT tech FROM technologies")
@@ -145,6 +148,11 @@ def db_2_dat(ifile, ofile, options):
 
 
 	#create a file to write output
+	#print ifile
+	#print ofile
+	#print options
+	#print "Sooooo"
+	
 	f = open(ofile, 'w')
 	f.write('data ;\n\n')
 	#connect to the database
@@ -391,8 +399,13 @@ class TemoaConfig( object ):
 			for i in range(self.mga_iter):
 				self.__mga_todo.put(self.scenario + '_mga_' + str(i))
 
-		f = open(os.devnull, 'w'); sys.stdout = f # Suppress the original DB_to_DAT.py output
+		f = open(os.devnull, 'w'); 
+		sys.stdout = f # Suppress the original DB_to_DAT.py output
+		
 		counter = 0
+		
+		#print "YYYY"
+		
 		for ifile in self.dot_dat:
 			i_name, i_ext = splitext(ifile)
 			if i_ext != '.dat':
@@ -403,4 +416,4 @@ class TemoaConfig( object ):
 		f.close()
 		sys.stdout = sys.__stdout__
 		if counter > 0:
-			sys.stderr.write("\n{} .db file(s) converted\n".format(counter))
+			sys.stderr.write("\n{} .db DD file(s) converted\n".format(counter))

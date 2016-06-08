@@ -357,11 +357,12 @@ def runModel():
   model = temoa_create_model()
   
   from temoa_lib import temoa_solve
-  temoa_solve( model )
+  temoa_solve( model , '/home/yash/Projects/sam/dapp/uploads/config_temp/config_sample' )
 
 
 
-#if '__main__' == __name__:
+if '__main__' == __name__:
+  runModel()
   ##default temoa_create_model function arg is 'name'
   #model = temoa_create_model()
 #
