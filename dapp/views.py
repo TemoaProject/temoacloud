@@ -1,26 +1,24 @@
+#Django
 from django.template import RequestContext
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, JsonResponse
-from thirdparty import test
+from django.conf import settings
+from django import forms
+from django.views.decorators.csrf import csrf_exempt
+
+#System
 import json
 import os
 import re
 import urllib
 import json
-from django.conf import settings
-
-
-from django import forms
-
-from django.views.decorators.csrf import csrf_exempt
-#from .forms import UploadFileForm
-#from .models import ModelWithFileField
-
-from thirdparty.temoa.db_io import Make_Graphviz
-from thirdparty.temoa.temoa_model import temoa_model
-
-
 import os
+
+#Custom / Thirdparty
+from thirdparty import test
+from thirdparty.temoa.db_io import Make_Graphviz
+from handle_modelrun import run_model
+
 
 def login(request):
   return render_to_response('login.html', context_instance=RequestContext(request))
@@ -35,26 +33,10 @@ def modelRun(request):
   return render_to_response('ModelRun.html', context_instance=RequestContext(request))
 
 def runModel(request):
-  #need to create config with form post data
-  if request.method == 'POST':
-    inputdatafilename = request.POST.get("inputdatafilename", "")
-    print inputdatafilename
-    outputdatafilename = request.POST.get("outputdatafilename", "")
-    print outputdatafilename
-    createspreadsheetoption =request.POST.get("createspreadsheetoption", "")
-    print createspreadsheetoption
-    createtextfileoption =request.POST.get("createtextfileoption", "")
-    print createtextfileoption
-    generatelpfileoption =request.POST.get("generatelpfileoption", "")
-    print generatelpfileoption
-    scenarioname =request.POST.get("scenarioname", "")
-    print scenarioname
-    solver =request.POST.get("solver", "")
-    print solver
-    runoption =request.POST.get("runoption", "")
-    print runoption
   
-  temoa_model.runModel()
+  #This function will handle 
+  #TODO try catch handling
+  run_model(request)
   
   return HttpResponse("Generating model...")
 

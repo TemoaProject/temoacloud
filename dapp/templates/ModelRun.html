@@ -41,7 +41,7 @@
                                           <label class="col-sm-4 control-label no-padding-right" for="form-field-2"> Please Select Your Model Output </label>
                                           <div class="col-sm-5">
                                              <div id="outputdropArea" class="dropzone">
-                                                <select class="form-control" id="outputdatafilename" name="ouputdatafilename" data-placeholder=""></select>
+                                                <select class="form-control" id="outputdatafilename" name="outputdatafilename" data-placeholder=""></select>
                                              </div>
                                           </div>
                                           <div class="col-sm-3 text-left"> <span class="help-button" data-rel="popover" data-trigger="hover" data-placement="right" data-content="Regardless of whether Temoa is run with an input database or text (DAT) file, model outputs can either be stored in a text file or in a database. Users who opt to run with database input will typically store the model outputs in the same database, which will include a set of output tables that track model outputs by scenario." title="Output Input Textbox">?</span> </div>
@@ -64,10 +64,10 @@
                                           <div class="col-sm-5">
                                              <div class="control-group">
                                                 <label style="margin-right:20px;">
-                                                <input name="createspreadsheetoption" type="radio" class="ace">
+                                                <input name="createspreadsheetoption" type="radio" value="yes" class="ace">
                                                 <span class="lbl"> Yes </span> </label>
                                                 <label>
-                                                <input name="createspreadsheetoption" type="radio" class="ace">
+                                                <input name="createspreadsheetoption" type="radio" value="" class="ace">
                                                 <span class="lbl"> No </span> </label>
                                              </div>
                                           </div>
@@ -77,7 +77,7 @@
                                           <div class="col-sm-5">
                                              <div class="control-group">
                                                 <label style="margin-right:20px;">
-                                                <input name="createtextfileoption" type="radio" class="ace">
+                                                <input name="createtextfileoption" type="radio" value="yes" class="ace">
                                                 <span class="lbl"> Yes </span> </label>
                                                 <label>
                                                 <input name="createtextfileoption" type="radio" class="ace">
@@ -90,7 +90,7 @@
                                           <div class="col-sm-5">
                                              <div class="control-group">
                                                 <label style="margin-right:20px;">
-                                                <input name="generatelpfileoption" type="radio" class="ace">
+                                                <input name="generatelpfileoption" type="radio" value="yes" class="ace">
                                                 <span class="lbl"> Yes</span> </label>
                                                 <label>
                                                 <input name="generatelpfileoption" type="radio" class="ace">
