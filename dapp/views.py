@@ -129,15 +129,14 @@ def runInput(request):
   if type == 'commodity':
   
     inputs["--comm"] = value
-    #imagepath = folder + "_" + random + "/commodities/commodity_" + value + ".svg"
-    imagepath = folder + "_" + random + "/" + folder + "_" + random + ".svg"
+    imagepath = folder + "_" + random + "/commodities/commodity_" + value + ".svg" if mode == "output" else folder + "_" + random + "/" + folder + "_" + random + ".svg"
     
 
   elif type == 'technology':
   
     inputs["--tech"] = value
-    #imagepath = folder + "_" + random + "/processes/process_" + value + ".svg"
-    imagepath = folder + "_" + random + "/" + folder + "_" + random + ".svg"
+    #imagepath = 
+    imagepath = folder + "_" + random + "/processes/process_" + value + ".svg" if mode == "output" else folder + "_" + random + "/" + folder + "_" + random + ".svg"
     
   print inputs
     
