@@ -130,23 +130,40 @@ function initForm() {
 }
 
 function showHideCommodityTechnology(mode){
+    
+    
+    
     $('#commodity-technology-type').change(function(){
 
         type = $('#commodity-technology-type').val();
      
-    if(type == 'none'){
-        $('#commodity-technology-value').hide();
-        $('#commodity-label').hide();
-    } else {
-        $('#commodity-technology-value').show();
-        $('#commodity-label').html("Select "+type+" value");
-        $('#commodity-label').show();
-        getCTList(mode, type);
-}
-});
+        if(type == 'none')
+        {
+            $('#commodity-technology-value').hide();
+            $('#commodity-label').hide();
+        } 
+        else 
+        {
+            
+            filename = $("#datafilename").val();
+            
+            if(filename == 0)
+            {
+                alert("Select model first");
+                return;
+            }
+            
+            $('#commodity-technology-value').show();
+            $('#commodity-label').html("Select "+type+" value");
+            $('#commodity-label').show();
+        
+        
+            getCTList(mode, type, filename );
+        }
+    });
 }
 
-function getCTList(mode, type){
+function getCTList(mode, type, filename){
     var url = '/dapp/loadctlist';
 
     $.ajax({
@@ -155,7 +172,7 @@ function getCTList(mode, type){
         method: 'get',
         data: {
             mode: mode,
-            filename:'abc',
+            filename: filename,
             'type':type
         },
         success: function(result) {
@@ -209,6 +226,8 @@ function initJs(str)
         $("#datafilename").html(options);
 
         myDropzone.removeAllFiles();
+        
+        showHideCommodityTechnology(str);
 
     });
     

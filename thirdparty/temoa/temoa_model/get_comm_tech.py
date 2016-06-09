@@ -3,11 +3,12 @@ import os
 import sys
 import getopt
 import re
+from collections import OrderedDict
 
 
 def get_comm(inp_f, db_dat):
 	
-	comm_list = []
+	comm_list = {}
 	comm_set = set()
 	
 	if not db_dat :
@@ -19,11 +20,12 @@ def get_comm(inp_f, db_dat):
 		cur.execute("SELECT DISTINCT comm_name FROM commodities")
 		for row in cur:
 			if row[0] != 'ethos':
-				comm_list.append(row[0])
+				x= row[0]
+				comm_list[x] = x
 		
 		cur.close()
 		con.close()
-		return sorted(comm_list)
+		
 		
 	else:
 		eff_flag = False
@@ -49,13 +51,13 @@ def get_comm(inp_f, db_dat):
 			sys.exit(2)
 			
 		for x in comm_set:
-			comm_list.append(x)
+			comm_list[x] = x
 			
-		return sorted(comm_list)
+	return dict ( OrderedDict ( sorted(comm_list.items(), key=lambda x: x[1]) ) )
 		
 def get_tech(inp_f, db_dat):
 	
-	tech_list = []
+	tech_list = {}
 	tech_set = set()
 	
 	if not db_dat :
@@ -66,11 +68,12 @@ def get_tech(inp_f, db_dat):
 		print inp_f
 		cur.execute("SELECT DISTINCT tech FROM technologies")
 		for row in cur:
-			tech_list.append(row[0])
+			x= row[0]
+			tech_list[x] = x
 			
 		cur.close()
 		con.close()
-		return sorted(tech_list)
+		
 		
 	else:
 		eff_flag = False
@@ -94,9 +97,9 @@ def get_tech(inp_f, db_dat):
 			sys.exit(2)
 			
 		for x in tech_set:
-			tech_list.append(x)
+			tech_list[x] = x
 			
-		return sorted(tech_list)
+	return dict ( OrderedDict ( sorted(tech_list.items(), key=lambda x: x[1]) ) )
 		
 	
 def help_user() :

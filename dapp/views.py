@@ -18,7 +18,7 @@ import os
 from thirdparty import test
 from thirdparty.temoa.db_io import Make_Graphviz
 from handle_modelrun import run_model
-
+from thirdparty.temoa.temoa_model import get_comm_tech
 
 def login(request):
   return render_to_response('login.html', context_instance=RequestContext(request))
@@ -165,7 +165,7 @@ def fileUpload(request):
       #fileList = loadFiles()
       #JsonResponse( {'success' : 'File uploading finished'} )
 
-      return JsonResponse( {"data" : loadFiles(mode) })
+      return JsonResponse( {"data" : loadFiles(mode), 'mode' : mode })
       
     
     return JsonResponse({'error': result}, status = 403)
@@ -202,32 +202,31 @@ def loadFileList(request):
   return JsonResponse(fileList)
 
 def loadFiles(mode):
-  print mode
-  #import glob   
-  #print glob.glob("upload/adam/*.txt")
+  #print mode
   types = ('.data', '.sqlite') # the tuple of file types
   
   return [each for each in os.listdir(settings.BASE_DIR + '/uploads/'+ mode) if each.endswith(types)]
   
-  #files_grabbed = []
-  #for type in types:
-      ##files_grabbed.extend(glob.glob('uploads/'+ mode +'/' + type))
-      #files_grabbed = [each for each in os.listdir('uploads/'+ mode) if each.endswith('.c')]
-  #fileList = []
 
-  #print files_grabbed
-
-  #for file in files_grabbed:
-    #fileList.append(os.path.basename(file))
-
-  #print fileList
-
-  #return fileList;
 
 def loadCTList(request):
   mode = request.GET.get('mode','input')
-  fileName = request.GET.get('filename')
+  filename = request.GET.get('filename')
   listType = request.GET.get('type','commodity')
+  
+  input = {"--input" : settings.BASE_DIR + '/uploads/'+ mode + "/" + filename}
+  
+  if listType == 'commodity':
+    input["--comm"] = True
+
+  elif listType == 'technology':
+    input["--tech"] = True
+  
+  
+  return JsonResponse( { "data" : get_comm_tech.get_info(input) } )
+
+  
+  
 
   if listType == 'commodity':
     ctList = { "data" : {"0":"COAL",

@@ -18,6 +18,7 @@
         }
     });
 }
+
  
  function initDropZone(str){
     // Dropzone class:
@@ -83,7 +84,7 @@ function initForm() {
         {
             $("#output-file-error").show();
             return false;
-        } file:///var/www/html/thabo/public/assets/img/new/bg.jpg
+        } 
 
         else 
         {
