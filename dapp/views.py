@@ -58,11 +58,6 @@ def index(request):
 def about(request):
   return render_to_response('About-Us.html', context_instance=RequestContext(request))
 
-#@csrf_exempt
-#def fileUpload(request):
-#  upload_file(request)
-#  return HttpResponse("File uploaded result")
-
 
 #get posted data
 def runInput(request):
@@ -85,47 +80,9 @@ def runInput(request):
     #print settings.BASE_DIR
     
     #filename = "/home/yash/Projects/dapp/thirdparty/temoa/db_io/temoa_utopia.sqlite"
+   
+   
     
-    inputs = { 
-            "-i" : settings.BASE_DIR + "/uploads/" + mode + "/" + filename , 
-            "-f" : format,
-            "--scenario" : random ,
-            "-o" : settings.BASE_DIR + "/result/" + mode
-          }
-          
-    if( colorscheme == "grey"):
-      inputs['-g'] = colorscheme
-    
-    print inputs
-    
-    makeGraph(inputs)
-    
-    return JsonResponse( {"filename" : filename2 + "_" + random , "mode" : mode , } )
-    
-    
-  
-
-# Create your views here.
-def makeGraph(inputs):
-  #print test.tryme()
-  
-  #So we have to pass inputs to Make_Graphviz to generate graph
-  #After getting response run a ajax call to get that
-  
-  
-  
-  
-  
-  Make_Graphviz.createGraphBasedOnInput(inputs)
-  
-  
-  #expected result
-  # image svg now fetch and show result
-  #print "result/%s/" %( os.path.splitext(os.path.basename(filename))[0] )
-  
-  
-  
-  
   #if opt in ("-i", "input"):
     #ifile = arg
   #elif opt in ("-f", "--format"):
@@ -143,10 +100,29 @@ def makeGraph(inputs):
   #elif opt in ("-o", "--output") :
     #res_dir = arg
   #elif opt in ("-g", "--grey") :
+    
+  inputs = { 
+            "-i" : settings.BASE_DIR + "/uploads/" + mode + "/" + filename , 
+            "-f" : format,
+            "--scenario" : random ,
+            "-o" : settings.BASE_DIR + "/result/" + mode
+  }
+          
+  if( colorscheme == "grey"):
+    inputs['-g'] = colorscheme
+    
+  print inputs
+    
+  makeGraph(inputs)
+    
+  return JsonResponse( {"filename" : filename2 + "_" + random , "mode" : mode , } )
+    
+    
   
-  
-  
-  return HttpResponse("Index SSS") 
+
+# Create your views here.
+def makeGraph(inputs):
+  return Make_Graphviz.createGraphBasedOnInput(inputs)
 
 
 @csrf_exempt
@@ -154,8 +130,6 @@ def fileUpload(request):
     
   if request.method == 'POST':
     mode = request.POST.get("mode", "input")
-    
-    
     
 
     result = handle_uploaded_file( request.FILES['file'],  mode)
@@ -178,15 +152,15 @@ def handle_uploaded_file(f, mode):
   
   
   filename, file_extension = os.path.splitext(f.name)
-  print(fname)
-  print file_extension
+  #print(fname)
+  #print file_extension
   
   if file_extension != ".data" and file_extension != ".sqlite" :
     return "Please select a valid file. Supported files are data and sqlite"
      
   
   if(os.path.isfile(fname) ):
-    print "Testing" + fname
+    #print "Testing" + fname
     return "File already exists. Please rename and try to upload."
   
   with open(fname, 'wb+') as destination:
