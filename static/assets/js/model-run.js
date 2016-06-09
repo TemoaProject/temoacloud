@@ -83,7 +83,8 @@ function initForm() {
         {
             $("#output-file-error").show();
             return false;
-        } 
+        } file:///var/www/html/thabo/public/assets/img/new/bg.jpg
+
         else 
         {
             $("#output-file-error").hide();
@@ -93,6 +94,7 @@ function initForm() {
         $.post( url, $('form#model-run-form').serialize(), function(data) {
             
             alert("model-run-submit");
+            alert(data.message);
         },
        'json' // I expect a JSON response
     );

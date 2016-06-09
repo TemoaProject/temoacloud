@@ -47,9 +47,9 @@ def create_config(values):
     
   # values is all avaiable options
   
-  print values
+  #print values
   
-  filename = "/home/yash/Projects/sam/dapp/uploads/config_temp/config_ %s" % (uuid.uuid4())
+  filename  =  settings.BASE_DIR + "/uploads/config_temp/config_ %s" % (uuid.uuid4())
   
   with open(filename, 'a') as config_file:
     for key, value in values.iteritems():
@@ -75,9 +75,6 @@ def run_model(request):
     
     values = {}
     
-    print request.POST.get("outputdatafilename", "")
-    print request.POST.get("createtextfileoption", "")
-
     values['--input'] = settings.UPLOADED_INPUT_DIR + request.POST.get("inputdatafilename", "")
     values['--output'] = settings.UPLOADED_OUTPUT_DIR + request.POST.get("outputdatafilename", "")
     values["--scenario"] =request.POST.get("scenarioname", "")
