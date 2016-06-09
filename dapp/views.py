@@ -64,25 +64,24 @@ def runInput(request):
   
   import uuid; 
   
-  if request.method == 'POST':
-    format = request.POST.get("format", "svg")
-    colorscheme = request.POST.get("colorscheme", "color")
-    commodityoutputlimit =request.POST.get("commodityoutputlimit", "")
-    commodityinputlimit =request.POST.get("commodityinputlimit", "")
-    filename =request.POST.get("datafile", "")
-    mode =request.POST.get("mode", "")
+  if request.method != 'POST':
+    return HttpResponse("Use post method only", status = 403)
+  
+  
+  
+  format = request.POST.get("format", "svg")
+  colorscheme = request.POST.get("colorscheme", "color")
+  type =request.POST.get("commodity-technology-type", "")
+  value =request.POST.get("commodity-technology-value", "")
+  filename =request.POST.get("datafile", "")
+  mode =request.POST.get("mode", "")
+  
+  filename2, file_extension = os.path.splitext(filename)
+  random = str(uuid.uuid4().get_hex().upper()[0:6])
     
-    filename2, file_extension = os.path.splitext(filename)
-    random = str(uuid.uuid4().get_hex().upper()[0:6])
-    
-    #fulldirpath = os.path.dirname(os.path.abspath(__file__))
-    
-    #print settings.BASE_DIR
-    
-    #filename = "/home/yash/Projects/dapp/thirdparty/temoa/db_io/temoa_utopia.sqlite"
-   
-   
-    
+  #fulldirpath = os.path.dirname(os.path.abspath(__file__))
+  #print settings.BASE_DIR
+  #filename = "/home/yash/Projects/dapp/thirdparty/temoa/db_io/temoa_utopia.sqlite"
   #if opt in ("-i", "input"):
     #ifile = arg
   #elif opt in ("-f", "--format"):
