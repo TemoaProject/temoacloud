@@ -225,20 +225,3 @@ def loadCTList(request):
   
   return JsonResponse( { "data" : get_comm_tech.get_info(input) } )
 
-  
-  
-
-  if listType == 'commodity':
-    ctList = { "data" : {"0":"COAL",
-                           "1": "METAL",
-                           "2":"SOIL"}}
-
-  if listType == 'technology':
-    ctList = { "data" : {"0":"ELEC",
-                           "1": "AIR",
-                           "2":"FIRE"}} 
-
-  return JsonResponse(ctList)
-
-    
-
