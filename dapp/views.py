@@ -76,8 +76,10 @@ def runInput(request):
   filename =request.POST.get("datafile", "")
   mode =request.POST.get("mode", "")
   
-  filename2, file_extension = os.path.splitext(filename)
+  folder, file_extension = os.path.splitext(filename)
   random = str(uuid.uuid4().get_hex().upper()[0:6])
+  
+  imagepath = ""
     
   #fulldirpath = os.path.dirname(os.path.abspath(__file__))
   #print settings.BASE_DIR
@@ -103,25 +105,43 @@ def runInput(request):
   inputs = { 
             "-i" : settings.BASE_DIR + "/uploads/" + mode + "/" + filename , 
             "-f" : format,
-            "--scenario" : random ,
             "-o" : settings.BASE_DIR + "/result/" + mode
   }
           
   if( colorscheme == "grey"):
     inputs['-g'] = colorscheme
     
+    
+
+  if mode == "input":
+    
+    inputs["-n"]= random
+    
+    imagepath = folder + "_" + random + "/" + folder + "_" + random + ".svg"
+
+  elif mode == "output":
+
+    inputs["--scenario"] = random
+
+    imagepath = folder + "_" + random + "/simple_model.svg"
+
+    
   if type == 'commodity':
+  
     inputs["--comm"] = value
+    imagepath = folder + "_" + random + "/commodities/commodity_" + value + ".svg"
     
 
   elif type == 'technology':
+  
     inputs["--tech"] = value
+    imagepath = folder + "_" + random + "/processes/process_" + value + ".svg"
     
   print inputs
     
   makeGraph(inputs)
     
-  return JsonResponse( {"filename" : filename2 + "_" + random , "mode" : mode , } )
+  return JsonResponse( {"filename" : imagepath , "folder": folder + "_" + random , "mode" : mode , } )
     
     
   
