@@ -2114,9 +2114,9 @@ def createGraphBasedOnInput(inputs):
 			res_dir = arg
 		elif opt in ("-g", "--grey") :
 			grey_flag = False
-		elif opt in ("-a", "commodity") :
+		elif opt in ("-a", "--comm") :
 			inp_comm = arg
-		elif opt in ("-b", "technology") :
+		elif opt in ("-b", "--tech") :
 			inp_tech = arg
 
 	if ifile is None:

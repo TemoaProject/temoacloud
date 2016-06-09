@@ -110,6 +110,13 @@ def runInput(request):
   if( colorscheme == "grey"):
     inputs['-g'] = colorscheme
     
+  if type == 'commodity':
+    inputs["--comm"] = value
+    
+
+  elif type == 'technology':
+    inputs["--tech"] = value
+    
   print inputs
     
   makeGraph(inputs)
