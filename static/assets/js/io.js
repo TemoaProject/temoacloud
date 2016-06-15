@@ -23,36 +23,6 @@ function populateFileList(mode){
 
 
 
-/*function ioFormSubmit() {
-
-    fileInput = $("#file-list option:selected").text();
-    if (fileInput == '--Select data File--') {
-        $("#input-file-error").show();
-        return false;
-    } else {
-        $("#input-file-error").hide();
-    }
-    comInput = $("#comomodity-input-text").val();
-    comOutput = $("#comomodity-output-text").val();
-    colorScheme = $("input[name=qcolorscheme]:checked").val();
-    outputFormat = $("#output-format").text();
-    displayNetworkDiagram();
-    alert("hi");
-    var url = '/dapp/runinput';
-    $.ajax({
-        url: url,
-        method: "post",
-        data: {datafile:fileInput,commodityoutputlimit:comInput,commodityinputlimit:comOutput,ccolorscheme:colorScheme,format:outputFormat},
-        dataType: 'json',
-        success: function(result) {
-            alert(result);
-            displayNetworkDiagram();
-        }
-    });
-
-}
-*/
-
 
 function displayNetworkDiagram(mode_folder, image_filename) {
     
