@@ -1,12 +1,7 @@
 {% extends 'layout.html' %} 
 {% block body_block %}
-<div class="main-container" id="main-container">
-   <script type="text/javascript">
-      try{ace.settings.check('main-container' , 'fixed')}catch(e){}
-          
-   </script>
-   <div class="main-container-inner">
-      <div class="">
+
+      
           <form id="model-run-form" action="/dapp/model" method="POST" enctype="multipart/form-data"class="form-horizontal" role="form">
          <div class="page-content" style="background-color:#f7f7f7;">
             <div class="row">
@@ -124,9 +119,12 @@
                                  </div>
                               </div>
                            </div>
+                           
+                           
+                           
                            <div class="space-8"></div>
-                           <div class="row">
-                              <div class="width-95" style="margin:auto !important;">
+                          
+                              <div class="widget-box" style="border-bottom:none;  padding:10px;">
                                  <div class="row " >
                                     <div class="col-xs-12 col-sm-12 no-padding-left " >
                                        <div class="widget-box" style="border-bottom:none; background-color:#fff;  padding:10px;">
@@ -183,7 +181,7 @@
                                     </div>
                                  </div>
                               </div>
-                           </div>
+                           
                         </div>
                         <div class="space-8"></div>
                         <div class="widget-box" style="border-bottom:none;  padding:10px;">
@@ -220,7 +218,7 @@
                            </div>
                         </div>
                         <div class="space-8"></div>
-                        <div class="widget-box" style="border-bottom:none;  padding:10px;">
+                        <div class="widget-box" style="border-bottom:none; display:none; padding:10px;">
                            <div class="row">
                               <div class="col-xs-12 col-sm-12 widget-container-span">
                                  <div class="widget-box width-95" style="background-color:#fff; margin:auto !important; padding:10px;">
@@ -356,14 +354,11 @@
          </div>
          <!-- /.col --> 
         </form>
-      </div>
+      
       <!-- /.row --> 
-   </div>
-   <!-- /.page-content --> 
-</div>
 <!-- /.main-content --> 
 <!-- /#ace-settings-container --> 
-</div>
+
 <div class="space-32"></div>
 <script src="/static/assets/js/model-run.js"></script>
 <script>
