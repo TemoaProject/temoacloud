@@ -53,26 +53,58 @@ function initJs()
     populateFileList('output');
     initDropZone('input');
     initDropZone('output');
-    $("#input-file-error").hide();
-    $("#output-file-error").hide();
+   
     initForm();
+    
+    $("input[name='runoption']").click(function() {
+
+       //alert("clicked");
+    
+        selected_val =  $(this).val() ;
+        //alert(selected_val)
+    
+        if( selected_val == "Single-Run")
+        {
+            $(".UncertaintyAnalysisOptions, .MGAConfiguration").addClass("hidden");
+            //alert("hide")
+        }
+        else if (selected_val == "Uncertainty-Analysis")
+        {
+            $(".UncertaintyAnalysisOptions, .MGAConfiguration").removeClass("hidden");
+            //alert("show")
+        }
+    
+    
+
+   });
+   
+   
+   
+   
+   
 }
 
 function initForm() { 
     
     var url = '/dapp/model';
     
+    $("#input-file-error").hide();
+    $("#output-file-error").hide();
+    $("#scenarioname-error").hide();
+    $("#solver-error").hide();
     
     
     $("#model-run-form").submit(function(e) {
             
         e.preventDefault();
         
+        var isErrors;
+        
         var fileInput = $("#inputdatafilename option:selected").text();
         if (fileInput == '--Select data File--' || fileInput == '') 
         {
             $("#input-file-error").show();
-            return false;
+            isErrors = true;
         } 
         else 
         {
@@ -83,13 +115,39 @@ function initForm() {
         if (fileOutput == '--Select data File--' || fileOutput == '') 
         {
             $("#output-file-error").show();
-            return false;
+            isErrors = true;
         } 
 
         else 
         {
             $("#output-file-error").hide();
         }
+        
+        
+        scenarioname = $("input[name='scenarioname']").val();
+        if( scenarioname == '')
+        {
+            $("#scenarioname-error").show();
+            isErrors = true;
+        }
+        else
+        {
+            $("#scenarioname-error").hide();
+        }
+        
+        solver = $("input[name='solver']").val();
+        if( solver == '')
+        {
+            $("#solver-error").show();
+            isErrors = true;
+        }
+        else
+        {
+            $("#solver-error").hide();
+        }
+        
+        if(isErrors)
+            return false;
         
         
         $.post( url, $('form#model-run-form').serialize(), function(data) {

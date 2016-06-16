@@ -22,7 +22,7 @@
                   
                   
                 </div>
-                <div class="col-sm-3 text-left hidden"> <span class="help-button" data-rel="popover" data-trigger="hover" data-placement="right" data-content="To run Temoa, you must select an input dataset from your 'data' folder. You must either select a relational database (sqlite) or a text (DAT) file.."
+                <div class="col-sm-3 text-left "> <span class="help-button" data-rel="popover" data-trigger="hover" data-placement="right" data-content="To run Temoa, you must select an input dataset from your 'data' folder. You must either select a relational database (sqlite) or a text (DAT) file.."
                         title="Input Data Textbox">?</span> </div>
             </div>
             
@@ -37,7 +37,7 @@
                   
                   
                 </div>
-                <div class="col-sm-3 text-left hidden"> <span class="help-button" data-rel="popover" data-trigger="hover" data-placement="right" data-content="Regardless of whether Temoa is run with an input database or text (DAT) file, model outputs can either be stored in a text file or in a database. Users who opt to run with database input will typically store the model outputs in the same database, which will include a set of output tables that track model outputs by scenario."
+                <div class="col-sm-3 text-left "> <span class="help-button" data-rel="popover" data-trigger="hover" data-placement="right" data-content="Regardless of whether Temoa is run with an input database or text (DAT) file, model outputs can either be stored in a text file or in a database. Users who opt to run with database input will typically store the model outputs in the same database, which will include a set of output tables that track model outputs by scenario."
                         title="Output Input Textbox">?</span> </div>
             </div>
      
@@ -47,8 +47,10 @@
                 <label class="col-sm-4 control-label no-padding-right" for="form-field-2"> Scenario Name </label>
                 <div class="col-sm-5">
                     <input name="scenarioname" type="text" placeholder="Scenario Name" class="form-control" />
+                  
+                  <div class="mark-error" id="scenarioname-error">Error: Please enter scenario name</div>
                 </div>
-                <div class="col-sm-3 text-left hidden"> <span class="help-button" data-rel="popover" data-trigger="hover" data-placement="right" data-content="If running the model with an input database, please specify a scenario name. Model results are stored in the provided database. The specified name will be used to track scenario-specific results within the database output tables."
+                <div class="col-sm-3 text-left "> <span class="help-button" data-rel="popover" data-trigger="hover" data-placement="right" data-content="If running the model with an input database, please specify a scenario name. Model results are stored in the provided database. The specified name will be used to track scenario-specific results within the database output tables."
                         title="Scenario Name Textbox">?</span> </div>
             </div>
             
@@ -91,7 +93,7 @@
                         <label>
                                                 <input name="generatelpfileoption" type="radio" class="ace">
                                                 <span class="lbl"> No</span> </label>
-                        <span class="help-button  hidden" data-rel="popover" data-trigger="hover" data-placement="right" data-content="If 'yes' is chosen for this option, pyomo will save a copy of the LP file that is sent to the solver. The LP file represents the instantiated model, and applies the input data to calculate objective function and constraint coefficients. Viewing the LP file is often useful for debugging purposes."
+                        <span class="help-button  " data-rel="popover" data-trigger="hover" data-placement="right" data-content="If 'yes' is chosen for this option, pyomo will save a copy of the LP file that is sent to the solver. The LP file represents the instantiated model, and applies the input data to calculate objective function and constraint coefficients. Viewing the LP file is often useful for debugging purposes."
                             title="Lp Radio Button" style="margin-left:20px;">?</span>
                     </div>
                 </div>
@@ -99,9 +101,17 @@
             <div class="form-group ">
                 <label class="col-sm-4 control-label no-padding-right" for="form-field-2"> Solver </label>
                 <div class="col-sm-5">
-                    <input name="solver" id="tags" type="text" class="form-control" placeholder="Solver Name" />
+<!--                  <input name="solvern" value="glpk" id="tags" type="text" class="form-control" placeholder="Solver Name" />-->
+                  <select class="form-control" id="solver" name="solver" data-placeholder="Enter values like glpk, cplex etc...">
+                     <option value="glpk">GLPK</option>
+                     <option value="cplex">CPLEX</option>
+                  </select>
+                     
+                  
+                  
+                  <div class="mark-error" id="solver-error">Error: Please enter solver</div>
                 </div>
-                <div class="col-sm-3 text-left  hidden"> <span class="help-button" data-rel="popover" data-trigger="hover" data-placement="right" data-content="Choose the solver you wish to employ for this model run. Note that the solver must be installed and must be specified in your system path. Common options include GLPK, CPLEX, and Gurobi."
+                <div class="col-sm-3 text-left  "> <span class="help-button" data-rel="popover" data-trigger="hover" data-placement="right" data-content="Choose the solver you wish to employ for this model run. Note that the solver must be installed and must be specified in your system path. Common options include GLPK, CPLEX, and Gurobi."
                         title="Solver Textbox">?</span> </div>
             </div>
             <div class="form-group ">
@@ -139,9 +149,10 @@
                             <div class="row">
                                 <div class="col-sm-12 ">
                                     <label>
-                                                            <input name="form-field-radio" type="radio" class="ace">
-                                                            <span class="lbl"> Modeling to Generate  Alternatives </span> </label>
-                                    <span class="help-button pull-right" data-rel="popover" data-trigger="hover" data-placement="right" data-content="More details." title="Popover on hover">?</span> <a class="btn btn-sm btn-success pull-right " style="margin-right:30px;"> Configure</a>
+                                 <input name="form-field-radio" checked="checked"  type="radio" class="ace">
+                                 <span class="lbl"> Modeling to Generate  Alternatives </span> </label>
+                                 <span class="help-button pull-right hidden" data-rel="popover" data-trigger="hover" data-placement="right" data-content="More details." title="Popover on hover">?</span> 
+                                 <a class="btn btn-sm btn-success pull-right hidden " style="margin-right:30px;"> Configure</a>
                                 </div>
                             </div>
                             <div class="space-4"></div>
@@ -168,7 +179,7 @@
                                 <span class="col-xs-6">
                                                          <span class="pull-right inline">
                                                          <span class="btn-toolbar inline middle no-margin">
-                                                         <input id="submit-button" type="submit" class="btn btn-success btn-sm" value="Model Run" />
+                                                        
                                                          </span>
                                 </span>
                                 </span>
@@ -327,7 +338,15 @@
     </div>
    
    
-   <div class="row"> <a href="#Run" data-toggle="modal" class="btn btn-app btn-danger"> <i class=" icon icon-play bigger-230"></i> Run Model  </a> </div>
+   <div class="row"> 
+   
+    <input id="submit-button" type="submit" class="btn  btn-app btn-danger" value="Run Model" />
+      
+     <!-- <a href="#Run" data-toggle="modal" class="btn btn-app btn-danger"> 
+         <i class=" icon icon-play bigger-230"></i> Run Model  
+      </a> -->
+      
+   </div>
 
 
 
@@ -362,9 +381,11 @@
 
 <div class="space-32"></div>
 <script src="/static/assets/js/model-run.js"></script>
+<!--<script src="/static/assets/js/model.validate.js"></script>-->
 <script>
     $(document).ready(function() {
         initJs();
+/*        initValidate();*/
 
     });
 </script>
