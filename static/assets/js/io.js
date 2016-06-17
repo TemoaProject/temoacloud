@@ -162,9 +162,12 @@ function getCTList(mode, type, filename){
 function initJs(str)
 {
     initForm();
+    
     $('#commodity-technology-value').hide();
     $('#commodity-label').hide();
+    
     populateFileList(str);
+    
     showHideCommodityTechnology(str);
     
     $("#input-file-error").hide();
@@ -201,4 +204,10 @@ function initJs(str)
 
     });
     
+   
+    
 }
+
+
+
+

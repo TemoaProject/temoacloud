@@ -107,3 +107,13 @@
 {
 	margin:  20px 0;
 }
+
+.form-control, select {
+	border-radius: 0;
+	-webkit-box-shadow: none!important;
+	box-shadow: none!important;
+	color: #222;
+	font-weight: bold;
+	background-color: #fff;
+	border: 1px solid #d5d5d5
+}
