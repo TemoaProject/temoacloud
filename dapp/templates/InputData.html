@@ -1,187 +1,125 @@
-{% extends 'layout.html' %} 
-{% block body_block %}
-      
-          
-                    <form id="input-form" class="form-horizontal" action="/dapp/runinput" method="POST" enctype="multipart/form-data" role="form">
- 
-                           
-                           
-                                    <div class="white-box-with-bottom-border fixed-remove-pad">
-                                    <h3 class="header lighter  blue no-margin-top ">{{title}} </h3>
-                                        
-                                            <div class="form-group">
-                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1">Select a Database or text file </label>
-                                               <div class="col-sm-5">
-                                                 <div id="dropArea" class="dropzone">
-                                                 <select class="form-control" id="datafilename" name="datafile" data-placeholder="">
-                                                 
-                                                </select>
-                                                <input name="mode" type="hidden" value="{{mode}}" />
-                                                    <!--name <inpu
-                                                    <!-- <input type="file" name="file"id="id-input-file-2" class="form-control" /> -->
-                                                </div>
-                                                </div>
-                                                <div class="col-sm-1 no-padding">
-                                                    <button class="btn btn-primary btn-sm form-control">View/Edit Data</button>
-                                                </div>
-                                            </div>
-                                            <div id ="input-file-error">
-                                            <span style="padding:100px;color:red;">
-                                                <strong>Error: Please select input data file </strong></span>
-                                        </div>
-                                            <div class="space-4"></div>
-                                  <!--          <div class="form-group ">
-                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-2"> Upload Data </label>
-                                                <div class="col-sm-5">
-                                                    <input type="file" id="id-input-file-2" class="form-control" />
-                                                </div>
-                                                  
-                                                
-                                                <div class="col-sm-1 no-padding">
-                                                    <button id="file-upload-button"class="btn btn-primary btn-sm form-control">Upload Data</button>
-                                                </div>
-                                            </div>
-                                            <div id="progress" class="progress">
-                                                    <div class="progress-bar progress-bar-success"></div>
-                                                </div>-->
+{% extends 'layout.html' %} {% block body_block %}
 
-                                       
-                                    </div>
-                                
-                            <div class="space-10"></div>
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-12 widget-container-span">
-                                    <div class="widget-box width-95" style="background-color:#fff; margin:auto !important; border-bottom:none;  height:265px; padding:10px;">
 
-                                        <h4 class="row header lighter brown no-margin-top no-margin-left no-margin-right ">
-                                            <span class="col-xs-6"> Network Diagram Options  </span><!-- /.col -->
-                                            
-                              
-                                        </h4>
+<form id="input-form" class="form-horizontal" action="/dapp/runinput" method="POST" enctype="multipart/form-data" role="form">
 
-                                        <div class="space-16"></div>
-                                        <div class="row">
-                                            <div class="col-sm-1"></div>
-                                            <div class="col-sm-5">
-                                                Select Commodity/Technology Type
-                                                <select class="form-control" id="commodity-technology-type" name="commodity-technology-type"  data-placeholder="Choose a Format...">
+
+
+    <div class="white-box-with-bottom-border fixed-remove-pad">
+        <h3 class="header blue box-top-pad">{{title}} </h3>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="form-field-1">Select a Database or text file </label>
+            <div class="col-sm-5">
+                <div id="dropArea" class="dropzone">
+                    <select class="form-control" id="datafilename" name="datafile" data-placeholder=""></select>
+                </div>
+                
+                <input name="mode" type="hidden" value="{{mode}}" />
+                <div id="input-file-error" class ="mark-error">Error: Please select input data file</div>
+                
+                
+            </div>
+            <div class="col-sm-1 no-padding">
+                <button class="btn btn-primary btn-sm form-control">View/Edit Data</button>
+            </div>
+        </div>
+        
+        
+    
+
+
+    </div>
+
+
+
+    <div class="white-box-with-bottom-border">
+
+        <h4 class="box-heading">Network Diagram Options </h4>
+
+   
+   
+   
+        <div class="form-group">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-5">
+                Select Commodity/Technology Type
+                <select class="form-control" id="commodity-technology-type" name="commodity-technology-type" data-placeholder="Choose a Format...">
                                                     <option value="none">NONE</option>
                                                     <option value="commodity">Commodity</option>
                                                     <option value="technology">Technology</option>
                                                 </select>
-                                            </div>
-                                            <div class="col-sm-5">
-                                                <span id = "commodity-label">Commodity/Technology Value</span>
-                                                <select class="form-control" id="commodity-technology-value" name="commodity-technology-value"  data-placeholder="Choose a Commodity/Technology...">
+                                                
+                <div id="commodity-file-error" class="mark-error">Error: Please first select model</div>
+            </div>
+            <div class="col-sm-5">
+                <span id="commodity-label">Commodity/Technology Value</span>
+                <select class="form-control" id="commodity-technology-value" name="commodity-technology-value" data-placeholder="Choose a Commodity/Technology...">
                                                     <option value="1">COAL</option>
                                                     <option value="1">COAL</option>
                                                 </select>
-                                            </div>
-                                        </div>
-                                        <div class="space-8"></div>
-                                        <div class="row">
-                                            <div class="col-sm-1"></div>
-                                            <div class="col-sm-5">
-                                                Color Scheme
-                                                <div class="control-group">
+                <div id="commodity-value-error" class="mark-error">Error: Please select value from above</div>
+            </div>
+        </div>
 
+        <div class="form-group">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-5">
+                Color Scheme
+                <div class="control-group">
 
+                    <label style="margin-right:20px;">
+                        <input name="colorscheme" type="radio" class="ace" value="grey">
+                        <span class="lbl"> Grey Scale </span>
+                    </label>
 
-                                                    <label style="margin-right:20px;">
-                                                        <input id="color-scheme"name="colorscheme" selected type="radio" class="ace" value="grey">
-                                                        <span class="lbl"> Grey Scale </span>
-                                                    </label>
-
-                                                    <label>
-                                                        <input d="color-scheme"name="colorscheme" type="radio" class="ace" value="color">
-                                                        <span class="lbl"> Color</span>
-                                                    </label>
-
-
-
-
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-5">
-                                                Output Format
-                                                <select class="form-control" id="output-format" name="format"  data-placeholder="Choose a Format...">
+                    <label>
+                        <input name="colorscheme" type="radio" class="ace" value="color">
+                        <span class="lbl"> Color</span>
+                    </label>
+                </div>
+            </div>
+ 
+            <div class="col-sm-5">
+                Output Format
+                <select class="form-control" id="output-format" name="format" data-placeholder="Choose a Format...">
                                                     <option value="svg">SVG</option>
                                                     <option value="canvas">Canvas</option>
                                                 </select>
-                                            </div>
+            </div>
 
-                                        </div>
-                                        <div class="space-8"></div>
-                                        <div class="row">
-                                            <span class="col-xs-6"> </span>
-                                            <span class="col-xs-6">
-                                                <span class="pull-right inline">
+        </div>
 
 
-                                                    <span class="btn-toolbar inline middle no-margin">
-                                                        <input id="submit-button" type="submit" class="btn btn-success btn-sm" value="Render Network Diagram" />
-                                                    </span>
-                                                </span>
-                                            </span>
-                                        </div>
 
 
-                                    </div>
-                                </div>
+    </div>
+
+    <div class="row submit-button-container">
+        <input id="submit-button" type="submit" class="btn btn-app btn-danger" value="Render Network Diagram" />
+    </div>
 
 
-                                <!-- /span -->
-                            </div>
-                            <!-- /row -->
+    <div class="white-box-with-bottom-border bottom-margin">
+        <h4 class="box-heading">Generated Energy Network Diagram</h4>
 
-                            <div class="space-10"></div>
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-12 widget-container-span">
-                                    <div class="widget-box width-95" style="background-color:#fff; margin:auto !important; padding:10px;">
-                                         <h4 class="row header lighter brown no-margin-top no-margin-left no-margin-right ">
-                                            <span class="col-xs-6"> Energy Network Diagram Options  </span><!-- /.col -->
+        <div class="row align-center">
 
-                
-                                        <div class="space-16">
-                                        </div>
-                                      </h4> 
-                                      <div class="space-8"></div>
-                            <div class="row">
-                                <div class="col-sm-3"></div>
-                                <div id="networkDiagram" class="col-sm-5"> 
-                                    </div>
+            <div id="networkDiagram"> </div>
 
-                            </div>
-                            </div>
-
-                                </div>
-
-                                <!-- /span -->
-                            </div>
+        </div>
+    </div>
 
 
-                            <!-- PAGE CONTENT ENDS -->
-                       
-                        <!-- /.col -->
-         
-                    
-                     </form>
-                    
-                    
-                   
-                <!-- /.page-content -->
-           
-            <!-- /.main-content -->
-            <!-- /#ace-settings-container -->
-          <!-- /.main-container-inner -->
+</form>
+
+
 <script src="/static/assets/js/io.js"></script>
 <script>
-$(document).ready(function() {
-    
-    initJs('{{mode}}');
-    
-});
+    $(document).ready(function() {
 
-    </script>
-    {% endblock %}
+        initJs('{{mode}}');
 
+    });
+</script>
+{% endblock %}
