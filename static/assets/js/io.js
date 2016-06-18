@@ -34,6 +34,9 @@ function displayNetworkDiagram(mode_folder, image_filename) {
 
 function initForm() {
     
+    $("#commodity-file-error").hide();
+    $("#input-file-error").hide();
+    
     var url = '/dapp/runinput';
     
     
@@ -43,7 +46,7 @@ function initForm() {
         
         e.preventDefault();
         
-        
+        $("#commodity-value-error").hide();
         
         var fileInput = $("#datafilename option:selected").text();
         if (fileInput == '--Select data File--' || fileInput == '') 
@@ -55,6 +58,29 @@ function initForm() {
         {
             $("#input-file-error").hide();
         }
+        
+        
+        type = $('#commodity-technology-type').val();
+     
+        if(type != 'none')
+        {
+           filename = $("#commodity-technology-type").val();
+            
+            if(filename == '')
+            {
+                //alert("Select model first");
+                $("#commodity-value-error").show();
+                return;
+            }     
+        }
+        
+        
+        
+         
+       
+            
+        
+        
         
         
         $.post( url, $('form#input-form').serialize(), function(data) {
@@ -119,7 +145,8 @@ function showHideCommodityTechnology(mode){
             
             if(filename == 0)
             {
-                alert("Select model first");
+                //alert("Select model first");
+                $("#commodity-file-error").show();
                 return;
             }
             
@@ -165,17 +192,30 @@ function initJs(str)
     
     $('#commodity-technology-value').hide();
     $('#commodity-label').hide();
+    $("#commodity-value-error").hide();
     
     populateFileList(str);
     
     showHideCommodityTechnology(str);
     
-    $("#input-file-error").hide();
+    
     
     /*$("#input-form").submit(function(e) {
         e.preventDefault();
         ioFormSubmit();
     });*/
+    
+    $('#datafilename').change(function(){
+        
+        $('#commodity-technology-value').hide();
+        $('#commodity-label').hide();
+    
+        $("#commodity-technology-type").val("none");
+        $('#commodity-technology-value').html("");
+
+        
+    });
+    
     
     
     // Dropzone class:
