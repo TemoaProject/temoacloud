@@ -7,22 +7,27 @@
 	width:  90%;
 }
 
+.bottom-margin
+{
+	margin-bottom:  200px;
+}
 .box-heading
 {
-	border-bottom-color: #df9393;
     line-height: 28px;
-     margin-bottom: 20px; 
-     margin-top: 20px; 
-    padding-top: 5px;
-    border-bottom: 1px solid #CCC;
+    margin-bottom: 30px;
+    margin-top: 20px;
+    padding-top: 10px;
+    border-bottom: 1px solid #df9393;
     color: #a52a2a;
     font-weight: lighter;
+    padding-left: 15px;
 	
 }
 
 .box-top-pad
 {
-	padding-top:  10px;
+	padding-left: 15px;
+	padding-top: 10px;
 /*	margin-bottom:  50px;*/
 }
 
@@ -31,10 +36,22 @@
 	margin-top:  100px;
 }
 
+.submit-button-container
+{
+	    /* float: right; */
+    /* margin-bottom: 140px; */
+    /* margin-top: 30px; */
+    /* margin-right: 106px; */
+    text-align: right;
+    width: 90%;
+    margin: 30px 5%;
+	
+}
+
 
 .btn-app {
 	display: inline-block;
-	width: 200px;
+/*	width: 200px;*/
 	font-size: 18px;
 	font-weight: normal;
 	color: #FFF;
@@ -42,7 +59,7 @@
 	text-shadow: 0 -1px -1px rgba(0, 0, 0, 0.2);
 	border: 0;
 	border-radius: 3px;
-	padding: 12px 0px 8px;
+	padding: 5px 30px;
 	margin: 2px;
 	line-height: 1.7;
 	position: relative
@@ -53,11 +70,7 @@
 	background-repeat: repeat-x;
 	
 	
-	    float: right;
-    margin-bottom: 140px;
-    margin-top: 30px;
-    margin-right: 106px;
-	
+	   
 	
 }
 .btn-app:hover {
@@ -105,7 +118,7 @@
 
 .form-group 
 {
-	margin:  20px 0;
+	margin:  30px 0;
 }
 
 .form-control, select {
