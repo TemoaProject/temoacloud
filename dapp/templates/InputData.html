@@ -1,26 +1,13 @@
 {% extends 'layout.html' %} 
 {% block body_block %}
-    <div class="main-container" id="main-container">
-        <script type="text/javascript">
-				try{ace.settings.check('main-container' , 'fixed')}catch(e){}
-        </script>
-        <div class="main-container-inner">
-
-            <div class="">
-                <div class="page-content" style="background-color:#f7f7f7;">
-
+      
+          
                     <form id="input-form" class="form-horizontal" action="/dapp/runinput" method="POST" enctype="multipart/form-data" role="form">
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <!-- PAGE CONTENT BEGINS -->
  
-                            <h3 class="header lighter  blue no-margin-top ">{{mode}} Data </h3>
-                            <div class="space-10"></div>
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-12 widget-container-span">
-                                    <div class="widget-box width-95" style="border-bottom:none; margin:auto;  background-color:#fff; padding:10px;">
-                                       
-                                        <div class="space-10"></div>
+                           
+                           
+                                    <div class="white-box-with-bottom-border fixed-remove-pad">
+                                    <h3 class="header lighter  blue no-margin-top ">{{title}} </h3>
                                         
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label no-padding-right" for="form-field-1">Select a Database or text file </label>
@@ -59,13 +46,8 @@
                                                 </div>-->
 
                                        
-
-
-
-
                                     </div>
-                                </div>
-                            </div>
+                                
                             <div class="space-10"></div>
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 widget-container-span">
@@ -179,21 +161,19 @@
 
 
                             <!-- PAGE CONTENT ENDS -->
-                        </div>
+                       
                         <!-- /.col -->
-                    </div>
+         
                     
                      </form>
                     
                     
-                    <!-- /.row -->
-                </div>
+                   
                 <!-- /.page-content -->
-            </div>
+           
             <!-- /.main-content -->
             <!-- /#ace-settings-container -->
-        </div>
-      <div class="space-32"></div>     <!-- /.main-container-inner -->
+          <!-- /.main-container-inner -->
 <script src="/static/assets/js/io.js"></script>
 <script>
 $(document).ready(function() {

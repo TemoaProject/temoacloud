@@ -24,13 +24,13 @@ def login(request):
   return render_to_response('login.html', context_instance=RequestContext(request))
 
 def inputData(request):
-  return render_to_response('InputData.html', { 'mode' : 'input'}, context_instance=RequestContext(request))
+  return render_to_response('InputData.html', { 'mode' : 'input' , 'title' : 'Input Data'}, context_instance=RequestContext(request))
 
 def outputData(request):
-  return render_to_response('InputData.html', { 'mode' : 'output'}, context_instance=RequestContext(request))
+  return render_to_response('InputData.html', { 'mode' : 'output' , 'title' : 'Output Data'}, context_instance=RequestContext(request))
 
 def modelRun(request):
-  return render_to_response('ModelRun.html', context_instance=RequestContext(request))
+  return render_to_response('ModelRun.html', { 'title' : 'Model Run'} , context_instance=RequestContext(request))
 
 def runModel(request):
   
