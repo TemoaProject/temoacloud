@@ -5,6 +5,33 @@ import getopt
 import re
 from collections import OrderedDict
 
+def get_scenario(inp_f):
+	file_ty = re.search(r"(\w+)\.(\w+)\b", inp_f) # Extract the input filename and extension
+	
+	if not file_ty :
+		raise "The file type %s is not recognized." % ifile
+		
+	elif file_ty.group(2) not in ("db", "sqlite", "sqlite3", "sqlitedb") :
+		raise "Please specify a database for finding scenarios"
+
+	scene_list = {}
+	scene_set = set()
+	
+	
+	con = sqlite3.connect(inp_f)
+	cur = con.cursor()   # a database cursor is a control structure that enables traversal over the records in a database
+	con.text_factory = str #this ensures data is explored with the correct UTF-8 encoding
+
+	print inp_f
+	cur.execute("SELECT DISTINCT scenario FROM Output_Objective")
+	for row in cur:
+		x = row[0]
+		scene_list[x] = x
+	
+	cur.close()
+	con.close()
+	return dict ( OrderedDict ( sorted(scene_list.items(), key=lambda x: x[1]) ) )
+
 
 def get_comm(inp_f, db_dat):
 	
@@ -25,7 +52,6 @@ def get_comm(inp_f, db_dat):
 		
 		cur.close()
 		con.close()
-		
 		
 	else:
 		eff_flag = False
@@ -74,7 +100,6 @@ def get_tech(inp_f, db_dat):
 		cur.close()
 		con.close()
 		
-		
 	else:
 		eff_flag = False
 		with open (inp_f) as f :
@@ -114,6 +139,7 @@ def get_info(inputs):
 	inp_file = None
 	tech_flag = False
 	comm_flag = False
+	scene = False
 	db_or_dat = False # Means db by default
 	
 	if inputs is None:
@@ -129,6 +155,8 @@ def get_info(inputs):
 			comm_flag = True
 		elif opt in ("-t", "--tech"):
 			tech_flag = True
+		elif opt in ("-s", "--scenario"):
+			scene = True
 		elif opt in ("-h", "--help") :
 			help_user()                          
 			sys.exit(2)
@@ -136,10 +164,10 @@ def get_info(inputs):
 	if inp_file is None:
 		raise "Input file not specified"
 	
-	if comm_flag and tech_flag :
-		raise "connot use both comm/tech"
-	if not comm_flag and not tech_flag:
-		raise "comm/tech choice not specified"
+	if (comm_flag and tech_flag) or (comm_flag and scene) or(scene and tech_flag) or(comm_flag and tech_flag and scene) :
+		raise "con only use one flag at a time"
+	if not comm_flag and not tech_flag and not scene:
+		raise "flag not specified"
 		
 	file_ty = re.search(r"(\w+)\.(\w+)\b", inp_file) # Extract the input filename and extension
 	
@@ -163,12 +191,16 @@ def get_info(inputs):
 	if tech_flag:
 		return get_tech(inp_file, db_or_dat)
 		
+	if scene:
+		if db_or_dat:
+			raise "Please specify a database for finding scenarios"
+		return get_scenario(inp_file)
 		
 if __name__ == "__main__":	
 	
 	try:
 		argv = sys.argv[1:]
-		opts, args = getopt.getopt(argv, "hcti:", ["help", "comm", "tech", "input="])
+		opts, args = getopt.getopt(argv, "hctsi:", ["help", "comm", "tech", "scenario","input="])
 		
 		print opts
 		
