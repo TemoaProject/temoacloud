@@ -9,14 +9,14 @@ function populateFileList(mode){
             mode: mode
         },
         success: function(result) {
-            
+
             var options = '<option value="0">--Select data File--</option>';
             $.each(result.data, function(index, obj) {
                 options += "<option value=" + obj + ">" + obj + "</option>";
             });
-            
+
             $("#datafilename").html(options);
-            
+
         }
     });
 }
@@ -25,7 +25,7 @@ function populateFileList(mode){
 
 
 function displayNetworkDiagram(mode_folder, image_filename) {
-    
+
     //file is inside result/ folder but due to static django we have to say url /static :(  ..enjoy :)
     var imgPath = "/static/" + mode_folder + "/" + image_filename + "?" + new Date().getTime(); ;
     $('#networkDiagram').html('<img src="' + imgPath + '" width="800" alt="Output" />');
@@ -33,76 +33,76 @@ function displayNetworkDiagram(mode_folder, image_filename) {
 
 
 function initForm(mode) {
-    
+
     $("#commodity-file-error").hide();
     $("#input-file-error").hide();
     $("#scenario-name-error").hide();
-    
+
     var url = '/dapp/runinput';
-    
-    
-    
+
+
+
     $("#input-form").submit(function(e) {
-        
-        
+
+
         e.preventDefault();
-        
+
         $("#commodity-value-error").hide();
-        
+
         var fileInput = $("#datafilename option:selected").text();
-        if (fileInput == '--Select data File--' || fileInput == '') 
+        if (fileInput == '--Select data File--' || fileInput == '')
         {
             $("#input-file-error").show();
             return false;
-        } 
-        else 
+        }
+        else
         {
             $("#input-file-error").hide();
         }
-        
-        
+
+
         //Only check if mode is output
         if(mode == "output")
         {
             var scenarioname = $("#scenario-name option:selected").text();
-            if (scenarioname == '--Select scenario value--' || scenarioname == '') 
+            if (scenarioname == '--Select scenario value--' || scenarioname == '')
             {
                 $("#scenario-name-error").show();
                 return false;
-            } 
-            else 
+            }
+            else
             {
                 $("#scenario-name-error").hide();
             }
         }
-        
-        
+
+
         type = $('#commodity-technology-type').val();
-     
+
         if(type != 'none')
         {
            filename = $("#commodity-technology-type").val();
-            
+
             if(filename == '')
             {
                 //alert("Select model first");
                 $("#commodity-value-error").show();
                 return;
-            }     
+            }
         }
-        
-        
+
+
         $.post( url, $('form#input-form').serialize(), function(data) {
-            
+
             //alert(data.filename + data.mode);
-            
-            
+
+
             displayNetworkDiagram(data.mode, data.filename );
-            
+
             //Make download button ready
             $("#download-button").attr("href", "/static/" + data.zip_path);
-            
-            
+
+
         },
        'json' // I expect a JSON response
     );
@@ -122,10 +122,10 @@ function initForm(mode) {
     colorScheme = $("input[name=qcolorscheme]:checked").val();
     outputFormat = $("#output-format").text();
     displayNetworkDiagram();
-    
+
     //alert("hi");
-    
-    
+
+
     $.ajax({
         url: url,
         method: "post",
@@ -140,35 +140,35 @@ function initForm(mode) {
 }
 
 function showHideCommodityTechnology(mode){
-    
-    
-    
+
+
+
     $('#commodity-technology-type').change(function(){
 
         type = $('#commodity-technology-type').val();
-     
+
         if(type == 'none')
         {
             $('#commodity-technology-value').hide();
             $('#commodity-label').hide();
-        } 
-        else 
+        }
+        else
         {
-            
+
             filename = $("#datafilename").val();
-            
+
             if(filename == 0)
             {
                 //alert("Select model first");
                 $("#commodity-file-error").show();
                 return;
             }
-            
+
             $('#commodity-technology-value').show();
             $('#commodity-label').html("Select "+type+" value");
             $('#commodity-label').show();
-        
-        
+
+
             getCTList(mode, type, filename );
         }
     });
@@ -187,17 +187,17 @@ function getCTList(mode, type, filename){
             'type':type
         },
         success: function(result) {
-            
+
             var options = '<option value="0">--Select '+ type +' value--</option>';
             $.each(result.data, function(index, obj) {
                 options += "<option value=" + obj + ">" + obj + "</option>";
             });
-            
+
 			if(type == "scenario")
 				$("#scenario-name").html(options);
 			else
             	$("#commodity-technology-value").html(options);
-            
+
         }
     });
 }
@@ -206,41 +206,41 @@ function getCTList(mode, type, filename){
 function initJs(mode)
 {
     initForm(mode);
-    
+
     $('#commodity-technology-value').hide();
     $('#commodity-label').hide();
     $("#commodity-value-error").hide();
-    
+
     populateFileList(mode);
-    
+
     showHideCommodityTechnology(mode);
 
 
-        
+
     $('#datafilename').change(function(){
-        
+
         $('#commodity-technology-value').hide();
         $('#commodity-label').hide();
-    
+
         $("#commodity-technology-type").val("none");
         $('#commodity-technology-value').html("");
-        
+
         $("#commodity-file-error").hide();
         $("#input-file-error").hide();
         $("#scenario-name-error").hide();
 
-        
+
         if(mode == "output")
             getCTList(mode, "scenario", $(this).val() );
 
-        $("#download-db").attr("href", "/static/" + mode + "/" + this.value ) 
+        $("#download-db").attr("href", "/static/" + mode + "/" + this.value )
 
         console.log("DB changed!")
-        
+
     });
-    
-    
-    
+
+
+
     // Dropzone class:
     var myDropzone = new Dropzone("div#dropArea", {
         url: "/dapp/fileupload",
@@ -249,16 +249,16 @@ function initJs(mode)
     }
     });
 
-    myDropzone.on("success", function(fileList, response) 
+    myDropzone.on("success", function(fileList, response)
     {
-        
+
         var options = '<option value="0">--Select Input File--</option>';
-        
+
         $.each(response.data, function(index, obj) {
             options += fileList.name == obj ? "<option selected='selected' value=" + obj + ">" + obj + "</option>" :
                 "<option value=" + obj + ">" + obj + "</option>";
         });
-        
+
         $("#datafilename").html(options);
 
         myDropzone.removeAllFiles();
@@ -266,16 +266,16 @@ function initJs(mode)
 
         if(mode == "output")
             getCTList(mode, "scenario", fileList.name );
-        
+
         showHideCommodityTechnology(mode);
 
     });
 
 
 
-    
-   
-    
+
+
+
 }
 
 
