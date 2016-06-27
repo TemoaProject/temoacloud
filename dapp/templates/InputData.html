@@ -38,12 +38,12 @@
         <h4 class="box-heading">Network Diagram Options </h4>
 
 
-        <div class="form-group">
+        <div class="form-group" style="display: {% if mode == 'input'%}  none   {% endif %} ">
             <div class="col-sm-1"></div>
             <div class="col-sm-5">
                 Scenario Name
                 <select class="form-control" id="scenario-name" name="scenario-name" >
-                                                    <option value="none">NONE</option>
+                                                    <option value="{{random}}">Random</option>
                                                    
                                                 </select>
                                                 

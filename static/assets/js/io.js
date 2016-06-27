@@ -211,7 +211,9 @@ function initJs(mode)
         $("#commodity-technology-type").val("none");
         $('#commodity-technology-value').html("");
 		
-        getCTList(mode, "scenario", $(this).val() );
+        
+		if(mode == "output")
+			getCTList(mode, "scenario", $(this).val() );
 		
 		
 
@@ -243,7 +245,8 @@ function initJs(mode)
         myDropzone.removeAllFiles();
 		
 		
-		getCTList(mode, "scenario", filename );
+		if(mode == "output")
+			getCTList(mode, "scenario", fileList.name );
         
         showHideCommodityTechnology(mode);
 

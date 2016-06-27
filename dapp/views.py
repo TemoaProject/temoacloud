@@ -13,6 +13,7 @@ import re
 import urllib
 import json
 import os
+import uuid; 
 
 #Custom / Thirdparty
 from thirdparty import test
@@ -24,7 +25,10 @@ def login(request):
   return render_to_response('login.html', context_instance=RequestContext(request))
 
 def inputData(request):
-  return render_to_response('InputData.html', { 'mode' : 'input' , 'title' : 'Input Data'}, context_instance=RequestContext(request))
+
+  random = str(uuid.uuid4().get_hex().upper()[0:6])
+
+  return render_to_response('InputData.html', { 'mode' : 'input' , 'random' : random,  'title' : 'Input Data'}, context_instance=RequestContext(request))
 
 def outputData(request):
   return render_to_response('InputData.html', { 'mode' : 'output' , 'title' : 'Output Data'}, context_instance=RequestContext(request))
@@ -62,12 +66,8 @@ def about(request):
 #get posted data
 def runInput(request):
   
-  import uuid; 
-  
   if request.method != 'POST':
     return HttpResponse("Use post method only", status = 403)
-  
-  
   
   format = request.POST.get("format", "svg")
   colorscheme = request.POST.get("colorscheme", "color")
@@ -75,9 +75,11 @@ def runInput(request):
   value =request.POST.get("commodity-technology-value", "")
   filename =request.POST.get("datafile", "")
   mode =request.POST.get("mode", "")
+
+  random =request.POST.get("scenario-name", "")
   
   folder, file_extension = os.path.splitext(filename)
-  random = str(uuid.uuid4().get_hex().upper()[0:6])
+  
   
   imagepath = ""
     
@@ -139,6 +141,10 @@ def runInput(request):
     imagepath = folder + "_" + random + "/processes/process_" + value + ".svg" if mode == "output" else folder + "_" + random + "/" + folder + "_" + random + ".svg"
     
   print inputs
+
+  #remove existing folder
+  import shutil
+  shutil.rmtree(inputs['-o']+"/"+folder + "_" + random, ignore_errors=True)
     
   makeGraph(inputs)
     
