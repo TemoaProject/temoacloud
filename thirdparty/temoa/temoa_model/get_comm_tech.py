@@ -23,7 +23,7 @@ def get_scenario(inp_f):
 	con.text_factory = str #this ensures data is explored with the correct UTF-8 encoding
 
 	print inp_f
-	cur.execute("SELECT DISTINCT scenario FROM Output_Objective")
+	cur.execute("SELECT DISTINCT scenario FROM Output_VFlow_Out")
 	for row in cur:
 		x = row[0]
 		scene_list[x] = x

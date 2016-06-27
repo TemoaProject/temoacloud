@@ -239,6 +239,6 @@ def loadCTList(request):
     input["--scenario"] = True
     
     #FIXME remove this when we get scenerios from tables
-    return JsonResponse( { "data" : {"Test1" : "Test1" , "Test2" : "Test2"} } )
+    #return JsonResponse( { "data" : {"Test1" : "Test1" , "Test2" : "Test2"} } )
 
   return JsonResponse( { "data" : get_comm_tech.get_info(input) } )

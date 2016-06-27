@@ -61,6 +61,18 @@ function initForm() {
         }
         
         
+        var scenarioname = $("#scenario-name option:selected").text();
+        if (scenarioname == '--Select scenario value--' || scenarioname == '') 
+        {
+            $("#scenario-name-error").show();
+            return false;
+        } 
+        else 
+        {
+            $("#scenario-name-error").hide();
+        }
+        
+        
         type = $('#commodity-technology-type').val();
      
         if(type != 'none')
@@ -215,6 +227,10 @@ function initJs(mode)
     
         $("#commodity-technology-type").val("none");
         $('#commodity-technology-value').html("");
+        
+        $("#commodity-file-error").hide();
+        $("#input-file-error").hide();
+        $("#scenario-name-error").hide();
 		
         
 		if(mode == "output")
