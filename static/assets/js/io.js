@@ -27,12 +27,12 @@ function populateFileList(mode){
 function displayNetworkDiagram(mode_folder, image_filename) {
     
     //file is inside result/ folder but due to static django we have to say url /static :(  ..enjoy :)
-    var imgPath = "/static/" + mode_folder + "/" + image_filename ;
+    var imgPath = "/static/" + mode_folder + "/" + image_filename + "?" + new Date().getTime(); ;
     $('#networkDiagram').html('<img src="' + imgPath + '" width="800" alt="Output" />');
 }
 
 
-function initForm() {
+function initForm(mode) {
     
     $("#commodity-file-error").hide();
     $("#input-file-error").hide();
@@ -61,15 +61,19 @@ function initForm() {
         }
         
         
-        var scenarioname = $("#scenario-name option:selected").text();
-        if (scenarioname == '--Select scenario value--' || scenarioname == '') 
+        //Only check if mode is output
+        if(mode == "output")
         {
-            $("#scenario-name-error").show();
-            return false;
-        } 
-        else 
-        {
-            $("#scenario-name-error").hide();
+            var scenarioname = $("#scenario-name option:selected").text();
+            if (scenarioname == '--Select scenario value--' || scenarioname == '') 
+            {
+                $("#scenario-name-error").show();
+                return false;
+            } 
+            else 
+            {
+                $("#scenario-name-error").hide();
+            }
         }
         
         
@@ -201,7 +205,7 @@ function getCTList(mode, type, filename){
 
 function initJs(mode)
 {
-    initForm();
+    initForm(mode);
     
     $('#commodity-technology-value').hide();
     $('#commodity-label').hide();
@@ -210,16 +214,9 @@ function initJs(mode)
     populateFileList(mode);
     
     showHideCommodityTechnology(mode);
-	
-	
-    
-    
-    
-    /*$("#input-form").submit(function(e) {
-        e.preventDefault();
-        ioFormSubmit();
-    });*/
-    
+
+
+        
     $('#datafilename').change(function(){
         
         $('#commodity-technology-value').hide();
@@ -231,13 +228,14 @@ function initJs(mode)
         $("#commodity-file-error").hide();
         $("#input-file-error").hide();
         $("#scenario-name-error").hide();
-		
-        
-		if(mode == "output")
-			getCTList(mode, "scenario", $(this).val() );
-		
-		
 
+        
+        if(mode == "output")
+            getCTList(mode, "scenario", $(this).val() );
+
+        $("#download-db").attr("href", "/static/" + mode + "/" + this.value ) 
+
+        console.log("DB changed!")
         
     });
     
@@ -264,17 +262,17 @@ function initJs(mode)
         $("#datafilename").html(options);
 
         myDropzone.removeAllFiles();
-		
-		
-		if(mode == "output")
-			getCTList(mode, "scenario", fileList.name );
+
+
+        if(mode == "output")
+            getCTList(mode, "scenario", fileList.name );
         
         showHideCommodityTechnology(mode);
 
     });
-	
-	
-	
+
+
+
     
    
     
