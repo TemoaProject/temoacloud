@@ -213,7 +213,7 @@ def loadFiles(mode):
 def loadCTList(request):
   mode = request.GET.get('mode','input')
   filename = request.GET.get('filename')
-  listType = request.GET.get('type','commodity')
+  listType = request.GET.get('type','')
   
   input = {"--input" : settings.BASE_DIR + '/uploads/'+ mode + "/" + filename}
   
@@ -222,7 +222,8 @@ def loadCTList(request):
 
   elif listType == 'technology':
     input["--tech"] = True
-  
-  
-  return JsonResponse( { "data" : get_comm_tech.get_info(input) } )
 
+  elif listType == 'scenario':
+    input["--scenario"] = True
+
+  return JsonResponse( { "data" : get_comm_tech.get_info(input) } )

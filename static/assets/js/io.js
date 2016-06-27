@@ -36,6 +36,7 @@ function initForm() {
     
     $("#commodity-file-error").hide();
     $("#input-file-error").hide();
+    $("#scenario-name-error").hide();
     
     var url = '/dapp/runinput';
     
@@ -73,14 +74,6 @@ function initForm() {
                 return;
             }     
         }
-        
-        
-        
-         
-       
-            
-        
-        
         
         
         $.post( url, $('form#input-form').serialize(), function(data) {
@@ -179,14 +172,17 @@ function getCTList(mode, type, filename){
                 options += "<option value=" + obj + ">" + obj + "</option>";
             });
             
-            $("#commodity-technology-value").html(options);
+			if(type == "scenario")
+				$("#scenario-name").html(options);
+			else
+            	$("#commodity-technology-value").html(options);
             
         }
     });
 }
 
 
-function initJs(str)
+function initJs(mode)
 {
     initForm();
     
@@ -194,9 +190,11 @@ function initJs(str)
     $('#commodity-label').hide();
     $("#commodity-value-error").hide();
     
-    populateFileList(str);
+    populateFileList(mode);
     
-    showHideCommodityTechnology(str);
+    showHideCommodityTechnology(mode);
+	
+	
     
     
     
@@ -212,6 +210,10 @@ function initJs(str)
     
         $("#commodity-technology-type").val("none");
         $('#commodity-technology-value').html("");
+		
+        getCTList(mode, "scenario", $(this).val() );
+		
+		
 
         
     });
@@ -222,7 +224,7 @@ function initJs(str)
     var myDropzone = new Dropzone("div#dropArea", {
         url: "/dapp/fileupload",
         params: {
-        mode: str
+        mode: mode
     }
     });
 
@@ -239,10 +241,16 @@ function initJs(str)
         $("#datafilename").html(options);
 
         myDropzone.removeAllFiles();
+		
+		
+		getCTList(mode, "scenario", filename );
         
-        showHideCommodityTechnology(str);
+        showHideCommodityTechnology(mode);
 
     });
+	
+	
+	
     
    
     
