@@ -82,6 +82,11 @@ function initForm() {
             
             
             displayNetworkDiagram(data.mode, data.filename );
+            
+            //Make download button ready
+            $("#download-button").attr("href", "/static/" + data.zip_path);
+            
+            
         },
        'json' // I expect a JSON response
     );

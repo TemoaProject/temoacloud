@@ -55,7 +55,6 @@ def runModel(request):
 
 
 def index(request):
-  
   return HttpResponse("Nothing for now...")
 
 
@@ -142,13 +141,20 @@ def runInput(request):
     
   print inputs
 
+  output_dirname = inputs['-o']+"/"+folder + "_" + random
   #remove existing folder
   import shutil
-  shutil.rmtree(inputs['-o']+"/"+folder + "_" + random, ignore_errors=True)
+  shutil.rmtree(output_dirname, ignore_errors=True)
     
   makeGraph(inputs)
+
+  print "Zipping: " + output_dirname
+  shutil.make_archive(folder + "_" + random , 'zip', output_dirname)
+  
+  zip_file = mode + "/" + folder + "_" + random + ".zip"
+
     
-  return JsonResponse( {"filename" : imagepath , "folder": folder + "_" + random , "mode" : mode , } )
+  return JsonResponse( {"filename" : imagepath , "zip_path": zip_file, "folder" : folder + "_" + random , "mode" : mode , } )
     
     
   
@@ -231,5 +237,8 @@ def loadCTList(request):
 
   elif listType == 'scenario':
     input["--scenario"] = True
+    
+    #FIXME remove this when we get scenerios from tables
+    return JsonResponse( { "data" : {"Test1" : "Test1" , "Test2" : "Test2"} } )
 
   return JsonResponse( { "data" : get_comm_tech.get_info(input) } )

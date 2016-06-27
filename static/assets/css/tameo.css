@@ -54,7 +54,7 @@
 /*	width: 200px;*/
 	font-size: 18px;
 	font-weight: normal;
-	color: #FFF;
+	
 	text-align: center;
 	text-shadow: 0 -1px -1px rgba(0, 0, 0, 0.2);
 	border: 0;
@@ -64,16 +64,16 @@
 	line-height: 1.7;
 	position: relative
 }
-.btn-app {
+.btn-red {
 	background: #d3413b;
 	background-image: linear-gradient(to bottom, #d55b52 0, #d12723 100%);
 	background-repeat: repeat-x;
-	
+	color: #FFF;
 	
 	   
 	
 }
-.btn-app:hover {
+.btn-red:hover {
 	background: #b52c26;
 	background-image: linear-gradient(to bottom, #c43a30 0, #a51f1c 100%);
 	background-repeat: repeat-x;
@@ -100,13 +100,6 @@
  min-width: 0;
  padding: 0
 }
-.btn-app.radius-4 {
-	border-radius: 4px
-}
-.btn.btn-app.active.btn-yellow {
-	color: #963;
-	border-color: #fee188
-}
 
 .mark-error
 {
@@ -123,7 +116,6 @@
 
 .form-control, select {
 	border-radius: 0;
-	-webkit-box-shadow: none!important;
 	box-shadow: none!important;
 	color: #222;
 	font-weight: bold;
