@@ -352,11 +352,11 @@ def pformat_results ( pyomo_instance, pyomo_result, options ):
 		con.close()
 		
 		if options.saveEXCEL :
-			sys.path.append('db_io')
+			#sys.path.append('db_io')
 			for inpu in options.dot_dat:
 				print inpu
 				file_ty = re.search(r"\b(\w+)\.(\w+)\b", inpu)
-			new_dir = 'db_io'+os.sep+file_ty.group(1)+'_'+options.scenario+'_model'
+			new_dir = 'result/db_io'+os.sep+file_ty.group(1)+'_'+options.scenario+'_model'
 			if os.path.exists( new_dir ):
 				rmtree( new_dir )
 			os.mkdir(new_dir)
