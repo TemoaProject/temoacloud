@@ -68,6 +68,7 @@ def runInput(request):
   if request.method != 'POST':
     return HttpResponse("Use post method only", status = 403)
   
+  
   format = request.POST.get("format", "svg")
   colorscheme = request.POST.get("colorscheme", "color")
   type =request.POST.get("commodity-technology-type", "")
@@ -143,10 +144,17 @@ def runInput(request):
 
   output_dirname = inputs['-o']+"/"+folder + "_" + random
   #remove existing folder
-  import shutil
-  shutil.rmtree(output_dirname, ignore_errors=True)
+  
+  
+  error = ''
+  try:  
+    import shutil
+    shutil.rmtree(output_dirname, ignore_errors=True)
+  
+    makeGraph(inputs)
+  except:
+    error = 'An error occured. Please try again.'
     
-  makeGraph(inputs)
 
   print "Zipping: " + output_dirname
   shutil.make_archive(folder + "_" + random , 'zip', output_dirname)
@@ -154,7 +162,7 @@ def runInput(request):
   zip_file = mode + "/" + folder + "_" + random + ".zip"
 
     
-  return JsonResponse( {"filename" : imagepath , "zip_path": zip_file, "folder" : folder + "_" + random , "mode" : mode , } )
+  return JsonResponse( {"error" : error, "filename" : imagepath , "zip_path": zip_file, "folder" : folder + "_" + random , "mode" : mode , } )
     
     
   
@@ -238,7 +246,15 @@ def loadCTList(request):
   elif listType == 'scenario':
     input["--scenario"] = True
     
+  error = ''  
+  data = {}
+  
+  try:
+    data = get_comm_tech.get_info(input)
+  except:
+    error = 'An error occured. Please try again.'  
+    
     #FIXME remove this when we get scenerios from tables
     #return JsonResponse( { "data" : {"Test1" : "Test1" , "Test2" : "Test2"} } )
-
-  return JsonResponse( { "data" : get_comm_tech.get_info(input) } )
+  
+  return JsonResponse( { "data" : data , "error" : error } )

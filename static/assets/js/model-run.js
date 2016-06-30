@@ -92,12 +92,16 @@ function initForm() {
     $("#output-file-error").hide();
     $("#scenarioname-error").hide();
     $("#solver-error").hide();
+	
+	
     
     
     $("#model-run-form").submit(function(e) {
             
         e.preventDefault();
         
+		
+		
         var isErrors;
         
         var fileInput = $("#inputdatafilename option:selected").text();
@@ -152,8 +156,13 @@ function initForm() {
         
         $.post( url, $('form#model-run-form').serialize(), function(data) {
             
-            alert("model-run-submit");
+            
             alert(data.message);
+            
+             //Make download button ready
+			
+            $("#download-button").addClass("btn-yellow").attr("href", "/static/" + data.zip_path);
+            
         },
        'json' // I expect a JSON response
     );
