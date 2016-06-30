@@ -106,7 +106,7 @@ function initForm(mode) {
             displayNetworkDiagram(data.mode, data.filename );
 
             //Make download button ready
-            $("#download-button").attr("href", "/static/" + data.zip_path);
+            $("#download-button").addClass("btn-yellow").attr("href", "/static/" + data.zip_path);
 
 
         },
@@ -193,9 +193,9 @@ function getCTList(mode, type, filename){
             'type':type
         },
         success: function(result) {
-            if(data.error)
+            if(result.error)
             {
-                alert(data.error)
+                alert(result.error)
                 return;
             }
 
