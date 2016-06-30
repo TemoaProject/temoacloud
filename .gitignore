@@ -1,2 +1,4 @@
 *.pyc
-
+/result/input/*
+/result/output/*
+/uploads/config_temp/*
