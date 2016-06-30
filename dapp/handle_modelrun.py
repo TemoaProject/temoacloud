@@ -75,7 +75,8 @@ def run_model(request):
     
     values = {}
     
-    values['--input'] = settings.UPLOADED_INPUT_DIR + request.POST.get("inputdatafilename", "")
+    inputfilename = request.POST.get("inputdatafilename", "")
+    values['--input'] = settings.UPLOADED_INPUT_DIR + inputfilename
     values['--output'] = settings.UPLOADED_OUTPUT_DIR + request.POST.get("outputdatafilename", "")
     values["--scenario"] =request.POST.get("scenarioname", "")
     values["--solver"] =request.POST.get("solver", "")
@@ -94,9 +95,20 @@ def run_model(request):
     
     filename = create_config(values)
   
-    temoa_model.runModel(filename)
+    data = temoa_model.runModel(filename)
+    
     
     #Remove this temp config file
     
-    #FIXME uncomment below on production 
+    #uncomment below on production 
     #os.remove(filename)
+    
+    
+    #print "DATA"
+    generatedfolderpath = "result/db_io/" + os.path.splitext(inputfilename)[0] + "_" + values["--scenario"] + "_model"
+    
+    print generatedfolderpath
+    
+    return generatedfolderpath
+    
+    
