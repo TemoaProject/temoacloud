@@ -13,7 +13,8 @@ import re
 import urllib
 import json
 import os
-import uuid; 
+import uuid 
+import shutil
 
 #Custom / Thirdparty
 from thirdparty import test
@@ -40,18 +41,29 @@ def runModel(request):
   
   msg = 'Successfully generated'
   result = True
+  generatedfolderpath = ''
+  zip_path = ''
+  
   try:
     #This function will handle 
     #TODO try catch handling
-    run_model(request)
+    generatedfolderpath = run_model(request)
+    
+    
+    random = str(uuid.uuid4().get_hex().upper()[0:6])
+    output_dirname = 'db_io/db_io_' + random 
+    print "Zipping: " + settings.BASE_DIR + "/" + generatedfolderpath + " | " + output_dirname
+    shutil.make_archive( 'result/' + output_dirname , 'zip', settings.BASE_DIR + "/" + generatedfolderpath)
+    
+    zip_path = output_dirname + ".zip"
   
   
   except:
-    msg = 'An error occured.'
+    msg = 'An error occured. Please try again.'
     result = False
   
   
-  return JsonResponse( {"result" : result , "message" : msg  } )
+  return JsonResponse( {"result" : result , "message" : msg , 'zip_path' : zip_path  } )
 
 
 def index(request):
@@ -148,7 +160,7 @@ def runInput(request):
   
   error = ''
   try:  
-    import shutil
+    
     shutil.rmtree(output_dirname, ignore_errors=True)
   
     makeGraph(inputs)
