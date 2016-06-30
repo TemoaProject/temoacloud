@@ -95,6 +95,12 @@ function initForm(mode) {
         $.post( url, $('form#input-form').serialize(), function(data) {
 
             //alert(data.filename + data.mode);
+            
+            if(data.error)
+            {
+                alert(data.error)
+                return;
+            }
 
 
             displayNetworkDiagram(data.mode, data.filename );
@@ -187,6 +193,12 @@ function getCTList(mode, type, filename){
             'type':type
         },
         success: function(result) {
+            if(data.error)
+            {
+                alert(data.error)
+                return;
+            }
+
 
             var options = '<option value="0">--Select '+ type +' value--</option>';
             $.each(result.data, function(index, obj) {
