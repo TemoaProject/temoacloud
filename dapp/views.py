@@ -117,7 +117,7 @@ def runInput(request):
   #elif opt in ("-g", "--grey") :
     
   inputs = { 
-            "-i" : settings.BASE_DIR + "/uploads/" + mode + "/" + filename , 
+            "-i" : settings.BASE_DIR + "/uploads/uploaded/" + mode + "/" + filename , 
             "-f" : format,
             "-o" : settings.BASE_DIR + "/result/" + mode
   }
@@ -207,7 +207,7 @@ def handle_uploaded_file(f, mode):
   import os.path
   
   
-  fname = settings.BASE_DIR + '/uploads/'+mode+'/' + f.name
+  fname = settings.BASE_DIR + '/uploads/uploaded/'+mode+'/' + f.name
   
   
   filename, file_extension = os.path.splitext(f.name)
@@ -238,7 +238,7 @@ def loadFiles(mode):
   #print mode
   types = ('.data', '.sqlite') # the tuple of file types
   
-  return [each for each in os.listdir(settings.BASE_DIR + '/uploads/'+ mode) if each.endswith(types)]
+  return [each for each in os.listdir(settings.BASE_DIR + '/uploads/uploaded/'+ mode) if each.endswith(types)]
   
 
 
@@ -247,7 +247,7 @@ def loadCTList(request):
   filename = request.GET.get('filename')
   listType = request.GET.get('type','')
   
-  input = {"--input" : settings.BASE_DIR + '/uploads/'+ mode + "/" + filename}
+  input = {"--input" : settings.BASE_DIR + '/uploads/uploaded/'+ mode + "/" + filename}
   
   if listType == 'commodity':
     input["--comm"] = True
