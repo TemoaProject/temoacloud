@@ -1,0 +1,12 @@
+[Unit]
+Description=gunicorn daemon
+After=network.target
+
+[Service]
+User=yash
+Group=www-data
+WorkingDirectory=/srv
+ExecStart=/srv/tprojectenv/bin/gunicorn --workers 3 --bind unix:/srv/dproject.sock dproject.wsgi:application
+
+[Install]
+WantedBy=multi-user.target

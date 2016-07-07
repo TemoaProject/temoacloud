@@ -1,0 +1,73 @@
+server {
+    listen 80;
+    server_name 72.15.201.14;
+
+    #rewrite    ^/static/input/$    $1/result/input/$2;
+
+    rewrite_log on;
+    error_log /var/log/nginx/localhost.error_log notice;
+
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+
+
+
+    location /static/input/ {
+        rewrite ^/static(.*)$ /result$1 last;
+        #return 301 /result/input/$1;
+
+        root /srv;
+        try_files $uri @secondStatic;
+
+    }
+
+    location /static/output/ {
+        rewrite ^/static(.*)$ /result$1 last;
+        root /srv;
+        try_files $uri @secondStaticOutput;
+
+    }
+
+    location /static/db_io/ {
+        rewrite ^/static(.*)$ /result$1 last;
+        root /srv;
+    }
+
+
+    location /static/uploaded {
+        rewrite ^/static(.*)$ /uploads$1 last;
+        root /srv;
+    }
+
+
+
+
+    location /static/ {
+        root /srv;
+        expires 30d;
+        #access_log off;
+        #try_files $uri @secondStatic
+
+    }
+
+     location /result {
+        root /srv;
+     }
+    
+     location /uploads
+     {
+        root /srv;
+     }
+
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/srv/dproject.sock;
+    }
+
+}
+
+
+
+
+
