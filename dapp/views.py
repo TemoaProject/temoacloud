@@ -58,7 +58,7 @@ def runModel(request):
     zip_path = output_dirname + ".zip"
   
   
-  except:
+  except ValueError:
     msg = 'An error occured. Please try again.'
     result = False
   
