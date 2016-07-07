@@ -1,5 +1,5 @@
  function populateFileList(str) {
-    var url = '/dapp/loadfilelist';
+    var url = '/loadfilelist';
     $.ajax({
         url: url,
         dataType: 'json',
@@ -23,7 +23,7 @@
  function initDropZone(str){
     // Dropzone class:
     var myDropzone = new Dropzone("div#"+str+"dropArea", {
-        url: "/dapp/fileupload",
+        url: "/fileupload",
         params: {
         mode: str
     }
@@ -86,7 +86,7 @@ function initJs()
 
 function initForm() { 
     
-    var url = '/dapp/model';
+    var url = '/model';
     
     $("#input-file-error").hide();
     $("#output-file-error").hide();

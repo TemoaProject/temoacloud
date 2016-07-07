@@ -1,5 +1,5 @@
 function populateFileList(mode){
-    var url = '/dapp/loadfilelist';
+    var url = '/loadfilelist';
 
     $.ajax({
         url: url,
@@ -38,7 +38,7 @@ function initForm(mode) {
     $("#input-file-error").hide();
     $("#scenario-name-error").hide();
 
-    var url = '/dapp/runinput';
+    var url = '/runinput';
 
 
 
@@ -181,7 +181,7 @@ function showHideCommodityTechnology(mode){
 }
 
 function getCTList(mode, type, filename){
-    var url = '/dapp/loadctlist';
+    var url = '/loadctlist';
 
     $.ajax({
         url: url,
@@ -255,7 +255,7 @@ function initJs(mode)
 
     // Dropzone class:
     var myDropzone = new Dropzone("div#dropArea", {
-        url: "/dapp/fileupload",
+        url: "/fileupload",
         params: {
         mode: mode
     }
