@@ -28,7 +28,7 @@ function displayNetworkDiagram(mode_folder, image_filename) {
 
     //file is inside result/ folder but due to static django we have to say url /static :(  ..enjoy :)
     var imgPath = "/static/" + mode_folder + "/" + image_filename + "?" + new Date().getTime(); ;
-    $('#networkDiagram').html('<img src="' + imgPath + '" width="800" alt="Output" />');
+    $('#networkDiagram').html('<iframe class="result-frame" src="' + imgPath + '" width="800" alt="Output"></iframe> ');
 }
 
 

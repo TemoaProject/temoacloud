@@ -122,3 +122,11 @@
 	background-color: #fff;
 	border: 1px solid #d5d5d5
 }
+
+.result-frame
+{
+	border:  0;
+	padding-left:  20px;
+	width: 70%;
+	height:  800px;
+}
