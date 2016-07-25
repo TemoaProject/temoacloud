@@ -49,8 +49,8 @@ def runModel(request):
     #TODO try catch handling
     generatedfolderpath = run_model(request)
     
-    if not generatedfolderpath:
-      raise "Error detected"
+    #if not generatedfolderpath:
+    #  raise "Error detected"
     
     
     random = str(uuid.uuid4().get_hex().upper()[0:6])
