@@ -261,8 +261,8 @@ def loadCTList(request):
   elif listType == 'scenario':
     input["--scenario"] = True
   
-  elif listType == 'date':
-    input["--date"] = True  
+  elif listType == 'period':
+    input["--period"] = True  
     
   error = ''  
   data = {}

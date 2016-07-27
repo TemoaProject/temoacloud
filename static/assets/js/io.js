@@ -228,7 +228,7 @@ function getCTList(mode, type, filename){
 
 			if(type == "scenario")
 				$("#scenario-name").html(options);
-         else if (type == "date")
+         else if (type == "period")
         {
             $("#date-range").html(options); 
             $(".date-range").show();
@@ -287,7 +287,7 @@ function initJs(mode)
     
     $('#scenario-name').change(function(){
         
-        getCTList(mode, "date", $(this).val() );
+        getCTList(mode, "period", $(this).val() );
     });
 
 
