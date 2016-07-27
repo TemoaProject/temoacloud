@@ -84,7 +84,7 @@ function initForm(mode) {
             
             
             var daterange = $("#date-range option:selected").text();
-            if (daterange == '--Select date--' || daterange == '')
+            if (daterange == '--Select period value--' || daterange == '')
             {
                 $("#date-range-error").show();
                 return false;
@@ -287,7 +287,7 @@ function initJs(mode)
     
     $('#scenario-name').change(function(){
         
-        getCTList(mode, "period", $(this).val() );
+        getCTList(mode, "period", $('#datafilename').val() );
     });
 
 
