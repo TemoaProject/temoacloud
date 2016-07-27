@@ -55,7 +55,12 @@
                 <div id="scenario-name-error" class="mark-error">Error: Please select scenario. Run Model if entries are blank.</div>
             </div>
             <div class="col-sm-5">
-                &nbsp;
+                <span class="date-range">Date</span>
+                <select class="form-control date-range" id="date-range" name="range-date"  >
+                    <option value="{{random}}">--Select date--</option>
+                </select>
+                                                
+                <div id="date-range-error" class="mark-error">Error: Please select date.</div>
             </div>
         </div>   
    

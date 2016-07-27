@@ -34,9 +34,16 @@ function displayNetworkDiagram(mode_folder, image_filename) {
 
 function initForm(mode) {
 
+    $('#commodity-technology-value').hide();
+    $('#commodity-label').hide();
+    $("#commodity-value-error").hide();
+    $(".date-range").hide();
+    
+    
     $("#commodity-file-error").hide();
     $("#input-file-error").hide();
     $("#scenario-name-error").hide();
+    $("#date-range-error").hide();
 
     var url = '/runinput';
 
@@ -73,6 +80,18 @@ function initForm(mode) {
             else
             {
                 $("#scenario-name-error").hide();
+            }
+            
+            
+            var daterange = $("#date-range option:selected").text();
+            if (daterange == '--Select date--' || daterange == '')
+            {
+                $("#date-range-error").show();
+                return false;
+            }
+            else
+            {
+                $("#date-range-error").hide();
             }
         }
 
@@ -209,6 +228,11 @@ function getCTList(mode, type, filename){
 
 			if(type == "scenario")
 				$("#scenario-name").html(options);
+         else if (type == "date")
+        {
+            $("#date-range").html(options); 
+            $(".date-range").show();
+        }
 			else
             	$("#commodity-technology-value").html(options);
 
@@ -226,9 +250,7 @@ function initJs(mode)
 {
     initForm(mode);
 
-    $('#commodity-technology-value').hide();
-    $('#commodity-label').hide();
-    $("#commodity-value-error").hide();
+    
 
     populateFileList(mode);
 
@@ -247,6 +269,7 @@ function initJs(mode)
         $("#commodity-file-error").hide();
         $("#input-file-error").hide();
         $("#scenario-name-error").hide();
+        $("#date-range-error").hide();
         
         showDownloadButtonWithHelp()
 
@@ -260,7 +283,12 @@ function initJs(mode)
         console.log("DB changed!")
 
     });
-
+    
+    
+    $('#scenario-name').change(function(){
+        
+        getCTList(mode, "date", $(this).val() );
+    });
 
 
     // Dropzone class:
