@@ -9,7 +9,7 @@ def get_tperiods(inp_f):
 	file_ty = re.search(r"(\w+)\.(\w+)\b", inp_f) # Extract the input filename and extension
 	
 	if not file_ty :
-		raise "The file type %s is not recognized." % ifile
+		raise "The file type %s is not recognized." % inp_f
 		
 	elif file_ty.group(2) not in ("db", "sqlite", "sqlite3", "sqlitedb") :
 		raise "Please specify a database for finding scenarios"
@@ -42,7 +42,7 @@ def get_scenario(inp_f):
 	file_ty = re.search(r"(\w+)\.(\w+)\b", inp_f) # Extract the input filename and extension
 	
 	if not file_ty :
-		raise "The file type %s is not recognized." % ifile
+		raise "The file type %s is not recognized." % inp_f
 		
 	elif file_ty.group(2) not in ("db", "sqlite", "sqlite3", "sqlitedb") :
 		raise "Please specify a database for finding scenarios"
@@ -215,7 +215,7 @@ def get_info(inputs):
 	file_ty = re.search(r"(\w+)\.(\w+)\b", inp_file) # Extract the input filename and extension
 	
 	if not file_ty :
-		raise "The file type %s is not recognized." % ifile
+		raise "The file type %s is not recognized." % inp_f
 		
 	elif file_ty.group(2) in ("db", "sqlite", "sqlite3", "sqlitedb") :
 		db_or_dat = False
@@ -224,7 +224,7 @@ def get_info(inputs):
 		db_or_dat = True
 		
 	else :
-		print "The input file type %s is not recognized. Please specify a database or a text file." % ifile
+		print "The input file type %s is not recognized. Please specify a database or a text file." % inp_f
 		sys.exit(2)
 
 		
