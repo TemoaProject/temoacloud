@@ -92,6 +92,7 @@ def runInput(request):
   mode =request.POST.get("mode", "")
 
   random =request.POST.get("scenario-name", "")
+  dateRange =request.POST.get("date-range", "")
   
   folder, file_extension = os.path.splitext(filename)
   
@@ -140,7 +141,7 @@ def runInput(request):
 
     inputs["--scenario"] = random
 
-    imagepath = folder + "_" + random + "/simple_model.svg"
+    imagepath = folder + "_" + random + "/results/results"+ dateRange +".svg"
 
     
   if type == 'commodity':
@@ -249,6 +250,7 @@ def loadCTList(request):
   mode = request.GET.get('mode','input')
   filename = request.GET.get('filename')
   listType = request.GET.get('type','')
+  scenarioName = request.GET.get('scenario-name','')
   
   input = {"--input" : settings.BASE_DIR + '/uploads/uploaded/'+ mode + "/" + filename}
   
@@ -274,5 +276,8 @@ def loadCTList(request):
     
     #FIXME remove this when we get scenerios from tables
     #return JsonResponse( { "data" : {"Test1" : "Test1" , "Test2" : "Test2"} } )
+  
+ 
+  
   
   return JsonResponse( { "data" : data , "error" : error } )

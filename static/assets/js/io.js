@@ -219,7 +219,11 @@ function getCTList(mode, type, filename){
                 alert(result.error)
                 return;
             }
-
+            
+            if (type == "period")
+            {
+                result.data = result.data[$("#scenario-name").val()]
+            }
 
             var options = '<option value="0">--Select '+ type +' value--</option>';
             $.each(result.data, function(index, obj) {
