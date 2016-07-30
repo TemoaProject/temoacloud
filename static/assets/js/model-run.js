@@ -39,7 +39,18 @@
                 "<option value=" + obj + ">" + obj + "</option>";
         });
         
-        $("#"+str+"datafilename").html(options);
+        //$("#"+str+"datafilename").html(options);
+        
+        //Update output in all cases
+        $("#outputdatafilename").html(options);
+        $("#inputdatafilename").html(options);
+  
+        //if(str == "input")
+            
+        if(str == "output")
+        {
+           outputBlank(false);
+        }
 
         myDropzone.removeAllFiles();
 
@@ -80,28 +91,64 @@ function initJs()
    
    
    
-   
-   
+}
+
+
+
+
+
+function outputBlank(isBlank)
+{
+    
+    if(isBlank)
+    {
+        $("input[name='createspreadsheetoption']").prop("disabled", true);
+        $("input[name='createspreadsheetoption'][value='']").prop("checked",true);
+        $("input[name='createtextfileoption']").prop("disabled", true);
+        $("input[name='createtextfileoption'][value='yes']").prop("checked",true);
+    }
+    else
+    {
+        $("input[name='createspreadsheetoption']").prop("disabled", false);
+        $("input[name='createspreadsheetoption'][value='yes']").prop("checked",true);
+        $("input[name='createtextfileoption']").prop("disabled", false);
+        $("input[name='createtextfileoption'][value='yes']").prop("checked",true);
+    }
+    
+    
 }
 
 function initForm() { 
+
+
+    $("#outputdatafilename").change(function(){
+
+        if($(this).val() == 0 )
+          outputBlank(true);
+        else
+          outputBlank(false);
+              
+    });
+    
+        
+    
+
+
     
     var url = '/model';
+    
+    outputBlank(true);
     
     $("#input-file-error").hide();
     $("#output-file-error").hide();
     $("#scenarioname-error").hide();
     $("#solver-error").hide();
 	
-	
-    
     
     $("#model-run-form").submit(function(e) {
             
         e.preventDefault();
         
-		
-		
         var isErrors;
         
         var fileInput = $("#inputdatafilename option:selected").text();
@@ -115,7 +162,7 @@ function initForm() {
             $("#input-file-error").hide();
         }
 
-        var fileOutput = $("#outputdatafilename option:selected").text();
+        /*var fileOutput = $("#outputdatafilename option:selected").text();
         if (fileOutput == '--Select data File--' || fileOutput == '') 
         {
             $("#output-file-error").show();
@@ -125,7 +172,7 @@ function initForm() {
         else 
         {
             $("#output-file-error").hide();
-        }
+        }*/
         
         
         scenarioname = $("input[name='scenarioname']").val();

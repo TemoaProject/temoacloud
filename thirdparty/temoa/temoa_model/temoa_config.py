@@ -386,11 +386,11 @@ class TemoaConfig( object ):
 			if not isfile(i):
 				raise TemoaConfigError('Cannot locate input file: {}'.format(i))
 		
-		if not self.output:
-			raise TemoaConfigError('Output file not specified.')
+		#if not self.output:
+		#	raise TemoaConfigError('Output file not specified.')
 		
-		if not isfile(self.output):
-			raise TemoaConfigError('Cannot locate output file: {}.'.format(self.output))
+		#if not isfile(self.output):
+		#	raise TemoaConfigError('Cannot locate output file: {}.'.format(self.output))
 		
 		if not self.scenario:
 			raise TemoaConfigError('Scenario name not specified.')
