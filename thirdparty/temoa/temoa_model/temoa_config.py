@@ -355,6 +355,9 @@ class TemoaConfig( object ):
 	
 	def build(self,**kwargs):
 		import ply.lex as lex, os, sys
+		
+		db_or_dat = True # True means input file is a db file. False means input is a dat file.
+		
 		if 'config' in kwargs:
 			if isfile(kwargs['config']):
 				self.file_location= abspath(kwargs.pop('config'))
@@ -385,14 +388,20 @@ class TemoaConfig( object ):
 		for i in self.dot_dat:
 			if not isfile(i):
 				raise TemoaConfigError('Cannot locate input file: {}'.format(i))
-		
-		if not self.output:
+			i_name, i_ext = splitext(i)
+			if (i_ext == '.dat') or (i_ext == '.txt'):
+				db_or_dat = False
+			elif (i_ext == '.db') or (i_ext == '.sqlite') or (i_ext == '.sqlite3') or (i_ext == 'sqlitedb'):
+				db_or_dat = True
+				
+			
+		if not self.output and db_or_dat:
 			raise TemoaConfigError('Output file not specified.')
 		
-		if not isfile(self.output):
+		if db_or_dat and isfile(self.output):
 			raise TemoaConfigError('Cannot locate output file: {}.'.format(self.output))
 		
-		if not self.scenario:
+		if not self.scenario and db_or_dat:
 			raise TemoaConfigError('Scenario name not specified.')
 		
 		if self.mga_iter:
@@ -403,9 +412,6 @@ class TemoaConfig( object ):
 		sys.stdout = f # Suppress the original DB_to_DAT.py output
 		
 		counter = 0
-		
-		#print "YYYY"
-		
 		for ifile in self.dot_dat:
 			i_name, i_ext = splitext(ifile)
 			if i_ext != '.dat':
