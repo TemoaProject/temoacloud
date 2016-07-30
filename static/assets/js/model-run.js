@@ -210,7 +210,9 @@ function initForm() {
             
              //Make download button ready
 			   $(".spinner").addClass("invisible");
-            $("#download-button").addClass("btn-yellow").attr("href", "/static/" + data.zip_path);
+            
+            if(data.zip_path != "")
+                $("#download-button").addClass("btn-yellow").attr("href", "/static/" + data.zip_path);
             
         },
        'json' // I expect a JSON response
