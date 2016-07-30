@@ -398,7 +398,7 @@ class TemoaConfig( object ):
 		if not self.output and db_or_dat:
 			raise TemoaConfigError('Output file not specified.')
 		
-		if db_or_dat and isfile(self.output):
+		if db_or_dat and not isfile(self.output):
 			raise TemoaConfigError('Cannot locate output file: {}.'.format(self.output))
 		
 		if not self.scenario and db_or_dat:
