@@ -121,7 +121,7 @@ def runInput(request):
   #elif opt in ("-g", "--grey") :
     
   inputs = { 
-            "-i" : settings.BASE_DIR + "/uploads/uploaded/" + mode + "/" + filename , 
+            "-i" : settings.UPLOADED_DIR + filename , 
             "-f" : format,
             "-o" : settings.BASE_DIR + "/result/" + mode
   }
@@ -202,7 +202,7 @@ def fileUpload(request):
       #fileList = loadFiles()
       #JsonResponse( {'success' : 'File uploading finished'} )
 
-      return JsonResponse( {"data" : loadFiles(mode), 'mode' : mode })
+      return JsonResponse( {"data" : loadFiles(), 'mode' : mode })
       
     
     return JsonResponse({'error': result}, status = 403)
@@ -211,14 +211,14 @@ def handle_uploaded_file(f, mode):
   import os.path
   
   
-  fname = settings.BASE_DIR + '/uploads/uploaded/'+mode+'/' + f.name
+  fname = settings.UPLOADED_DIR  + f.name
   
   
   filename, file_extension = os.path.splitext(f.name)
   #print(fname)
   #print file_extension
   
-  if file_extension != ".data" and file_extension != ".sqlite" :
+  if file_extension != ".data" and file_extension != ".sqlite" and file_extension != ".dat" :
     return "Please select a valid file. Supported files are data and sqlite"
      
   
@@ -234,15 +234,15 @@ def handle_uploaded_file(f, mode):
 
 
 def loadFileList(request):
-  mode = request.GET.get('mode','input')
-  fileList = { "data" : loadFiles(mode) }
+  #mode = request.GET.get('mode','input')
+  fileList = { "data" : loadFiles() }
   return JsonResponse(fileList)
 
-def loadFiles(mode):
+def loadFiles():
   #print mode
-  types = ('.data', '.sqlite') # the tuple of file types
+  types = ('.data', '.sqlite', '.dat') # the tuple of file types
   
-  return [each for each in os.listdir(settings.BASE_DIR + '/uploads/uploaded/'+ mode) if each.endswith(types)]
+  return [each for each in os.listdir(settings.UPLOADED_DIR) if each.endswith(types)]
   
 
 
@@ -252,7 +252,7 @@ def loadCTList(request):
   listType = request.GET.get('type','')
   scenarioName = request.GET.get('scenario-name','')
   
-  input = {"--input" : settings.BASE_DIR + '/uploads/uploaded/'+ mode + "/" + filename}
+  input = {"--input" : settings.UPLOADED_DIR + filename}
   
   if listType == 'commodity':
     input["--comm"] = True

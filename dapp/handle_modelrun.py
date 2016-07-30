@@ -77,8 +77,8 @@ def run_model(request):
     values = {}
     
     inputfilename = request.POST.get("inputdatafilename", "")
-    values['--input'] = settings.UPLOADED_INPUT_DIR + inputfilename
-    values['--output'] = settings.UPLOADED_OUTPUT_DIR + request.POST.get("outputdatafilename", "")
+    values['--input'] = settings.UPLOADED_DIR + inputfilename
+    values['--output'] = settings.UPLOADED_DIR + request.POST.get("outputdatafilename", "")
     values["--scenario"] =request.POST.get("scenarioname", "")
     values["--solver"] =request.POST.get("solver", "")
 

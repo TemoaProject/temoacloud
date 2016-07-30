@@ -281,7 +281,7 @@ function initJs(mode)
         if(mode == "output")
             getCTList(mode, "scenario", $(this).val() );
 
-        $("#download-db").attr("href", "/static/uploaded/" + mode + "/" + this.value );
+        $("#download-db").attr("href", "/static/uploaded/files/" + this.value );
         
 
         console.log("DB changed!")
