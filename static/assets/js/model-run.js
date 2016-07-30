@@ -121,23 +121,46 @@ function outputBlank(isBlank)
 function initForm() { 
 
 
+    outputBlank(true);
+    showDownloadButtonWithHelp(false, 'output');
+    showDownloadButtonWithHelp(false, 'input');
+
     $("#outputdatafilename").change(function(){
 
         if($(this).val() == 0 )
-          outputBlank(true);
+        {
+            outputBlank(true);
+            showDownloadButtonWithHelp(false, 'output', '');
+        }
         else
-          outputBlank(false);
+        {
+            outputBlank(false);
+            showDownloadButtonWithHelp(true, 'output', $(this).val());
+        }
               
     });
     
-        
+
+    $("#inputdatafilename").change(function(){
+
+        if($(this).val() == 0 )
+        {
+            showDownloadButtonWithHelp(false, 'input', '');
+        }
+        else
+        {
+            showDownloadButtonWithHelp(true, 'input', $(this).val() );
+        }
+              
+    });
+    
     
 
 
     
     var url = '/model';
     
-    outputBlank(true);
+    
     
     $("#input-file-error").hide();
     $("#output-file-error").hide();
@@ -218,4 +241,22 @@ function initForm() {
        'json' // I expect a JSON response
     );
 });
+}
+
+
+function showDownloadButtonWithHelp(isShow, mode, datafilename)
+{
+    if(isShow)
+    {
+        $("#download-"+mode+"-db").removeClass('hidden');
+        $("#download-"+mode+"-button-help").removeClass('hidden');
+        
+        $("#download-"+mode+"-db").attr("href", "/static/uploaded/files/" + datafilename );
+        
+    }
+    else
+    {
+        $("#download-"+mode+"-db").addClass('hidden');
+        $("#download-"+mode+"-button-help").addClass('hidden');
+    }
 }

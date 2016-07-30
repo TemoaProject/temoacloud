@@ -275,13 +275,13 @@ function initJs(mode)
         $("#scenario-name-error").hide();
         $("#date-range-error").hide();
         
-        showDownloadButtonWithHelp()
+        //showDownloadButtonWithHelp()
 
 
         if(mode == "output")
             getCTList(mode, "scenario", $(this).val() );
 
-        $("#download-db").attr("href", "/static/uploaded/files/" + this.value );
+        //$("#download-db").attr("href", "/static/uploaded/files/" + this.value );
         
 
         console.log("DB changed!")

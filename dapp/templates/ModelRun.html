@@ -22,8 +22,20 @@
                   
                   
                 </div>
-                <div class="col-sm-3 text-left "> <span class="help-button" data-rel="popover" data-trigger="hover" data-placement="right" data-content="To run Temoa, you must select an input dataset from your 'data' folder. You must either select a relational database (sqlite) or a text (DAT) file.."
-                        title="Input Data Textbox">?</span> </div>
+                <div class="col-sm-1 text-left ">
+                
+                    <span class="help-button" data-rel="popover" data-trigger="hover" data-placement="right" data-content="To run Temoa, you must select an input dataset from your 'data' folder. You must either select a relational database (sqlite) or a text (DAT) file.."
+                        title="Input Data Textbox">?</span> 
+                        
+                </div>
+                
+                <div class="col-sm-2 text-left ">
+                    <a class="btn btn-primary btn-sm download-input hidden" href="#" id="download-input-db">Download</a>
+                
+                    <span id="download-input-button-help" class="help-button hidden" data-rel="popover" data-trigger="hover" data-placement="right" 
+                      data-content="Download updated sqlite database file" title="Download Sqlite file">?</span>
+                </div>
+                 
             </div>
             
             <div class="form-group">
@@ -37,8 +49,18 @@
                   
                   
                 </div>
-                <div class="col-sm-3 text-left "> <span class="help-button" data-rel="popover" data-trigger="hover" data-placement="right" data-content="Regardless of whether Temoa is run with an input database or text (DAT) file, model outputs can either be stored in a text file or in a database. Users who opt to run with database input will typically store the model outputs in the same database, which will include a set of output tables that track model outputs by scenario."
-                        title="Output Input Textbox">?</span> </div>
+                <div class="col-sm-1 text-left "> <span class="help-button" data-rel="popover" data-trigger="hover" data-placement="right" data-content="Regardless of whether Temoa is run with an input database or text (DAT) file, model outputs can either be stored in a text file or in a database. Users who opt to run with database input will typically store the model outputs in the same database, which will include a set of output tables that track model outputs by scenario."
+                        title="Output Input Textbox">?</span> 
+                        
+                </div>
+                
+                <div class="col-sm-1 text-left ">      
+                     <a class="btn btn-primary btn-sm download-output hidden" href="#" id="download-output-db">Download</a>
+                
+                    <span id="download-ouput-button-help" class="help-button hidden" data-rel="popover" data-trigger="hover" data-placement="right" 
+                      data-content="Download updated sqlite database file" title="Download Sqlite file">?</span>
+                  
+                </div>
             </div>
      
            
