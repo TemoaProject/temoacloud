@@ -24,7 +24,7 @@ def make_excel(ifile, ofile, scenario):
 	header = ['Technologies', ]
 	header_emiss = []
 	header_v = ['Technologies', 'Output Name', 'Vintage', 'Cost']
-	tables = {"Output_VFlow_Out" : ["Activity", "vflow_out"], "Output_Capacity" : ["Capacity", "capacity"], "Output_Emissions" : ["Emissions", "emissions"], "Output_Costs" : ["Costs", "output_cost"]}
+	tables = {"Output_VFlow_Out" : ["Activity", "vflow_out"], "Output_CapacityByPeriodAndTech" : ["Capacity", "capacity"], "Output_Emissions" : ["Emissions", "emissions"], "Output_Costs" : ["Costs", "output_cost"]}
 
 	
 	if ifile is None :
@@ -166,7 +166,7 @@ def make_excel(ifile, ofile, scenario):
 					flag2 = '2'
 				elif (a is "Output_Costs" and flag2 is '2') or (a is "Output_Emissions" and flag1 is '2'):
 					pass
-				else:# a is not "Output_V_Capacity":
+				elif a is not "Output_V_Capacity":
 					for col in range(0, len(header)) :
 						sheet[i].write(row, col, header[col], ostyle_header)
 						sheet[i].col(col).width_in_pixels = 3300

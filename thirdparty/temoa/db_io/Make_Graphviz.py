@@ -129,18 +129,18 @@ def calc_intermediates (ifile):
 	
 	for x,y in g_activeCapacity_tv:
 		V_Capacity[x,y] = 0
-		for row in cur.execute("SELECT capacity FROM V_Capacity WHERE tech is '"+x+"' and vintage is '"+str(y)+"'"):
+		for row in cur.execute("SELECT capacity FROM Output_V_Capacity WHERE tech is '"+x+"' and vintage is '"+str(y)+"'"):
 			V_Capacity[x,y] = row[0]
 
 ###########FIXME########################################
 	for x,y in g_activeCapacityAvailable_pt:
 		V_CapacityAvailableByPeriodAndTech[x,y] = 0
-		for row in cur.execute("SELECT capacity FROM Output_Capacity WHERE t_periods is '"+str(x)+"' and tech is '"+y+"'"):
+		for row in cur.execute("SELECT capacity FROM Output_CapacityByPeriodAndTech WHERE t_periods is '"+str(x)+"' and tech is '"+y+"'"):
 			V_CapacityAvailableByPeriodAndTech[x,y] = row[0]
-	
+
 	for x,y,z in g_activeActivity_ptv:
 		V_ActivityByPeriodAndProcess[x,y,z] = 0
-		for row in cur.execute("SELECT activity FROM V_ActivityByPeriodAndProcess WHERE t_periods is '"+str(x)+"' and tech is '"+y+"' and vintage is '"+str(z)+"'"):
+		for row in cur.execute("SELECT SUM(vflow_out)activity FROM Output_VFlow_Out WHERE t_periods is '"+str(x)+"' and tech is '"+y+"' and vintage is '"+str(z)+"'"):
 			V_ActivityByPeriodAndProcess[x,y,z] = row[0]
 	
 	for a,b,c,d,e,f,g in g_activeFlow_psditvo:
