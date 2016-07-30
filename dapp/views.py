@@ -43,6 +43,7 @@ def runModel(request):
   result = True
   generatedfolderpath = ''
   zip_path = ''
+  outputFilename = request.POST.get("outputdatafilename")
   
   try:
     #This function will handle 
@@ -53,7 +54,7 @@ def runModel(request):
     #  raise "Error detected"
     zip_path = ""
     
-    if not request.POST.get("outputdatafilename"):
+    if outputFilename:
       random = str(uuid.uuid4().get_hex().upper()[0:6])
       output_dirname = 'db_io/db_io_' + random 
       #print "Zipping: " + settings.BASE_DIR + "/" + generatedfolderpath + " | " + output_dirname
