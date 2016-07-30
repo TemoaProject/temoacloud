@@ -1961,8 +1961,6 @@ def parse_args ( ):
 	
 	import argparse, platform, sys
 
-	
-	
 
 	# used for some error messages below.
 	red_bold = cyan_bold = reset = ''
@@ -2066,7 +2064,7 @@ def parse_args ( ):
 	  type=float)
 
 	options = parser.parse_args()
-	print options
+	#print options
 	#Namespace(config='config_sample', dot_dat=[], eciu=None, fix_variables=None, generateSolverLP=False, how_to_cite=False, keepPyomoLP=False, mga=None, solver='mpec_nlp', version=False)
 
 	# Use the Temoa configuration file to overwrite Kevin's argument parser
@@ -2074,10 +2072,8 @@ def parse_args ( ):
 		try:
 			temoa_config = TemoaConfig(d_solver=default_solver)
 			temoa_config.build(config=options.config)
-			#SE.write(repr(temoa_config))
+			SE.write(repr(temoa_config))
 			options = temoa_config
-			#print "GGGGGGG"
-			#print options
 			SE.write('\nPlease press enter to continue or Ctrl+C to quit.\n')
 			#raw_input() # Give the user a chance to confirm input
 		except KeyboardInterrupt:
@@ -2136,19 +2132,37 @@ def parse_args ( ):
 	SE.write('Notice: Using the {} solver interface.\n'.format( s_choice ))
 	SE.flush()
 	
-	#print "TEST"
-	#print options
 	
 	raw_input() # Give the user a chance to confirm input
 
 	return options
 
 
-def temoa_solve ( model, config_filename ):
-	from sys import argv, version_info, exit
+def temoa_solve_ui ( model, config_filename ):
+    
+	available_solvers, default_solver = get_solvers()
+
+	temoa_config = TemoaConfig(d_solver=default_solver)
+	temoa_config.build(config=config_filename)
+	options = temoa_config
+
+	run_solve(model, options)
+
+
+def temoa_solve ( model ):
+	
 	from argparse import Namespace
 
+	options = parse_args()
 
+	run_solve(model,options)
+
+	
+
+	
+
+def run_solve(model,options):
+	from sys import argv, version_info, exit
 	if version_info < (2, 7):
 		msg = ("Temoa requires Python v2.7 to run.\n\nIf you've "
 		  "installed Coopr with Python 2.6 or less, you'll need to reinstall "
@@ -2156,23 +2170,6 @@ def temoa_solve ( model, config_filename ):
 		  'executable.')
 		raise SystemExit( msg )
 
-	
-	#options = parse_args()
-	
-	#options = Namespace(config='config_sample', dot_dat=[], eciu=None, fix_variables=None, generateSolverLP=False, how_to_cite=False, keepPyomoLP=False, mga=None, solver='mpec_nlp', version=False)
-	
-	available_solvers, default_solver = get_solvers()
-	
-	temoa_config = TemoaConfig(d_solver=default_solver)
-	temoa_config.build(config=config_filename)
-	#SE.write(repr(temoa_config))
-	options = temoa_config
-
-
-	
-	#print "BIG"
-	print options
-	#exit()
 
 	from pyomo.opt import SolverFactory
 

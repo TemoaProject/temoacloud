@@ -107,7 +107,7 @@ def run_model(request):
     
     filename = create_config(values)
   
-    data = temoa_model.runModel(filename)
+    data = temoa_model.runModelUI(filename)
     
     
     #Remove this temp config file

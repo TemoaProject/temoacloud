@@ -351,19 +351,29 @@ def temoa_create_model ( name='The Temoa Energy System Model' ):
     return M
 
 
-def runModel(config_filename):
-  
-  #read config
+
+def runModelUI(config_filename):
   
   model = temoa_create_model()
   
   from temoa_lib import temoa_solve
-  temoa_solve( model , config_filename )
+  temoa_solve_ui( model , config_filename )
+  
+
+def runModel():
+  
+  #read config
+  model = temoa_create_model()
+  
+  from temoa_lib import temoa_solve
+  temoa_solve( model )
 
 
 
-if '__main__' == __name__:
-  runModel('/home/yash/Projects/sam/dapp/uploads/config_temp/config_sample')
+#if '__main__' == __name__:
+#  runModel('/home/yash/Projects/sam/dapp/uploads/config_temp/config_sample')
+
+  
   ##default temoa_create_model function arg is 'name'
   #model = temoa_create_model()
 #
