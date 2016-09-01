@@ -1309,7 +1309,7 @@ def MGA ( model, optimizer, options, epsilon=1e-6 ):
 	else:
 		SE.write( '\r---------- Not solving: no available solver\n' )
 		return
-
+		
 def solve_perfect_foresight ( model, optimizer, options ):
 	from time import clock
 	import sys, os, gc
@@ -1320,12 +1320,16 @@ def solve_perfect_foresight ( model, optimizer, options ):
 
 	opt = optimizer              # for us lazy programmer types
 	dot_dats = options.dot_dat
+	txt_file = open("db_io"+os.sep+"Output.txt", "w")
 
+#	txt_file.close()
 	if options.generateSolverLP:
 		opt.options.wlp = path.basename( dot_dats[0] )[:-4] + '.lp'
 		SE.write('\nSolver will write file: {}\n\n'.format( opt.options.wlp ))
+		txt_file.write('\nSolver will write file: {}\n\n'.format( opt.options.wlp ))
 
 	SE.write( '[        ] Reading data files.'); SE.flush()
+	txt_file.write( '[        ] Reading data files.'); txt_file.flush()
 	# Recreate the pyomo command's ability to specify multiple "dot dat" files
 	# on the command line
 	begin = clock()
@@ -1338,13 +1342,17 @@ def solve_perfect_foresight ( model, optimizer, options ):
 			raise TemoaValidationError( msg.format( fname ))
 		modeldata.load( filename=fname )
 	SE.write( '\r[%8.2f\n' % duration() )
+	txt_file.write( '\r[%8.2f\n' % duration() )
 
 	SE.write( '[        ] Creating Temoa model instance.'); SE.flush()
+	txt_file.write( '[        ] Creating Temoa model instance.'); txt_file.flush()
 	instance = model.create_instance( modeldata )
 	SE.write( '\r[%8.2f\n' % duration() )
+	txt_file.write( '\r[%8.2f\n' % duration() )
 
 	if options.fix_variables:
 		SE.write( '[        ] Fixing supplied variables.'); SE.flush()
+		txt_file.write( '[        ] Fixing supplied variables.'); txt_file.flush()
 		import re
 
 		# Assumption: All variables are indexed
@@ -1408,32 +1416,42 @@ def solve_perfect_foresight ( model, optimizer, options ):
 
 		SE.write( '\r[%8.2f\n' % duration() )
 		SE.write( '[        ] Preprocessing fixed variables.'); SE.flush()
+		txt_file.write( '\r[%8.2f\n' % duration() )
+		txt_file.write( '[        ] Preprocessing fixed variables.'); txt_file.flush()
 		instance.preprocess()
 		SE.write( '\r[%8.2f\n' % duration() )
+		txt_file.write( '\r[%8.2f\n' % duration() )
 
 	# Now do the solve and ...
 	SE.write( '[        ] Solving.'); SE.flush()
+	txt_file.write( '[        ] Solving.'); txt_file.flush()
 	if opt:
 		result = opt.solve( instance , 
 							keepfiles=options.keepPyomoLP, 
 							symbolic_solver_labels=options.keepPyomoLP )
 		SE.write( '\r[%8.2f\n' % duration() )
+		txt_file.write( '\r[%8.2f\n' % duration() )
 
 		# return signal handlers to defaults, again
 		signal(SIGINT, default_int_handler)
 
 	else:
 		SE.write( '\r---------- Not solving: no available solver\n' )
+		txt_file.write( '\r---------- Not solving: no available solver\n' )
 		return
 
 	# ... print the easier-to-read/parse format
 	msg = '[        ] Calculating reporting variables and formatting results.'
 	SE.write( msg ); SE.flush()
+	txt_file.write( msg ); txt_file.flush()
 	instance.solutions.store_to(result)
 	formatted_results = pformat_results( instance, result, options )
 	SE.write( '\r[%8.2f\n' % duration() )
+	txt_file.write( '\r[%8.2f\n' % duration() )
 
 	SO.write( formatted_results.getvalue() )
+	txt_file.write( formatted_results.getvalue() )
+	txt_file.close()
 
 def solve_true_cost_of_guessing ( optimizer, options, epsilon=1e-6 ):
 	import multiprocessing as MP, os, cPickle as pickle
