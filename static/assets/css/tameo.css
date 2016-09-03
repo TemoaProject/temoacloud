@@ -130,3 +130,13 @@
     width: 70%;
     height: 800px;
 }
+
+.tabcontainer
+{
+	margin-left: 12px;
+}
+
+.mini-height
+{
+	min-height: 400px;
+}
