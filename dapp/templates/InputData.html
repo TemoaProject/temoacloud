@@ -141,39 +141,39 @@
             <div class="tabcontainer">
 
 
-{% if mode == 'output' %}
+
 
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
+    
+    {% if mode == 'output' %}
+
     <li role="presentation" class="active"><a href="#outputtab" aria-controls="home" role="tab" data-toggle="tab">Output Tab</a></li>
-    <li role="presentation">
-    <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a>
-    <span>x</span>
-    </li>
-    <li role="presentation">
-    <a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a>
-    <span>x</span>
-    </li>
-    <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
-    <li><a href="#" class="add-contact">+ Add Contact</a>
-        </li>
+    
+    {% endif %}
+
   </ul>
+    
 
   <!-- Tab panes -->
   <div class="tab-content">
+    
+    {% if mode == 'output' %}
+
     <div role="tabpanel" class="tab-pane active mini-height" id="outputtab">
-        <a href="#closetab">Close</a>
-    <h1>Output Result</h1>
+        
+    
+    <textarea id="outputarea" readonly="readonly" class="form-control mini-height "></textarea>
 
     </div>
-    <div role="tabpanel" class="tab-pane mini-height" id="profile">... PROFILE   </div>
-    <div role="tabpanel" class="tab-pane mini-height" id="messages">... MEss</div>
-    <div role="tabpanel" class="tab-pane mini-height" id="settings">...SETTT</div>
+    
+    {% endif %}
+    
   </div>
 
 </div>
 
-{% endif %}
+
 
 
 

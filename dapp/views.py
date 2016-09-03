@@ -179,8 +179,17 @@ def runInput(request):
   
   zip_file = mode + "/" + folder + "_" + random + ".zip"
 
-    
-  return JsonResponse( {"error" : error, "filename" : imagepath , "zip_path": zip_file, "folder" : folder + "_" + random , "mode" : mode , } )
+  output = "Get content here Cool"
+
+  return JsonResponse( 
+        {
+          "error" : error, 
+          "filename" : imagepath , 
+          "zip_path": zip_file, 
+          "folder" : folder + "_" + random , 
+          "mode" : mode , 
+          "output" : output
+          } )
     
     
   

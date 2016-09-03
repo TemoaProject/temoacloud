@@ -22,13 +22,38 @@ function populateFileList(mode){
 }
 
 
+function addTab(tabcontent)
+{
+
+    var id = $(".nav-tabs").children().length + 1; //think about it ;)
 
 
-function displayNetworkDiagram(mode_folder, image_filename) {
+    var tabId = 'result_' + id;
+    
+    $(".nav-tabs").append('<li><a href="#result_' + id + '">Generated Result ' + id +'</a> <span> x </span></li>');
+    
+    $('.tab-content')
+    .append('<div class="tab-pane" id="' + tabId + '"> ' + tabcontent + '</div>');
+    
+    $('.nav-tabs li:nth-child(' + id + ') a').click();
+}
+
+
+
+function displayNetworkDiagram(mode_folder, image_filename, output) {
 
     //file is inside result/ folder but due to static django we have to say url /static :(  ..enjoy :)
     var imgPath = "/static/" + mode_folder + "/" + image_filename + "?" + new Date().getTime(); ;
-    $('#networkDiagram').html('<iframe class="result-frame" src="' + imgPath + '" width="800" alt="Output"></iframe> ');
+    
+    var tabcontent = '<iframe class="result-frame" src="' + imgPath + '" width="800" alt="Output"></iframe> ';
+
+    addTab(tabcontent);
+
+    $("#outputarea").val(output);
+
+   
+
+    //$('#networkDiagram').html('<iframe class="result-frame" src="' + imgPath + '" width="800" alt="Output"></iframe> ');
 }
 
 
@@ -124,7 +149,7 @@ function initForm(mode) {
             }
 
 
-            displayNetworkDiagram(data.mode, data.filename );
+            displayNetworkDiagram(data.mode, data.filename, data.output );
 
             //Make download button ready
             $(".spinner").addClass("invisible");

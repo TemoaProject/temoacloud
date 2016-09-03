@@ -17,18 +17,20 @@ $(".nav-tabs")
     });
 
 
-$('.add-contact').click(function (e) 
-{
-    e.preventDefault();
-    
-    var id = $(".nav-tabs").children().length; //think about it ;)
-    var tabId = 'contact_' + id;
-    
-    $(this).closest('li').before('<li><a href="#contact_' + id + '">New Tab</a> <span> x </span></li>');
-    
-    $('.tab-content')
-    .append('<div class="tab-pane" id="' + tabId + '">Contact Form: New Contact ' + id + '</div>');
-    
-    $('.nav-tabs li:nth-child(' + id + ') a').click();
 
-});
+
+// $('.add-contact').click(function (e) 
+// {
+//     e.preventDefault();
+    
+//     var id = $(".nav-tabs").children().length; //think about it ;)
+//     var tabId = 'contact_' + id;
+    
+//     $(this).closest('li').before('<li><a href="#contact_' + id + '">New Tab</a> <span> x </span></li>');
+    
+//     $('.tab-content')
+//     .append('<div class="tab-pane" id="' + tabId + '">Contact Form: New Contact ' + id + '</div>');
+    
+//     $('.nav-tabs li:nth-child(' + id + ') a').click();
+
+// });

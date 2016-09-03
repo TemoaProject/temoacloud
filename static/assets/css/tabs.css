@@ -15,3 +15,20 @@
 .nav-tabs > li:hover > span {
     display: inline-block;
 }
+
+#outputarea
+{
+	margin: 15px 0 25px 10px;
+	width: 98%;
+}
+
+.tabcontainer
+{
+	margin-left: 12px;
+	width: 98%;
+}
+
+.mini-height
+{
+	min-height: 400px;
+}
