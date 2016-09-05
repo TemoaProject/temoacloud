@@ -1318,141 +1318,148 @@ def solve_perfect_foresight ( model, optimizer, options ):
 
 	from pformat_results import pformat_results
 
-	opt = optimizer              # for us lazy programmer types
-	dot_dats = options.dot_dat
-	txt_file = open("db_io"+os.sep+"Output.txt", "w")
+	try:
+	
+		opt = optimizer              # for us lazy programmer types
+		dot_dats = options.dot_dat
+		txt_file = open("db_io"+os.sep+"Output.txt", "w")
 
-#	txt_file.close()
-	if options.generateSolverLP:
-		opt.options.wlp = path.basename( dot_dats[0] )[:-4] + '.lp'
-		SE.write('\nSolver will write file: {}\n\n'.format( opt.options.wlp ))
-		txt_file.write('\nSolver will write file: {}\n\n'.format( opt.options.wlp ))
+		if options.generateSolverLP:
+			opt.options.wlp = path.basename( dot_dats[0] )[:-4] + '.lp'
+			SE.write('\nSolver will write file: {}\n\n'.format( opt.options.wlp ))
+			txt_file.write('\nSolver will write file: {}\n\n'.format( opt.options.wlp ))
 
-	SE.write( '[        ] Reading data files.'); SE.flush()
-	txt_file.write( '[        ] Reading data files.'); txt_file.flush()
-	# Recreate the pyomo command's ability to specify multiple "dot dat" files
-	# on the command line
-	begin = clock()
-	duration = lambda: clock() - begin
+		SE.write( '[        ] Reading data files.'); SE.flush()
+		txt_file.write( '[        ] Reading data files.'); txt_file.flush()
+		# Recreate the pyomo command's ability to specify multiple "dot dat" files
+		# on the command line
+		begin = clock()
+		duration = lambda: clock() - begin
 
-	modeldata = DataPortal( model=model )
-	for fname in dot_dats:
-		if fname[-4:] != '.dat':
-			msg = "\n\nExpecting a dot dat (e.g., data.dat) file, found '{}'\n"
-			raise TemoaValidationError( msg.format( fname ))
-		modeldata.load( filename=fname )
-	SE.write( '\r[%8.2f\n' % duration() )
-	txt_file.write( '\r[%8.2f\n' % duration() )
-
-	SE.write( '[        ] Creating Temoa model instance.'); SE.flush()
-	txt_file.write( '[        ] Creating Temoa model instance.'); txt_file.flush()
-	instance = model.create_instance( modeldata )
-	SE.write( '\r[%8.2f\n' % duration() )
-	txt_file.write( '\r[%8.2f\n' % duration() )
-
-	if options.fix_variables:
-		SE.write( '[        ] Fixing supplied variables.'); SE.flush()
-		txt_file.write( '[        ] Fixing supplied variables.'); txt_file.flush()
-		import re
-
-		# Assumption: All variables are indexed
-		# We accept \S+ instead of the more precise (\d+(?:\.\d+)?) because we
-		# want to be helpful in case of a user typo.
-		var_data_re = re.compile( r'^ *(\S+) +(V_\w+)\[(\S+)\]$' )
-		int_re = re.compile( r'^\d+$' )
-
-		with open( options.fix_variables, 'rb' ) as f:
-			for lineno, line in enumerate( f, 1 ):    # humans think 1-based
-				match = var_data_re.match( line )
-
-				# We ignore (and thereby allow) lines that don't match the Temoa
-				# value variable[index] per line output.  This enables folks to
-				# comment and uncomment lines if they'd like.
-				if not match: continue
-
-				try:
-					value, vgroup, vindex = match.groups()
-					vindex = vindex.split(',')
-					value = float( value )
-				except ValueError as ve:
-					msg = '\nLine {:d}: Unable to parse value for "{}{}" ({})\n'
-					raise TemoaValidationError( msg.format(
-					  lineno, vgroup, vindex, value ))
-
-				for i, index in enumerate( vindex ):
-					# if index is an integer, convert it so it matches indices
-					# Problem: if modeler has used integer values for indices
-					# other than period or vintage.
-					if int_re.match( index ):
-						vindex[ i ] = int( index )
-
-				try:
-					m_var = getattr( instance, vgroup )[ tuple(vindex) ]
-					m_var.fixed = True
-					m_var.set_value( value )
-
-				except AttributeError as ae:
-					if "'AbstractModel' object has no attribute " in str(ae):
-						# This could be so much cleaner if Coopr had Coopr-specific
-						# error classes.  Sigh.
-
-						msg = 'Line {:d}: Model does not have a variable named "{}".'
-						msg = msg.format( lineno, vgroup )
-						raise TemoaObjectNotFoundError( msg )
-
-					raise
-
-				except KeyError as ke:
-					if 'Error accessing indexed component' in str(ke):
-						# This could be so much cleaner if Coopr had Coopr-specific
-						# error classes.  Sigh.
-
-						msg = 'Line {:d}: Variable "{}" has no index "{}".'
-						vindex = str( tuple(vindex) )
-						msg = msg.format( lineno, vgroup, vindex )
-						raise TemoaKeyError( msg )
-
-					raise
-
-		SE.write( '\r[%8.2f\n' % duration() )
-		SE.write( '[        ] Preprocessing fixed variables.'); SE.flush()
-		txt_file.write( '\r[%8.2f\n' % duration() )
-		txt_file.write( '[        ] Preprocessing fixed variables.'); txt_file.flush()
-		instance.preprocess()
+		modeldata = DataPortal( model=model )
+		for fname in dot_dats:
+			if fname[-4:] != '.dat':
+				msg = "\n\nExpecting a dot dat (e.g., data.dat) file, found '{}'\n"
+				raise TemoaValidationError( msg.format( fname ))
+			modeldata.load( filename=fname )
 		SE.write( '\r[%8.2f\n' % duration() )
 		txt_file.write( '\r[%8.2f\n' % duration() )
 
-	# Now do the solve and ...
-	SE.write( '[        ] Solving.'); SE.flush()
-	txt_file.write( '[        ] Solving.'); txt_file.flush()
-	if opt:
-		result = opt.solve( instance , 
-							keepfiles=options.keepPyomoLP, 
-							symbolic_solver_labels=options.keepPyomoLP )
+		SE.write( '[        ] Creating Temoa model instance.'); SE.flush()
+		txt_file.write( '[        ] Creating Temoa model instance.'); txt_file.flush()
+		instance = model.create_instance( modeldata )
 		SE.write( '\r[%8.2f\n' % duration() )
 		txt_file.write( '\r[%8.2f\n' % duration() )
 
-		# return signal handlers to defaults, again
-		signal(SIGINT, default_int_handler)
+		if options.fix_variables:
+			SE.write( '[        ] Fixing supplied variables.'); SE.flush()
+			txt_file.write( '[        ] Fixing supplied variables.'); txt_file.flush()
+			import re
 
-	else:
-		SE.write( '\r---------- Not solving: no available solver\n' )
-		txt_file.write( '\r---------- Not solving: no available solver\n' )
-		return
+			# Assumption: All variables are indexed
+			# We accept \S+ instead of the more precise (\d+(?:\.\d+)?) because we
+			# want to be helpful in case of a user typo.
+			var_data_re = re.compile( r'^ *(\S+) +(V_\w+)\[(\S+)\]$' )
+			int_re = re.compile( r'^\d+$' )
 
-	# ... print the easier-to-read/parse format
-	msg = '[        ] Calculating reporting variables and formatting results.'
-	SE.write( msg ); SE.flush()
-	txt_file.write( msg ); txt_file.flush()
-	instance.solutions.store_to(result)
-	formatted_results = pformat_results( instance, result, options )
-	SE.write( '\r[%8.2f\n' % duration() )
-	txt_file.write( '\r[%8.2f\n' % duration() )
+			with open( options.fix_variables, 'rb' ) as f:
+				for lineno, line in enumerate( f, 1 ):    # humans think 1-based
+					match = var_data_re.match( line )
 
-	SO.write( formatted_results.getvalue() )
-	txt_file.write( formatted_results.getvalue() )
-	txt_file.close()
+					# We ignore (and thereby allow) lines that don't match the Temoa
+					# value variable[index] per line output.  This enables folks to
+					# comment and uncomment lines if they'd like.
+					if not match: continue
 
+					try:
+						value, vgroup, vindex = match.groups()
+						vindex = vindex.split(',')
+						value = float( value )
+					except ValueError as ve:
+						msg = '\nLine {:d}: Unable to parse value for "{}{}" ({})\n'
+						raise TemoaValidationError( msg.format(
+						  lineno, vgroup, vindex, value ))
+
+					for i, index in enumerate( vindex ):
+						# if index is an integer, convert it so it matches indices
+						# Problem: if modeler has used integer values for indices
+						# other than period or vintage.
+						if int_re.match( index ):
+							vindex[ i ] = int( index )
+
+					try:
+						m_var = getattr( instance, vgroup )[ tuple(vindex) ]
+						m_var.fixed = True
+						m_var.set_value( value )
+
+					except AttributeError as ae:
+						if "'AbstractModel' object has no attribute " in str(ae):
+							# This could be so much cleaner if Coopr had Coopr-specific
+							# error classes.  Sigh.
+
+							msg = 'Line {:d}: Model does not have a variable named "{}".'
+							msg = msg.format( lineno, vgroup )
+							raise TemoaObjectNotFoundError( msg )
+
+						raise
+
+					except KeyError as ke:
+						if 'Error accessing indexed component' in str(ke):
+							# This could be so much cleaner if Coopr had Coopr-specific
+							# error classes.  Sigh.
+
+							msg = 'Line {:d}: Variable "{}" has no index "{}".'
+							vindex = str( tuple(vindex) )
+							msg = msg.format( lineno, vgroup, vindex )
+							raise TemoaKeyError( msg )
+
+						raise
+
+			SE.write( '\r[%8.2f\n' % duration() )
+			SE.write( '[        ] Preprocessing fixed variables.'); SE.flush()
+			txt_file.write( '\r[%8.2f\n' % duration() )
+			txt_file.write( '[        ] Preprocessing fixed variables.'); txt_file.flush()
+			instance.preprocess()
+			SE.write( '\r[%8.2f\n' % duration() )
+			txt_file.write( '\r[%8.2f\n' % duration() )
+
+		# Now do the solve and ...
+		SE.write( '[        ] Solving.'); SE.flush()
+		txt_file.write( '[        ] Solving.'); txt_file.flush()
+		if opt:
+			result = opt.solve( instance , 
+								keepfiles=options.keepPyomoLP, 
+								symbolic_solver_labels=options.keepPyomoLP )
+			SE.write( '\r[%8.2f\n' % duration() )
+			txt_file.write( '\r[%8.2f\n' % duration() )
+
+			# return signal handlers to defaults, again
+			signal(SIGINT, default_int_handler)
+
+		else:
+			SE.write( '\r---------- Not solving: no available solver\n' )
+			txt_file.write( '\r---------- Not solving: no available solver\n' )
+			return
+
+		# ... print the easier-to-read/parse format
+		msg = '[        ] Calculating reporting variables and formatting results.'
+		SE.write( msg ); SE.flush()
+		txt_file.write( msg ); txt_file.flush()
+		instance.solutions.store_to(result)
+		formatted_results = pformat_results( instance, result, options )
+		SE.write( '\r[%8.2f\n' % duration() )
+		txt_file.write( '\r[%8.2f\n' % duration() )
+
+		SO.write( formatted_results.getvalue() )
+		txt_file.write( formatted_results.getvalue() )
+		txt_file.close()
+	except BaseException as model_exc:
+		SE.write("exception found in solve_perfect_foresight\n")
+		txt_file.write("exception found in solve_perfect_foresight\n")
+		SE.write(str(model_exc))
+		txt_file.write(str(model_exc))
+		txt_file.close()
+		
 def solve_true_cost_of_guessing ( optimizer, options, epsilon=1e-6 ):
 	import multiprocessing as MP, os, cPickle as pickle
 
