@@ -15,6 +15,7 @@ import json
 import os
 import uuid 
 import shutil
+from datetime import datetime
 
 #Custom / Thirdparty
 from thirdparty import test
@@ -45,27 +46,27 @@ def runModel(request):
   zip_path = ''
   outputFilename = request.POST.get("outputdatafilename")
   
-  try:
+  #try:
     #This function will handle 
     #TODO try catch handling
-    generatedfolderpath = run_model(request)
+  generatedfolderpath = run_model(request)
+  
+  #if not generatedfolderpath:
+  #  raise "Error detected"
+  zip_path = ""
+  
+  if outputFilename:
+    random = str(uuid.uuid4().get_hex().upper()[0:6])
+    output_dirname = 'db_io/db_io_' + random 
+    #print "Zipping: " + settings.BASE_DIR + "/" + generatedfolderpath + " | " + output_dirname
+    shutil.make_archive( 'result/' + output_dirname , 'zip', settings.BASE_DIR + "/" + generatedfolderpath)
     
-    #if not generatedfolderpath:
-    #  raise "Error detected"
-    zip_path = ""
-    
-    if outputFilename:
-      random = str(uuid.uuid4().get_hex().upper()[0:6])
-      output_dirname = 'db_io/db_io_' + random 
-      #print "Zipping: " + settings.BASE_DIR + "/" + generatedfolderpath + " | " + output_dirname
-      shutil.make_archive( 'result/' + output_dirname , 'zip', settings.BASE_DIR + "/" + generatedfolderpath)
-      
-      zip_path = output_dirname + ".zip"
+    zip_path = output_dirname + ".zip"
   
   
-  except:
-    msg = 'An error occured. Please try again.'
-    result = False
+  #except:
+  #  msg = 'An error occured. Please try again.'
+  #  result = False
   
   
   return JsonResponse( {"result" : result , "message" : msg , 'zip_path' : zip_path  } )
@@ -179,7 +180,17 @@ def runInput(request):
   
   zip_file = mode + "/" + folder + "_" + random + ".zip"
 
-  output = "Get content here Cool"
+
+  originalLogFile = "result/debug_logs/OutputLog"
+  archiveLogFile = "result/debug_logs/OutputLog__"+str(datetime.now().date()) + "__" +str(datetime.now().time())+".log"
+
+  file = open(originalLogFile, 'r')
+  output = file.read()
+
+  #Maintain archive of current log file
+  fileArch = open(archiveLogFile, "w")
+  fileArch.write(output)
+
 
   return JsonResponse( 
         {

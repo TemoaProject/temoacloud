@@ -28,7 +28,6 @@ from os import path, close as os_close
 from sys import argv, stderr as SE, stdout as SO
 from signal import signal, SIGINT, default_int_handler
 
-
 from pyomo.opt import SolverFactory as SF
 from temoa_config import TemoaConfig
 
@@ -1322,7 +1321,7 @@ def solve_perfect_foresight ( model, optimizer, options ):
 	
 		opt = optimizer              # for us lazy programmer types
 		dot_dats = options.dot_dat
-		txt_file = open("db_io"+os.sep+"Output.txt", "w")
+		txt_file = open("result/debug_logs/OutputLog.log", "w")
 
 		if options.generateSolverLP:
 			opt.options.wlp = path.basename( dot_dats[0] )[:-4] + '.lp'
