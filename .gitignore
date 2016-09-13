@@ -2,3 +2,4 @@
 /result/input/*
 /result/output/*
 /uploads/config_temp/*
+/result/debug_logs/OutputLog.log
