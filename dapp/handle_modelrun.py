@@ -49,7 +49,7 @@ def create_config(values):
   
   #print values
   
-  filename  =  settings.CONFIG_TEMP +"/config_ %s" % (uuid.uuid4())
+  filename  =  settings.CONFIG_TEMP +"/config_%s" % (uuid.uuid4())
   
   with open(filename, 'a') as config_file:
     for key, value in values.iteritems():
