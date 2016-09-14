@@ -229,7 +229,9 @@ function initForm() {
         $.post( url, $('form#model-run-form').serialize(), function(data) {
             
             
-            alert(data.message);
+            //alert(data.message);
+
+            $("#outputarea").val(data.output);
             
              //Make download button ready
 			   $(".spinner").addClass("invisible");

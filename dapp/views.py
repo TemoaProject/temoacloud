@@ -38,6 +38,24 @@ def outputData(request):
 def modelRun(request):
   return render_to_response('ModelRun.html', { 'title' : 'Model Run'} , context_instance=RequestContext(request))
 
+def _getLog():
+  originalLogFile = "result/debug_logs/OutputLog.log"
+  archiveLogFile = "result/debug_logs/OutputLog__"+str(datetime.now().date()) + "__" +str(datetime.now().time())+".log"
+
+  file = open(originalLogFile, 'r')
+
+  if not file:
+    return "Log not found or created"
+
+  output = file.read()
+
+  #Maintain archive of current log file
+  fileArch = open(archiveLogFile, "w")
+  fileArch.write(output)
+
+  return output
+
+
 def runModel(request):
   
   msg = 'Successfully generated'
@@ -69,7 +87,7 @@ def runModel(request):
   #  result = False
   
   
-  return JsonResponse( {"result" : result , "message" : msg , 'zip_path' : zip_path  } )
+  return JsonResponse( {"result" : result , "message" : msg , 'zip_path' : zip_path, "output" : _getLog()  } )
 
 
 def index(request):
@@ -181,15 +199,7 @@ def runInput(request):
   zip_file = mode + "/" + folder + "_" + random + ".zip"
 
 
-  originalLogFile = "result/debug_logs/OutputLog"
-  archiveLogFile = "result/debug_logs/OutputLog__"+str(datetime.now().date()) + "__" +str(datetime.now().time())+".log"
-
-  file = open(originalLogFile, 'r')
-  output = file.read()
-
-  #Maintain archive of current log file
-  fileArch = open(archiveLogFile, "w")
-  fileArch.write(output)
+  
 
 
   return JsonResponse( 
@@ -198,8 +208,7 @@ def runInput(request):
           "filename" : imagepath , 
           "zip_path": zip_file, 
           "folder" : folder + "_" + random , 
-          "mode" : mode , 
-          "output" : output
+          "mode" : mode 
           } )
     
     

@@ -40,7 +40,7 @@ function addTab(tabcontent)
 
 
 
-function displayNetworkDiagram(mode_folder, image_filename, output) {
+function displayNetworkDiagram(mode_folder, image_filename) {
 
     //file is inside result/ folder but due to static django we have to say url /static :(  ..enjoy :)
     var imgPath = "/static/" + mode_folder + "/" + image_filename + "?" + new Date().getTime(); ;
@@ -49,7 +49,7 @@ function displayNetworkDiagram(mode_folder, image_filename, output) {
 
     addTab(tabcontent);
 
-    $("#outputarea").val(output);
+    
 
    
 
@@ -149,7 +149,7 @@ function initForm(mode) {
             }
 
 
-            displayNetworkDiagram(data.mode, data.filename, data.output );
+            displayNetworkDiagram(data.mode, data.filename );
 
             //Make download button ready
             $(".spinner").addClass("invisible");
