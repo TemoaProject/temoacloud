@@ -190,6 +190,7 @@ class TemoaConfig( object ):
 		'keep_pyomo_lp_file',
 		'eciu',
 		'saveEXCEL',
+		'saveTEXTFILE',
 		'mgaslack',
 		'mgaiter',
 		'mgaweight'
@@ -209,6 +210,7 @@ class TemoaConfig( object ):
 		self.output           = None # May update to a list if multiple output is required.
 		self.scenario         = None
 		self.saveEXCEL        = False
+		self.saveTEXTFILE     = True
 		self.how_to_cite      = None
 		self.version          = False
 		self.fix_variables    = None
@@ -279,6 +281,10 @@ class TemoaConfig( object ):
 	def t_saveEXCEL(self, t):
 		r'--saveEXCEL\b'
 		self.saveEXCEL = True
+	
+	def t_saveTEXTFILE(self, t):
+		r'--saveTEXTFILE\b'
+		self.saveTEXTFILE = True
 	
 	def t_how_to_cite(self, t):
 		r'--how_to_cite\b'
