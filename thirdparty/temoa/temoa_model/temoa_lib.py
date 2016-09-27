@@ -27,12 +27,14 @@ from operator import itemgetter as iget
 from os import path, close as os_close
 from sys import argv, stderr as SE, stdout as SO
 from signal import signal, SIGINT, default_int_handler
+from shutil import copyfile
 
 from pyomo.opt import SolverFactory as SF
 from temoa_config import TemoaConfig
 
 
 import errno, warnings
+import re as reg_exp
 
 import pyomo.environ
   # workaround for Coopr's brain dead signal handler
@@ -1321,7 +1323,7 @@ def solve_perfect_foresight ( model, optimizer, options ):
 	
 		opt = optimizer              # for us lazy programmer types
 		dot_dats = options.dot_dat
-		txt_file = open("result/debug_logs/OutputLog.log", "w")
+		txt_file = open("result"+os.sep+"debug_logs"+os.sep+"OutputLog.log", "w")
 
 		if options.generateSolverLP:
 			opt.options.wlp = path.basename( dot_dats[0] )[:-4] + '.lp'
@@ -1458,7 +1460,14 @@ def solve_perfect_foresight ( model, optimizer, options ):
 		SE.write(str(model_exc))
 		txt_file.write(str(model_exc))
 		txt_file.close()
-		
+
+	if options.saveTEXTFILE:
+		for inpu in options.dot_dat:
+			file_ty = reg_exp.search(r"\b(\w+)\.(\w+)\b", inpu)
+		new_dir = 'result'+os.sep+'db_io'+os.sep+file_ty.group(1)+'_'+options.scenario+'_model'
+		copyfile('result'+os.sep+'db_io'+os.sep+'debug_logs'+os.sep+'OutputLog.log', new_dir+os.sep+options.scenario+'_OutputLog.log')
+
+
 def solve_true_cost_of_guessing ( optimizer, options, epsilon=1e-6 ):
 	import multiprocessing as MP, os, cPickle as pickle
 
