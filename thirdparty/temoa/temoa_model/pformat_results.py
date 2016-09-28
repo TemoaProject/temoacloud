@@ -256,11 +256,20 @@ def pformat_results ( pyomo_instance, pyomo_result, options ):
 
 	if isinstance(options, TemoaConfig):	
 		if not options.output:
+			if options.saveTEXTFILE:
+				for inpu in options.dot_dat:
+					print inpu
+					file_ty = re.search(r"\b(\w+)\.(\w+)\b", inpu)
+				new_dir = 'result'+os.sep+'db_io'+os.sep+file_ty.group(1)+'_'+options.scenario+'_model'
+				if os.path.exists( new_dir ):
+					rmtree( new_dir )
+				os.mkdir(new_dir)
 			print "No Output File specified."
 			return output
 	
 		if not os.path.exists(options.output) :
 			print "Please put the "+options.output+" file in the right Directory"
+			return output
 		
 		con = sqlite3.connect(options.output)
 		cur = con.cursor()   # A database cursor enables traversal over DB records
