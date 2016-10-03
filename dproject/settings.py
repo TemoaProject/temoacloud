@@ -21,6 +21,7 @@ UPLOADED_DIR = BASE_DIR + '/uploads/uploaded/files/'
 
 CONFIG_TEMP = BASE_DIR + '/uploads/uploaded/config_temp/'
 
+RESULT_DIR = BASE_DIR + '/result/'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/

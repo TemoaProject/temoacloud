@@ -1,4 +1,5 @@
 from django.conf import settings
+import collections
 
 import uuid, os
 
@@ -74,13 +75,15 @@ def run_model(request):
   #need to create config with form post data
   if request.method == 'POST':
     
-    values = {}
+    values = collections.OrderedDict()
     
     inputfilename = request.POST.get("inputdatafilename", "")
     values['--input'] = settings.UPLOADED_DIR + inputfilename
     values['--output'] = settings.UPLOADED_DIR + request.POST.get("outputdatafilename", "")
     values["--scenario"] =request.POST.get("scenarioname", "")
     values["--solver"] =request.POST.get("solver", "")
+    values["--path_to_db_io"] =   settings.RESULT_DIR + "db_io"
+    values["--path_to_logs"]=     settings.RESULT_DIR + "debug_logs"
 
     runoption =request.POST.get("runoption", "")
     
@@ -97,7 +100,8 @@ def run_model(request):
       values['--saveEXCEL'] = ""
     
     #OPTION is missing
-    #if request.POST.get("createtextfileoption", ""):
+    if request.POST.get("createtextfileoption", ""):
+      values['--saveTEXTFILE'] = ""
     #  values['--generate_solver_text_file'] = ""
     
     if request.POST.get("generatelpfileoption", ""):
@@ -117,7 +121,7 @@ def run_model(request):
     
     
     #print "DATA"
-    generatedfolderpath = "result/db_io/" + os.path.splitext(inputfilename)[0] + "_" + values["--scenario"] + "_model"
+    generatedfolderpath =  settings.RESULT_DIR + "db_io/" + os.path.splitext(inputfilename)[0] + "_" + values["--scenario"] + "_model"
     
     print generatedfolderpath
     print runoption

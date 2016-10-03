@@ -39,8 +39,8 @@ def modelRun(request):
   return render_to_response('ModelRun.html', { 'title' : 'Model Run'} , context_instance=RequestContext(request))
 
 def _getLog():
-  originalLogFile = "result/debug_logs/OutputLog.log"
-  archiveLogFile = "result/debug_logs/OutputLog__"+str(datetime.now().date()) + "__" +str(datetime.now().time())+".log"
+  originalLogFile = settings.RESULT_DIR +  "debug_logs/OutputLog.log"
+  archiveLogFile = settings.RESULT_DIR + "debug_logs/OutputLog__"+str(datetime.now().date()) + "__" +str(datetime.now().time())+".log"
 
   file = open(originalLogFile, 'r')
 
@@ -77,7 +77,7 @@ def runModel(request):
     random = str(uuid.uuid4().get_hex().upper()[0:6])
     output_dirname = 'db_io/db_io_' + random 
     #print "Zipping: " + settings.BASE_DIR + "/" + generatedfolderpath + " | " + output_dirname
-    shutil.make_archive( 'result/' + output_dirname , 'zip', settings.BASE_DIR + "/" + generatedfolderpath)
+    shutil.make_archive( settings.RESULT_DIR + output_dirname , 'zip', generatedfolderpath)
     
     zip_path = output_dirname + ".zip"
   
@@ -144,7 +144,7 @@ def runInput(request):
   inputs = { 
             "-i" : settings.UPLOADED_DIR + filename , 
             "-f" : format,
-            "-o" : settings.BASE_DIR + "/result/" + mode
+            "-o" : settings.RESULT_DIR  + mode
   }
           
   if( colorscheme == "grey"):
