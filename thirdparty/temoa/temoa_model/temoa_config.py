@@ -193,6 +193,7 @@ class TemoaConfig( object ):
 		'keep_pyomo_lp_file',
 		'eciu',
 		'saveEXCEL',
+		'saveTEXTFILE',
 		'mgaslack',
 		'mgaiter',
 		'path_to_db_io',
@@ -214,6 +215,7 @@ class TemoaConfig( object ):
 		self.output           = None # May update to a list if multiple output is required.
 		self.scenario         = None
 		self.saveEXCEL        = False
+		self.saveTEXTFILE     = True
 		self.how_to_cite      = None
 		self.version          = False
 		self.fix_variables    = None
@@ -287,8 +289,6 @@ class TemoaConfig( object ):
 		r'--saveEXCEL\b'
 		self.saveEXCEL = True
 	
-<<<<<<< Updated upstream
-=======
 	def t_saveTEXTFILE(self, t):
 		r'--saveTEXTFILE\b'
 		self.saveTEXTFILE = True
@@ -301,7 +301,6 @@ class TemoaConfig( object ):
 		r'--path_to_logs(\s+|\=)[-\\\/\:\.\~\w\s]+\b'
 		self.path_to_logs = abspath(t.value.replace('=', ',').split(",")[1])
 	
->>>>>>> Stashed changes
 	def t_how_to_cite(self, t):
 		r'--how_to_cite\b'
 		self.how_to_cite = True

@@ -8,7 +8,7 @@
 # Input File (Mandatory). Usage: --input=<your_path_to_input_file>
 # Input can be a .db or .dat file
 # Both relative path and absolute path are accepted
---input=db_io/temoa_utopia.dat
+--input=db_io/temoa_utopia.sqlite
 
 # Output File (Mandatory). Usage: --output=<your_path_to_output_file>
 # The output file must be a existing .db file
