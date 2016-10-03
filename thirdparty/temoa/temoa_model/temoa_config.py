@@ -21,7 +21,10 @@ received this license file.  If not, see <http://www.gnu.org/licenses/>.
 
 from temoa_common import *
 
-from os.path import abspath, isfile, splitext
+from os.path import abspath, isfile, splitext, dirname
+from os import sep
+
+import re
 
 def db_2_dat(ifile, ofile, options):
 	# Adapted from DB_to_DAT.py
@@ -192,6 +195,8 @@ class TemoaConfig( object ):
 		'saveEXCEL',
 		'mgaslack',
 		'mgaiter',
+		'path_to_db_io',
+		'path_to_logs',
 		'mgaweight'
 	)
 	
@@ -224,6 +229,8 @@ class TemoaConfig( object ):
 		self.show_capacity    = False
 		self.graph_type       = 'separate_vintages'
 		self.use_splines      = False
+		self.path_to_db_io    = re.sub('temoa_model$', 'db_io', dirname(abspath(__file__)))# Path to where automated excel and text log folder will be save as output.
+		self.path_to_logs     = self.path_to_db_io+sep+"debug_logs" #Path to where debug logs will be generated for each run. By default in debug_logs folder in db_io.
 		
 		if 'd_solver' in kwargs.keys(): 
 			self.solver = kwargs['d_solver']
@@ -280,6 +287,21 @@ class TemoaConfig( object ):
 		r'--saveEXCEL\b'
 		self.saveEXCEL = True
 	
+<<<<<<< Updated upstream
+=======
+	def t_saveTEXTFILE(self, t):
+		r'--saveTEXTFILE\b'
+		self.saveTEXTFILE = True
+		
+	def t_path_to_db_io(self, t):
+		r'--path_to_db_io(\s+|\=)[-\\\/\:\.\~\w\ ]+\b'
+		self.path_to_db_io = abspath(t.value.replace('=', ',').split(",")[1])
+		
+	def t_path_to_logs(self, t):
+		r'--path_to_logs(\s+|\=)[-\\\/\:\.\~\w\s]+\b'
+		self.path_to_logs = abspath(t.value.replace('=', ',').split(",")[1])
+	
+>>>>>>> Stashed changes
 	def t_how_to_cite(self, t):
 		r'--how_to_cite\b'
 		self.how_to_cite = True

@@ -1316,12 +1316,21 @@ def solve_perfect_foresight ( model, optimizer, options ):
 	from pyomo.core import DataPortal
 
 	from pformat_results import pformat_results
-
+	
+	try:
+		txt_file = open(options.path_to_logs+os.sep+"OutputLog.log", "w")
+	except BaseException as io_exc:
+		SE.write("Log file cannot be opened. Please check path. Trying to find:\n"+options.path_to_logs+" folder\n")
+		txt_file = open("OutputLog.log", "w")
+	
 	try:
 	
 		opt = optimizer              # for us lazy programmer types
 		dot_dats = options.dot_dat
+<<<<<<< Updated upstream
 		txt_file = open("result/debug_logs/OutputLog.log", "w")
+=======
+>>>>>>> Stashed changes
 
 		if options.generateSolverLP:
 			opt.options.wlp = path.basename( dot_dats[0] )[:-4] + '.lp'
@@ -1459,6 +1468,14 @@ def solve_perfect_foresight ( model, optimizer, options ):
 		txt_file.write(str(model_exc))
 		txt_file.close()
 		
+<<<<<<< Updated upstream
+=======
+		#dirty fix. This used passed as parameter. - TODO - Suyash provide me one
+		new_dir = options.path_to_db_io+os.sep+file_ty.group(1)+'_'+options.scenario+'_model'
+		copyfile(options.path_to_logs+os.sep+'OutputLog.log', new_dir+os.sep+options.scenario+'_OutputLog.log')
+
+
+>>>>>>> Stashed changes
 def solve_true_cost_of_guessing ( optimizer, options, epsilon=1e-6 ):
 	import multiprocessing as MP, os, cPickle as pickle
 

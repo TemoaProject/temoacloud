@@ -253,9 +253,20 @@ def pformat_results ( pyomo_instance, pyomo_result, options ):
 			   "V_EmissionActivityByPeriodAndProcess" : "Output_Emissions", \
 			   "Objective"  : "Output_Objective", \
 			   "Costs"      : "Output_Costs" }
-
+	
 	if isinstance(options, TemoaConfig):	
 		if not options.output:
+<<<<<<< Updated upstream
+=======
+			if options.saveTEXTFILE:
+				for inpu in options.dot_dat:
+					print inpu
+					file_ty = re.search(r"\b(\w+)\.(\w+)\b", inpu)
+				new_dir = options.path_to_db_io+os.sep+file_ty.group(1)+'_'+options.scenario+'_model'
+				if os.path.exists( new_dir ):
+					rmtree( new_dir )
+				os.mkdir(new_dir)
+>>>>>>> Stashed changes
 			print "No Output File specified."
 			return output
 	
@@ -297,7 +308,11 @@ def pformat_results ( pyomo_instance, pyomo_result, options ):
 			for inpu in options.dot_dat:
 				print inpu
 				file_ty = re.search(r"\b(\w+)\.(\w+)\b", inpu)
+<<<<<<< Updated upstream
 			new_dir = 'result/db_io'+os.sep+file_ty.group(1)+'_'+options.scenario+'_model'
+=======
+			new_dir = options.path_to_db_io+os.sep+file_ty.group(1)+'_'+options.scenario+'_model'
+>>>>>>> Stashed changes
 			if os.path.exists( new_dir ):
 				rmtree( new_dir )
 			os.mkdir(new_dir)
