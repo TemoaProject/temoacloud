@@ -215,7 +215,7 @@ class TemoaConfig( object ):
 		self.output           = None # May update to a list if multiple output is required.
 		self.scenario         = None
 		self.saveEXCEL        = False
-		self.saveTEXTFILE     = True
+		self.saveTEXTFILE     = False
 		self.how_to_cite      = None
 		self.version          = False
 		self.fix_variables    = None

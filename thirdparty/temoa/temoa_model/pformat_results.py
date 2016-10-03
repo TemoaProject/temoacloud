@@ -300,7 +300,7 @@ def pformat_results ( pyomo_instance, pyomo_result, options ):
 									WHERE "+tables[table]+".tech = technologies.tech);")
 		con.commit()
 		con.close()			
-		import pdb;pdb.set_trace()
+		
 		if options.saveEXCEL or options.saveTEXTFILE:
 			for inpu in options.dot_dat:
 				print inpu
