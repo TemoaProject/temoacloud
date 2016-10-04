@@ -259,7 +259,7 @@ def pformat_results ( pyomo_instance, pyomo_result, options ):
 			if options.saveTEXTFILE:
 				for inpu in options.dot_dat:
 					print inpu
-					file_ty = re.search(r"\b(\w+)\.(\w+)\b", inpu)
+					file_ty = re.search(r"\b([\w-]+)\.(\w+)\b", inpu)
 				new_dir = options.path_to_db_io+os.sep+file_ty.group(1)+'_'+options.scenario+'_model'
 				if os.path.exists( new_dir ):
 					rmtree( new_dir )
@@ -304,14 +304,14 @@ def pformat_results ( pyomo_instance, pyomo_result, options ):
 		if options.saveEXCEL or options.saveTEXTFILE:
 			for inpu in options.dot_dat:
 				print inpu
-				file_ty = re.search(r"\b(\w+)\.(\w+)\b", inpu)
+				file_ty = re.search(r"\b([\w-]+)\.(\w+)\b", inpu)
 			new_dir = options.path_to_db_io+os.sep+file_ty.group(1)+'_'+options.scenario+'_model'
 			if os.path.exists( new_dir ):
 				rmtree( new_dir )
 			os.mkdir(new_dir)
 			
 			if options.saveEXCEL:
-				file_type = re.search(r"(\w+)\.(\w+)\b", options.output)
+				file_type = re.search(r"([\w-]+)\.(\w+)\b", options.output)
 				file_n = file_type.group(1)
 				from DB_to_Excel import make_excel
 				temp_scenario = set()
