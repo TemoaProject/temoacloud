@@ -298,7 +298,7 @@ class TemoaConfig( object ):
 		self.path_to_db_io = abspath(t.value.replace('=', ',').split(",")[1])
 		
 	def t_path_to_logs(self, t):
-		r'--path_to_logs(\s+|\=)[-\\\/\:\.\~\w\s]+\b'
+		r'--path_to_logs(\s+|\=)[-\\\/\:\.\~\w\ ]+\b'
 		self.path_to_logs = abspath(t.value.replace('=', ',').split(",")[1])
 	
 	def t_how_to_cite(self, t):
