@@ -13,5 +13,6 @@ urlpatterns = [
     url(r'^fileupload$', views.fileUpload, name='fileupload'),
     url(r'^runinput$', views.runInput, name='runinput'),
     url(r'^loadfilelist$', views.loadFileList, name='loadfilelist'),
-    url(r'^loadctlist$', views.loadCTList, name='loadctlist')
+    url(r'^loadctlist$', views.loadCTList, name='loadctlist'),
+    url(r'^dbquery/$', views.dbQuery, name='dbquery')
 ]

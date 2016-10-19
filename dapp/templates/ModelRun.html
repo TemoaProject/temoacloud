@@ -392,6 +392,7 @@
     
 
     <li role="presentation" class="active"><a href="#outputtab" aria-controls="home" role="tab" data-toggle="tab">Output Tab</a></li>
+    <li role="presentation" ><a href="#dbquerytab" aria-controls="home" role="tab" data-toggle="tab">DB Query</a></li>
     
 
 
@@ -407,6 +408,16 @@
         
     
     <textarea id="outputarea" readonly="readonly" class="form-control mini-height "></textarea>
+
+    </div>
+
+    <div role="tabpanel" class="tab-pane mini-height" id="dbquerytab">
+        
+    
+    <textarea id="querytextarea" class="form-control mini-height-query "></textarea>
+    <button id="rundbquery" class="btn btn-app btn-red">Run DB Query</button>
+    <div id="queryresult"></div>
+    <p>&nbsp;</p>
 
     </div>
     

@@ -23,6 +23,8 @@ from thirdparty.temoa.db_io import Make_Graphviz
 from handle_modelrun import run_model
 from thirdparty.temoa.temoa_model import get_comm_tech
 
+from thirdparty.temoa.db_io.db_query import get_flags
+
 def login(request):
   return render_to_response('login.html', context_instance=RequestContext(request))
 
@@ -211,7 +213,17 @@ def runInput(request):
           "mode" : mode 
           } )
     
-    
+ 
+def dbQuery(request):
+
+  inputs = {}
+
+  inputs["--query"] = request.POST['query']
+  inputs["--input"] = request.POST['input']
+
+  result = get_flags(inputs)
+
+  return  JsonResponse( {"result" : result })
   
 
 # Create your views here.
