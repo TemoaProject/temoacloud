@@ -27,7 +27,7 @@ from operator import itemgetter as iget
 from os import path, close as os_close
 from sys import argv, stderr as SE, stdout as SO
 from signal import signal, SIGINT, default_int_handler
-from shutil import copyfile
+from shutil import copyfile, move
 
 from pyomo.opt import SolverFactory as SF
 from temoa_config import TemoaConfig
@@ -1479,7 +1479,7 @@ def solve_perfect_foresight ( model, optimizer, options ):
 			file_ty = reg_exp.search(r"\b([\w-]+)\.(\w+)\b", inpu)
 		
 		new_dir = options.path_to_db_io+os.sep+file_ty.group(1)+'_'+options.scenario+'_model'
-		copyfile(opt.options.wlp, new_dir+os.sep+opt.options.wlp)
+		move(opt.options.wlp, new_dir+os.sep+opt.options.wlp)
 
 def solve_true_cost_of_guessing ( optimizer, options, epsilon=1e-6 ):
 	import multiprocessing as MP, os, cPickle as pickle
