@@ -1336,7 +1336,7 @@ def solve_perfect_foresight ( model, optimizer, options ):
 			txt_file.write('\nSolver will write file: {}\n\n'.format( opt.options.wlp ))
 
 		SE.write( '[        ] Reading data files.'); SE.flush()
-		txt_file.write( '[        ] Reading data files.'); txt_file.flush()
+		txt_file.write( 'Reading data files.')
 		# Recreate the pyomo command's ability to specify multiple "dot dat" files
 		# on the command line
 		begin = clock()
@@ -1348,18 +1348,18 @@ def solve_perfect_foresight ( model, optimizer, options ):
 				msg = "\n\nExpecting a dot dat (e.g., data.dat) file, found '{}'\n"
 				raise TemoaValidationError( msg.format( fname ))
 			modeldata.load( filename=fname )
-		SE.write( '\r[%8.2f\n' % duration() )
-		txt_file.write( '\r[%8.2f\n' % duration() )
+		SE.write( '\r[%8.2f]\n' % duration() )
+		txt_file.write( '[%8.2f]\n' % duration() )
 
 		SE.write( '[        ] Creating Temoa model instance.'); SE.flush()
-		txt_file.write( '[        ] Creating Temoa model instance.'); txt_file.flush()
+		txt_file.write( 'Creating Temoa model instance.')
 		instance = model.create_instance( modeldata )
 		SE.write( '\r[%8.2f\n' % duration() )
-		txt_file.write( '\r[%8.2f\n' % duration() )
+		txt_file.write( '[%8.2f]\n' % duration() )
 
 		if options.fix_variables:
 			SE.write( '[        ] Fixing supplied variables.'); SE.flush()
-			txt_file.write( '[        ] Fixing supplied variables.'); txt_file.flush()
+			txt_file.write( 'Fixing supplied variables.')
 			import re
 
 			# Assumption: All variables are indexed
@@ -1423,21 +1423,21 @@ def solve_perfect_foresight ( model, optimizer, options ):
 
 			SE.write( '\r[%8.2f\n' % duration() )
 			SE.write( '[        ] Preprocessing fixed variables.'); SE.flush()
-			txt_file.write( '\r[%8.2f\n' % duration() )
-			txt_file.write( '[        ] Preprocessing fixed variables.'); txt_file.flush()
+			txt_file.write( '[%8.2f]\n' % duration() )
+			txt_file.write( 'Preprocessing fixed variables.')
 			instance.preprocess()
 			SE.write( '\r[%8.2f\n' % duration() )
-			txt_file.write( '\r[%8.2f\n' % duration() )
+			txt_file.write( '[%8.2f]\n' % duration() )
 
 		# Now do the solve and ...
 		SE.write( '[        ] Solving.'); SE.flush()
-		txt_file.write( '[        ] Solving.'); txt_file.flush()
+		txt_file.write( 'Solving.')
 		if opt:
 			result = opt.solve( instance , 
 								keepfiles=options.keepPyomoLP, 
 								symbolic_solver_labels=options.keepPyomoLP )
 			SE.write( '\r[%8.2f\n' % duration() )
-			txt_file.write( '\r[%8.2f\n' % duration() )
+			txt_file.write( '[%8.2f]\n' % duration() )
 
 			# return signal handlers to defaults, again
 			signal(SIGINT, default_int_handler)
@@ -1450,11 +1450,11 @@ def solve_perfect_foresight ( model, optimizer, options ):
 		# ... print the easier-to-read/parse format
 		msg = '[        ] Calculating reporting variables and formatting results.'
 		SE.write( msg ); SE.flush()
-		txt_file.write( msg ); txt_file.flush()
+		txt_file.write( 'Calculating reporting variables and formatting results.')
 		instance.solutions.store_to(result)
 		formatted_results = pformat_results( instance, result, options )
 		SE.write( '\r[%8.2f\n' % duration() )
-		txt_file.write( '\r[%8.2f\n' % duration() )
+		txt_file.write( '[%8.2f]\n' % duration() )
 
 		SO.write( formatted_results.getvalue() )
 		txt_file.write( formatted_results.getvalue() )
