@@ -1474,6 +1474,12 @@ def solve_perfect_foresight ( model, optimizer, options ):
 		new_dir = options.path_to_db_io+os.sep+file_ty.group(1)+'_'+options.scenario+'_model'
 		copyfile(options.path_to_logs+os.sep+'OutputLog.log', new_dir+os.sep+options.scenario+'_OutputLog.log')
 
+	if options.generateSolverLP:
+		for inpu in options.dot_dat:
+			file_ty = reg_exp.search(r"\b([\w-]+)\.(\w+)\b", inpu)
+		
+		new_dir = options.path_to_db_io+os.sep+file_ty.group(1)+'_'+options.scenario+'_model'
+		copyfile(opt.options.wlp, new_dir+os.sep+opt.options.wlp)
 
 def solve_true_cost_of_guessing ( optimizer, options, epsilon=1e-6 ):
 	import multiprocessing as MP, os, cPickle as pickle
