@@ -61,7 +61,20 @@ def create_config(values):
   
   
   return filename
-    
+
+def extractFlags(values, flags):
+
+  if not flags:
+    return
+
+  splitted_flags = flags.split(",")
+  for flag in splitted_flags:
+    val = flag.split("=")
+    if(len(val) == 2 ):
+      values["--{0}".format(val[0])] = val[1]
+    else:
+      values["--{0}".format(val[0])] = ""
+      
 
 
 def run_model(request):
@@ -86,6 +99,10 @@ def run_model(request):
     values["--path_to_logs"]=     settings.RESULT_DIR + "debug_logs"
 
     runoption =request.POST.get("runoption", "")
+    
+    extractFlags(values, request.POST.get("custom_flags","") )
+    
+    print "values", values
     
     if runoption == "Uncertainty-Analysis" :
       values["--mga"] = "{" + \
