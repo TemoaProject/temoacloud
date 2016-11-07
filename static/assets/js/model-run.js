@@ -1,3 +1,5 @@
+ var ajaxReqt;
+ 
  function populateFileList(str) {
     var url = '/loadfilelist';
     $.ajax({
@@ -66,6 +68,19 @@ function initJs()
     initDropZone('output');
    
     initForm();
+    
+     $("#stop-button").click(function() {
+        ajaxReqt.abort();
+        //ajaxReqt.success();
+        
+        $("#outputarea").val("User stopped process");
+            
+        //Make download button ready
+        $(".spinner").addClass("invisible");
+        $("#stop-button").addClass("invisible");
+        $("#submit-button").removeClass("invisible");
+        
+    });
     
     $("input[name='runoption']").click(function() {
 
@@ -266,10 +281,12 @@ function initForm() {
         if(isErrors)
             return false;
             
-       $(".spinner").removeClass("invisible");     
+       $(".spinner").removeClass("invisible"); 
+       $("#stop-button").removeClass("invisible"); 
+       $("#submit-button").addClass("invisible");     
         
         
-        $.post( url, $('form#model-run-form').serialize(), function(data) {
+       ajaxReqt = $.post( url, $('form#model-run-form').serialize(), function(data) {
             
             
             //alert(data.message);
@@ -278,6 +295,8 @@ function initForm() {
             
              //Make download button ready
 			   $(".spinner").addClass("invisible");
+            $("#stop-button").addClass("invisible"); 
+            $("#submit-button").removeClass("invisible"); 
             
             if(data.zip_path != "")
                 $("#download-button").addClass("btn-yellow").attr("href", "/static/" + data.zip_path);
