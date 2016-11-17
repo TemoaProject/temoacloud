@@ -32,7 +32,7 @@ function addTab(tabcontent)
     
     $("#graphviz-tabs").append('<li><a href="#result_' + id + '">Generated Result ' + id +'</a> <span> x </span></li>');
     
-    $("#graphviz-content')
+    $('#graphviz-content')
     .append('<div class="tab-pane" id="' + tabId + '"> ' + tabcontent + '</div>');
     
     $('#graphviz-tabs li:nth-child(' + id + ') a').click();
