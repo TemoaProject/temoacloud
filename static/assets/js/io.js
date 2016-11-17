@@ -25,17 +25,17 @@ function populateFileList(mode){
 function addTab(tabcontent)
 {
 
-    var id = $(".nav-tabs").children().length + 1; //think about it ;)
+    var id = $("#graphviz-tabs").children().length + 1; //think about it ;)
 
 
     var tabId = 'result_' + id;
     
-    $(".nav-tabs").append('<li><a href="#result_' + id + '">Generated Result ' + id +'</a> <span> x </span></li>');
+    $("#graphviz-tabs").append('<li><a href="#result_' + id + '">Generated Result ' + id +'</a> <span> x </span></li>');
     
-    $('.tab-content')
+    $("#graphviz-content')
     .append('<div class="tab-pane" id="' + tabId + '"> ' + tabcontent + '</div>');
     
-    $('.nav-tabs li:nth-child(' + id + ') a').click();
+    $('#graphviz-tabs li:nth-child(' + id + ') a').click();
 }
 
 
