@@ -154,49 +154,7 @@ function initForm() {
               
     });
 
-    $("#rundbquery").click(function() {
-
-        var isErrors = false;
-
-        var fileInput = $("#inputdatafilename option:selected").text();
-        if (fileInput == '--Select data File--' || fileInput == '') 
-        {
-            //$("#db-input-file-error").show();
-            isErrors = true;
-            alert("Please Select Your Model Input")
-        } 
-        else 
-        {
-            //$("#db-input-file-error").hide();
-        }
-
-        query = $("#querytextarea").val()
-
-        if(!query)
-        {
-            isErrors = true
-            alert("query is empty")
-            //$("#db-text-error").hide();
-        }
-
-
-        if(isErrors)
-            return false;
-     
-         $.post( "/dbquery/", 
-                { 
-                    input: fileInput  , 
-                    query: query,  
-                    'csrfmiddlewaretoken': '{{ csrf_token }}' }, 
-          function( data ) 
-          {
-            //console.log( data ); 
-
-            $("#queryresult").html(data.result);
-
-          });
     
-    });
 
 
     
