@@ -62,6 +62,7 @@ def create_config(values):
   return filename
     
 
+
 def run_model(request):
   
   #print ( "this is a very %s" % ("someman")
@@ -80,18 +81,29 @@ def run_model(request):
     values['--output'] = settings.UPLOADED_OUTPUT_DIR + request.POST.get("outputdatafilename", "")
     values["--scenario"] =request.POST.get("scenarioname", "")
     values["--solver"] =request.POST.get("solver", "")
+
+    runoption =request.POST.get("runoption", "")
+    
+    if runoption == "Uncertainty-Analysis" :
+      values["--mga"] = "{" + \
+        "\n  --slack = " + request.POST.get("MGASlackValue", "") + \
+        "\n  --iteration = " + request.POST.get("NumberofMGAIterations", "") + \
+        "\n  --weight = " + request.POST.get("MGAWeightingMethod", "") + \
+      "\n}"
+    
+    
     
     if request.POST.get("createspreadsheetoption", "") :
       values['--saveEXCEL'] = ""
     
-    if request.POST.get("createtextfileoption", ""):
-      values['--generate_solver_lp_file'] = ""
+    #OPTION is missing
+    #if request.POST.get("createtextfileoption", ""):
+    #  values['--generate_solver_text_file'] = ""
     
     if request.POST.get("generatelpfileoption", ""):
       values["--generate_solver_lp_file"] = ""
     
-    #Under construction
-    runoption = request.POST.get("runoption", "")
+   
     
     filename = create_config(values)
   
@@ -108,6 +120,7 @@ def run_model(request):
     generatedfolderpath = "result/db_io/" + os.path.splitext(inputfilename)[0] + "_" + values["--scenario"] + "_model"
     
     print generatedfolderpath
+    print runoption
     
     return generatedfolderpath
     

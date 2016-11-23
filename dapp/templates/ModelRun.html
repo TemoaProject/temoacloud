@@ -202,9 +202,9 @@
 
 
             <div class="form-group ">
-                <label class="col-sm-4 control-label no-padding-right" for="form-field-2"> MGA Stock Value </label>
+                <label class="col-sm-4 control-label no-padding-right" for="form-field-2"> MGA Slack Value </label>
                 <div class="col-sm-5">
-                    <input type="text" placeholder="" class="form-control" />
+                    <input type="text" placeholder="" name="MGASlackValue" class="form-control" />
                 </div>
                 <div class="col-sm-3 text-left"> <span class="help-button" data-rel="popover" data-trigger="hover" data-placement="right" data-content="Modeling to generate alternative (MGA) is a technique that can produce alternative solutions that are close to cost optimal but very different in decision space. For more information on MGA applied to energy system models, please see the following publications:
                                           DeCarolis, J. F. (2011). Using modeling to generate alternatives (MGA) to expand our thinking on energy futures. Energy Economics, 33(2), 145-152.
@@ -213,14 +213,15 @@
             <div class="form-group ">
                 <label class="col-sm-4 control-label no-padding-right" for="form-field-2">Number of MGA Iterations  </label>
                 <div class="col-sm-5">
-                    <input type="text" placeholder="" class="form-control" />
+                    <input type="text" placeholder="" name="NumberofMGAIterations" class="form-control" />
                 </div>
             </div>
             <div class="form-group ">
                 <label class="col-sm-4 control-label no-padding-right" for="form-field-2"> MGA Weighting Method </label>
                 <div class="col-sm-5">
-                    <select class="form-control">
-                                             <option>1</option>
+                    <select class="form-control" name="MGAWeightingMethod">
+                                             <option value="integer">integer</option>
+                                             <option value="normalized">normalized</option>
                                           </select>
                 </div>
             </div>
