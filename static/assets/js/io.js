@@ -214,6 +214,11 @@ function getCTList(mode, type, filename){
     });
 }
 
+function showDownloadButtonWithHelp()
+{
+    $("#download-db").removeClass('hidden');
+    $("#download-button-help").removeClass('hidden');
+}
 
 function initJs(mode)
 {
@@ -240,12 +245,15 @@ function initJs(mode)
         $("#commodity-file-error").hide();
         $("#input-file-error").hide();
         $("#scenario-name-error").hide();
+        
+        showDownloadButtonWithHelp()
 
 
         if(mode == "output")
             getCTList(mode, "scenario", $(this).val() );
 
-        $("#download-db").attr("href", "/static/uploaded/" + mode + "/" + this.value )
+        $("#download-db").attr("href", "/static/uploaded/" + mode + "/" + this.value );
+        
 
         console.log("DB changed!")
 
@@ -274,6 +282,8 @@ function initJs(mode)
         $("#datafilename").html(options);
 
         myDropzone.removeAllFiles();
+        
+        //showDownloadButtonWithHelp();
 
 
         if(mode == "output")
