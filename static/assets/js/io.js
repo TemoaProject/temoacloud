@@ -90,6 +90,8 @@ function initForm(mode) {
                 return;
             }
         }
+        
+        $(".spinner").removeClass("invisible");
 
 
         $.post( url, $('form#input-form').serialize(), function(data) {
@@ -106,8 +108,8 @@ function initForm(mode) {
             displayNetworkDiagram(data.mode, data.filename );
 
             //Make download button ready
+            $(".spinner").addClass("invisible");
             $("#download-button").addClass("btn-yellow").attr("href", "/static/" + data.zip_path);
-
 
         },
        'json' // I expect a JSON response
