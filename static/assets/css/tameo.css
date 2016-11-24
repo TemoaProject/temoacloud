@@ -39,7 +39,7 @@
 .submit-button-container
 {
 	    /* float: right; */
-    /* margin-bottom: 140px; */
+    padding-bottom: 70px; 
     /* margin-top: 30px; */
     /* margin-right: 106px; */
     text-align: right;

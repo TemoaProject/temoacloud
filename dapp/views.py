@@ -49,16 +49,19 @@ def runModel(request):
     #TODO try catch handling
     generatedfolderpath = run_model(request)
     
+    if not generatedfolderpath:
+      raise "Error detected"
+    
     
     random = str(uuid.uuid4().get_hex().upper()[0:6])
     output_dirname = 'db_io/db_io_' + random 
-    print "Zipping: " + settings.BASE_DIR + "/" + generatedfolderpath + " | " + output_dirname
+    #print "Zipping: " + settings.BASE_DIR + "/" + generatedfolderpath + " | " + output_dirname
     shutil.make_archive( 'result/' + output_dirname , 'zip', settings.BASE_DIR + "/" + generatedfolderpath)
     
     zip_path = output_dirname + ".zip"
   
   
-  except ValueError:
+  except:
     msg = 'An error occured. Please try again.'
     result = False
   

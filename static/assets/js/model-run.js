@@ -152,6 +152,8 @@ function initForm() {
         
         if(isErrors)
             return false;
+            
+       $(".spinner").removeClass("invisible");     
         
         
         $.post( url, $('form#model-run-form').serialize(), function(data) {
@@ -160,7 +162,7 @@ function initForm() {
             alert(data.message);
             
              //Make download button ready
-			
+			   $(".spinner").addClass("invisible");
             $("#download-button").addClass("btn-yellow").attr("href", "/static/" + data.zip_path);
             
         },
