@@ -322,6 +322,11 @@ def pformat_results ( pyomo_instance, pyomo_result, options ):
 			
 		else: #empty schema db file
 			cur.execute("CREATE TABLE IF NOT EXISTS input_file ( id integer PRIMARY KEY, file varchar(30));")
+			
+			for i in tables.keys():
+				cur.execute("DELETE FROM "+tables[i]+";")
+				cur.execute("VACUUM;")
+			
 			for i in options.dot_dat:
 				cur.execute("DELETE FROM input_file WHERE id=1;")
 				cur.execute("INSERT INTO input_file(id, file) VALUES(?, ?);", (1,  '"'+i+'"'))
