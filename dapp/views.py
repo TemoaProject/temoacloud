@@ -84,6 +84,9 @@ def runModel(request):
       shutil.make_archive( settings.RESULT_DIR + output_dirname , 'zip', generatedfolderpath)
     
       zip_path = output_dirname + ".zip"
+      
+    else:
+      msg = "Failed to generate"
   
   #except:
   #  msg = 'An error occured. Please try again.'
@@ -91,7 +94,6 @@ def runModel(request):
   
     return JsonResponse( {"result" : result , "message" : msg , 'zip_path' : zip_path, "output" : _getLog()  } )
   
-  return JsonResponse( {"result" : False , "message" : "Failed to generate" , 'zip_path' : zip_path, "output" : ""  } )  
 
 
 def index(request):
