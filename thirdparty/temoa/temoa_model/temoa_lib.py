@@ -1472,7 +1472,9 @@ def solve_perfect_foresight ( model, optimizer, options ):
 		
 		#dirty fix. This used passed as parameter. - TODO - Suyash provide me one
 		new_dir = options.path_to_db_io+os.sep+file_ty.group(1)+'_'+options.scenario+'_model'
-		copyfile(options.path_to_logs+os.sep+'OutputLog.log', new_dir+os.sep+options.scenario+'_OutputLog.log')
+		
+		if path.isfile(options.path_to_logs+os.sep+'OutputLog.log'):
+			copyfile(options.path_to_logs+os.sep+'OutputLog.log', new_dir+os.sep+options.scenario+'_OutputLog.log')
 
 	if options.generateSolverLP:
 		for inpu in options.dot_dat:
