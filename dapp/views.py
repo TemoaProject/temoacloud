@@ -16,6 +16,7 @@ import os
 import uuid 
 import shutil
 from datetime import datetime
+import os.path
 
 #Custom / Thirdparty
 from thirdparty import test
@@ -79,17 +80,18 @@ def runModel(request):
     random = str(uuid.uuid4().get_hex().upper()[0:6])
     output_dirname = 'db_io/db_io_' + random 
     #print "Zipping: " + settings.BASE_DIR + "/" + generatedfolderpath + " | " + output_dirname
-    shutil.make_archive( settings.RESULT_DIR + output_dirname , 'zip', generatedfolderpath)
+    if path.exists(generatedfolderpath):
+      shutil.make_archive( settings.RESULT_DIR + output_dirname , 'zip', generatedfolderpath)
     
-    zip_path = output_dirname + ".zip"
-  
+      zip_path = output_dirname + ".zip"
   
   #except:
   #  msg = 'An error occured. Please try again.'
   #  result = False
   
+    return JsonResponse( {"result" : result , "message" : msg , 'zip_path' : zip_path, "output" : _getLog()  } )
   
-  return JsonResponse( {"result" : result , "message" : msg , 'zip_path' : zip_path, "output" : _getLog()  } )
+  return JsonResponse( {"result" : False , "message" : "Failed to generate" , 'zip_path' : zip_path, "output" : ""  } )  
 
 
 def index(request):
