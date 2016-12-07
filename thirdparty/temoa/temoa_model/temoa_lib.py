@@ -1479,7 +1479,9 @@ def solve_perfect_foresight ( model, optimizer, options ):
 			file_ty = reg_exp.search(r"\b([\w-]+)\.(\w+)\b", inpu)
 		
 		new_dir = options.path_to_db_io+os.sep+file_ty.group(1)+'_'+options.scenario+'_model'
-		move(opt.options.wlp, new_dir+os.sep+opt.options.wlp)
+		
+		if path.isfile(opt.options.wlp):
+			move(opt.options.wlp, new_dir+os.sep+opt.options.wlp)
 
 def solve_true_cost_of_guessing ( optimizer, options, epsilon=1e-6 ):
 	import multiprocessing as MP, os, cPickle as pickle
