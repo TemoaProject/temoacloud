@@ -16,7 +16,7 @@ import os
 import uuid 
 import shutil
 from datetime import datetime
-import os.path
+from os import path
 
 #Custom / Thirdparty
 from thirdparty import test
