@@ -1482,7 +1482,7 @@ def solve_perfect_foresight ( model, optimizer, options ):
 		
 		new_dir = options.path_to_db_io+os.sep+file_ty.group(1)+'_'+options.scenario+'_model'
 		
-		if path.isfile(opt.options.wlp):
+		if path.isfile(opt.options.wlp) and path.exists(new_dir):
 			move(opt.options.wlp, new_dir+os.sep+opt.options.wlp)
 
 def solve_true_cost_of_guessing ( optimizer, options, epsilon=1e-6 ):
