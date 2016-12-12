@@ -200,10 +200,15 @@ def runInput(request):
     
 
   print "Zipping: " + output_dirname
-  shutil.make_archive(folder + "_" + random , 'zip', output_dirname)
   
-  zip_file = mode + "/" + folder + "_" + random + ".zip"
-
+  zip_file = ""
+  
+  if path.exists(output_dirname) and path.exists(folder + "_" + random):
+    shutil.make_archive(folder + "_" + random , 'zip', output_dirname)
+  
+    zip_file = mode + "/" + folder + "_" + random + ".zip"
+  else:
+    error = "Result folders are missing"
 
   
 
