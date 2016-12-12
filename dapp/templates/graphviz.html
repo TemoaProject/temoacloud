@@ -5,9 +5,17 @@
     <div class="white-box-with-bottom-border">
         <h3 class="header blue box-top-pad">{{title}} </h3>
 
+        
+        
         <div class="form-group">
+        
+        
+            
+            
             <label class="col-sm-3 control-label no-padding-right" for="form-field-1">Select a Database or text file </label>
-            <div class="col-sm-5">
+        
+            
+                    <div class="col-sm-5">
                 <div id="dropArea" class="dropzone">
                     <select class="form-control" id="datafilename" name="datafile" data-placeholder=""></select>
                 </div>
@@ -27,7 +35,15 @@
         </div>
         
         
-    
+    <div class="form-group">
+            <div class="col-sm-3 no-padding-right">&nbsp;</div>
+            <div class="control-label col-sm-4 no-padding-right" style="text-align:left">
+                <label>
+                    <input type="checkbox" value="overwrite" name="isOverwrite"  id="isOverwrite" class="ace"/> 
+                    <span class="lbl"> Overwrite file if already exists</span>
+                </label>
+            </div>
+        </div>
 
 
     </div>

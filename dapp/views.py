@@ -240,9 +240,10 @@ def fileUpload(request):
     
   if request.method == 'POST':
     mode = request.POST.get("mode", "input")
+    overwrite = request.POST.get("isOverwrite", False)
     
-
-    result = handle_uploaded_file( request.FILES['file'],  mode)
+    #print("overwrite", overwrite )
+    result = handle_uploaded_file( request.FILES['file'],  mode, overwrite)
     
     #if string is empty we have no errors hence success
     if not result :
@@ -254,7 +255,7 @@ def fileUpload(request):
     
     return JsonResponse({'error': result}, status = 403)
 
-def handle_uploaded_file(f, mode):
+def handle_uploaded_file(f, mode, overwrite):
   import os.path
   
   
@@ -270,8 +271,19 @@ def handle_uploaded_file(f, mode):
      
   
   if(os.path.isfile(fname) ):
-    #print "Testing" + fname
-    return "File already exists. Please rename and try to upload."
+    
+    if int(overwrite) <> 0:
+      #print("isOverwrite 2", overwrite )
+      try:
+        os.remove(fname)
+      except OSError as e: # name the Exception `e`
+        #print "Failed with:", e.strerror # look what it says
+        #print "Error code:", e.code 
+        return "File already exists and failed to overwrite. Reason is {0}. Please try again.".format(e.strerror)
+    else: 
+      #print("isOverwrite 3", overwrite )
+      #print "Testing" + fname
+      return "File already exists. Please rename and try to upload."
   
   with open(fname, 'wb+') as destination:
     for chunk in f.chunks():

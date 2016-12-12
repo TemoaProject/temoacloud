@@ -327,6 +327,9 @@ function initJs(mode)
         mode: mode
     }
     });
+    myDropzone.on('sending', function(file, xhr, formData){
+            formData.append('isOverwrite', $("#isOverwrite").is(':checked') ? 1 : 0 );
+    });
 
     myDropzone.on("success", function(fileList, response)
     {
