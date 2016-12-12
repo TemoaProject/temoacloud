@@ -185,7 +185,7 @@ def runInput(request):
     
   print inputs
 
-  output_dirname = inputs['-o']+"/"+folder + "_" + random
+  output_dirname = inputs['-o'] + "/" + folder + "_" + random
   #remove existing folder
   
   
@@ -210,6 +210,14 @@ def runInput(request):
   else:
     error = "Result folders are missing"
 
+  #check if image exists or not
+  #base result mode
+  #tempimgpath = "{0}/{1}".format(inputs['-o'], imagepath)
+  #print "imagepatth", tempimgpath
+  #if not os.path.isfile( tempimgpath ):
+    #print "not found"
+    #imagepath = "assets/avatars/no_image_available.svg"
+  
   
 
 
@@ -304,7 +312,7 @@ def loadFileList(request):
 
 def loadFiles():
   #print mode
-  types = ('.data', '.sqlite', '.dat') # the tuple of file types
+  types = ('.data', '.sqlite', '.sqlite3', '.dat') # the tuple of file types
   
   return [each for each in os.listdir(settings.UPLOADED_DIR) if each.endswith(types)]
   
