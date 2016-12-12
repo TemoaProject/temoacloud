@@ -141,6 +141,7 @@ function initForm(mode) {
         $.post( url, $('form#input-form').serialize(), function(data) {
 
             //alert(data.filename + data.mode);
+            $(".spinner").addClass("invisible");
             
             if(data.error)
             {
@@ -152,7 +153,6 @@ function initForm(mode) {
             displayNetworkDiagram(data.mode, data.filename );
 
             //Make download button ready
-            $(".spinner").addClass("invisible");
             $("#download-button").addClass("btn-yellow").attr("href", "/static/" + data.zip_path);
 
         },
