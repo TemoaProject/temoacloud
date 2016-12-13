@@ -1347,9 +1347,9 @@ def solve_perfect_foresight ( model, optimizer, options ):
 		dot_dats = options.dot_dat
 
 		if options.generateSolverLP:
-			opt.options.wlp = path.basename( dot_dats[0] )[:-4] + '.lp'
-			SE.write('\nSolver will write file: {}\n\n'.format( opt.options.wlp ))
-			txt_file.write('\nSolver will write file: {}\n\n'.format( opt.options.wlp ))
+			opt.options.wlp = '/srv/thirdparty/temoa/db_io' + os.sep + path.basename( dot_dats[0] )[:-4] + '.lp'
+			SE.write('\nSolver will write file: {}\n\n'.format( os.path.basename(opt.options.wlp )))
+			txt_file.write('\nSolver will write file: {}\n\n'.format( os.path.basename(opt.options.wlp )))
 
 		SE.write( '[        ] Reading data files.'); SE.flush()
 		txt_file.write( 'Reading data files.')
@@ -1489,7 +1489,7 @@ def solve_perfect_foresight ( model, optimizer, options ):
 		#dirty fix. This used passed as parameter. - TODO - Suyash provide me one
 		new_dir = options.path_to_db_io+os.sep+file_ty.group(1)+'_'+options.scenario+'_model'
 		
-		if path.isfile(options.path_to_logs+os.sep+'OutputLog.log') and path.exists(new_dir+os.sep+options.scenario):
+		if path.isfile(options.path_to_logs+os.sep+'OutputLog.log') and path.exists(new_dir):
 			copyfile(options.path_to_logs+os.sep+'OutputLog.log', new_dir+os.sep+options.scenario+'_OutputLog.log')
 
 	if options.generateSolverLP:
@@ -1499,7 +1499,8 @@ def solve_perfect_foresight ( model, optimizer, options ):
 		new_dir = options.path_to_db_io+os.sep+file_ty.group(1)+'_'+options.scenario+'_model'
 		
 		if path.isfile(opt.options.wlp) and path.exists(new_dir):
-			move(opt.options.wlp, new_dir+os.sep+opt.options.wlp)
+			copyfile(opt.options.wlp, new_dir+os.sep+os.path.basename(opt.options.wlp[:-3])+'.lp')
+			#move(opt.options.wlp, new_dir+os.sep+opt.options.wlp)
 
 def solve_true_cost_of_guessing ( optimizer, options, epsilon=1e-6 ):
 	import multiprocessing as MP, os, cPickle as pickle
