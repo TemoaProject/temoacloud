@@ -1093,6 +1093,13 @@ given in good faith to the community (anyone who uses Temoa for any purpose) as
 free software under the terms of the GNU General Public License, version 2.
 """
 
+	try:
+		txt_file = open(options.path_to_logs+os.sep+"OutputLog.log", "w")
+	except BaseException as io_exc:
+		SE.write("Log file cannot be opened. Please check path. Trying to find:\n"+options.path_to_logs+" folder\n")
+		txt_file = open("OutputLog.log", "w")
+
+	txt_file.write( msg )
 	SO.write( msg.format( *args ))
 	raise SystemExit
 
@@ -1135,6 +1142,13 @@ For copy and paste or BibTex use:
 
 """
 
+	try:
+		txt_file = open(options.path_to_logs+os.sep+"OutputLog.log", "w")
+	except BaseException as io_exc:
+		SE.write("Log file cannot be opened. Please check path. Trying to find:\n"+options.path_to_logs+" folder\n")
+		txt_file = open("OutputLog.log", "w")
+
+	txt_file.write( msg )
 	SO.write( msg )
 	raise SystemExit
 
@@ -2196,6 +2210,19 @@ def temoa_solve_ui ( model, config_filename ):
 	temoa_config.build(config=config_filename)
 	options = temoa_config
 
+	#################################################################
+	#FIXME: Put logic from parse_args() here that are not covered in
+	#temoa_config.py. Like --how_to_cite & --version options.
+	if options.version:
+		version()
+		# this function exits
+
+	if options.how_to_cite:
+		bibliographicalInformation()
+		# this function exits.
+		
+	##################################################################
+	
 	run_solve(model, options)
 
 
