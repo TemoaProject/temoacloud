@@ -1051,7 +1051,7 @@ output carrier.
 # Miscellaneous routines
 
 
-def version ( ):
+def version ( options ):
 	from sys import stdout as SO
 	from os.path import basename, dirname
 
@@ -1104,7 +1104,7 @@ free software under the terms of the GNU General Public License, version 2.
 	raise SystemExit
 
 
-def bibliographicalInformation ( ):
+def bibliographicalInformation ( options ):
 	from sys import stdout as SO
 
 	msg = """
@@ -2146,11 +2146,11 @@ def parse_args ( ):
 
 	# First, the options that exit or do not perform any "real" computation
 	if options.version:
-		version()
+		version(options)
 		# this function exits
 
 	if options.how_to_cite:
-		bibliographicalInformation()
+		bibliographicalInformation(options)
 		# this function exits.
 
 	# It would be nice if this implemented with add_mutually_exclusive_group
@@ -2203,22 +2203,22 @@ def parse_args ( ):
 
 
 def temoa_solve_ui ( model, config_filename ):
-    
+	
 	available_solvers, default_solver = get_solvers()
 
 	temoa_config = TemoaConfig(d_solver=default_solver)
 	temoa_config.build(config=config_filename)
 	options = temoa_config
-
+	
 	#################################################################
 	#FIXME: Put logic from parse_args() here that are not covered in
 	#temoa_config.py. Like --how_to_cite & --version options.
 	if options.version:
-		version()
+		version(options)
 		# this function exits
 
 	if options.how_to_cite:
-		bibliographicalInformation()
+		bibliographicalInformation(options)
 		# this function exits.
 		
 	##################################################################
