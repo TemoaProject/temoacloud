@@ -1102,7 +1102,7 @@ free software under the terms of the GNU General Public License, version 2.
 
 	txt_file.write( msg )
 	SO.write( msg.format( *args ))
-	raise SystemExit
+	#raise SystemExit
 
 
 def bibliographicalInformation ( options ):
@@ -1152,7 +1152,7 @@ For copy and paste or BibTex use:
 
 	txt_file.write( msg )
 	SO.write( msg )
-	raise SystemExit
+	#raise SystemExit
 
 
 
@@ -2150,10 +2150,12 @@ def parse_args ( ):
 	if options.version:
 		version(options)
 		# this function exits
+		return
 
 	if options.how_to_cite:
 		bibliographicalInformation(options)
 		# this function exits.
+		return
 
 	# It would be nice if this implemented with add_mutually_exclusive_group
 	# but I /also/ want them in separate groups for display.  Bummer.
@@ -2218,10 +2220,12 @@ def temoa_solve_ui ( model, config_filename ):
 	if options.version:
 		version(options)
 		# this function exits
+		return
 
 	if options.how_to_cite:
 		bibliographicalInformation(options)
 		# this function exits.
+		return
 		
 	##################################################################
 	
