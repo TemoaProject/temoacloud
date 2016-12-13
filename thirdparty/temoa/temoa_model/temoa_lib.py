@@ -1054,6 +1054,7 @@ output carrier.
 def version ( options ):
 	from sys import stdout as SO
 	from os.path import basename, dirname
+	import os
 
 	bname = basename( dirname( __file__ ))
 
@@ -1106,6 +1107,7 @@ free software under the terms of the GNU General Public License, version 2.
 
 def bibliographicalInformation ( options ):
 	from sys import stdout as SO
+	import os
 
 	msg = """
 Please cite the following paper if your use of Temoa leads to a publishable
