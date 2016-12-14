@@ -76,12 +76,13 @@ def InitializeProcessParameters ():
 			g_processVintages[p, t].add( v )
 			g_processInputs[ pindex ].add( i )
 			g_processOutputs[pindex ].add( o )
-	
+		
 	g_activeFlow_psditvo = set(
 	  (p, s, d, i, t, v, o)
 
 	  for p in time_optimize
 	  for t in tech_all
+	  if (p, t) in g_processVintages.keys()
 	  for v in g_processVintages[ p, t ]
 	  for i in g_processInputs[ p, t, v ]
 	  for o in g_processOutputs[ p, t, v ]
@@ -93,6 +94,7 @@ def InitializeProcessParameters ():
 
 	  for p in time_optimize
 	  for t in tech_all
+	  if (p, t) in g_processVintages.keys()
 	  for v in g_processVintages[ p, t ]
 	)
 	g_activeCapacity_tv = set(
@@ -100,6 +102,7 @@ def InitializeProcessParameters ():
 
 	  for p in time_optimize
 	  for t in tech_all
+	  if (p, t) in g_processVintages.keys()
 	  for v in g_processVintages[ p, t ]
 	)
 	g_activeCapacityAvailable_pt = set(
@@ -107,7 +110,7 @@ def InitializeProcessParameters ():
 
 	  for p in time_optimize
 	  for t in tech_all
-	  if g_processVintages[ p, t ]
+	  if (p, t) in g_processVintages.keys()
 	)
 
 	
@@ -247,12 +250,11 @@ def db_file(ifile) : # Call this function if the input file is a database.
 
 ################FIND Default values when not specified########################
 	for x,y in set( (t, v) for i, t, v, o in Efficiency.iterkeys()):
+		LifetimeProcess[x,y] = 30 # Default no of years
 		for row in cur.execute("SELECT life FROM LifetimeTech WHERE tech is '"+x+"'"):
 			LifetimeProcess[x,y] = row[0]
 		for row in cur.execute("SELECT life_process FROM LifetimeProcess WHERE tech is '"+x+"' and vintage is '"+str(y)+"'"):
 			LifetimeProcess[x,y] = row[0]
-		if row[0] is None:
-			LifetimeProcess[x,y] = 30 # Default no of years
 ####################FIXME########################################
 	
 	for v,w,x,y,z in set(	(e, i, t, v, o) for i, t, v, o in Efficiency.iterkeys() for e in commodity_emissions ):
