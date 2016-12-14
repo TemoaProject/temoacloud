@@ -28,6 +28,18 @@
         mode: str
     }
     });
+    
+    myDropzone.on('sending', function(file, xhr, formData){
+            
+            if (str == "input"){
+                formData.append('isOverwrite', $("#isInputOverwrite").is(':checked') ? 1 : 0 );
+            }
+            else if (str == "output")
+            {
+                formData.append('isOverwrite', $("#isOutputOverwrite").is(':checked') ? 1 : 0 );
+            }
+    });
+
 
     myDropzone.on("success", function(fileList, response) 
     {
