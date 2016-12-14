@@ -1051,9 +1051,10 @@ output carrier.
 # Miscellaneous routines
 
 
-def version ( ):
+def version ( options ):
 	from sys import stdout as SO
 	from os.path import basename, dirname
+	import os
 
 	bname = basename( dirname( __file__ ))
 
@@ -1093,12 +1094,20 @@ given in good faith to the community (anyone who uses Temoa for any purpose) as
 free software under the terms of the GNU General Public License, version 2.
 """
 
+	try:
+		txt_file = open(options.path_to_logs+os.sep+"OutputLog.log", "w")
+	except BaseException as io_exc:
+		SE.write("Log file cannot be opened. Please check path. Trying to find:\n"+options.path_to_logs+" folder\n")
+		txt_file = open("OutputLog.log", "w")
+
+	txt_file.write( msg )
 	SO.write( msg.format( *args ))
-	raise SystemExit
+	#raise SystemExit
 
 
-def bibliographicalInformation ( ):
+def bibliographicalInformation ( options ):
 	from sys import stdout as SO
+	import os
 
 	msg = """
 Please cite the following paper if your use of Temoa leads to a publishable
@@ -1135,8 +1144,15 @@ For copy and paste or BibTex use:
 
 """
 
+	try:
+		txt_file = open(options.path_to_logs+os.sep+"OutputLog.log", "w")
+	except BaseException as io_exc:
+		SE.write("Log file cannot be opened. Please check path. Trying to find:\n"+options.path_to_logs+" folder\n")
+		txt_file = open("OutputLog.log", "w")
+
+	txt_file.write( msg )
 	SO.write( msg )
-	raise SystemExit
+	#raise SystemExit
 
 
 
@@ -1331,9 +1347,9 @@ def solve_perfect_foresight ( model, optimizer, options ):
 		dot_dats = options.dot_dat
 
 		if options.generateSolverLP:
-			opt.options.wlp = path.basename( dot_dats[0] )[:-4] + '.lp'
-			SE.write('\nSolver will write file: {}\n\n'.format( opt.options.wlp ))
-			txt_file.write('\nSolver will write file: {}\n\n'.format( opt.options.wlp ))
+			opt.options.wlp = '/srv/thirdparty/temoa/db_io' + os.sep + path.basename( dot_dats[0] )[:-4] + '.lp'
+			SE.write('\nSolver will write file: {}\n\n'.format( os.path.basename(opt.options.wlp )))
+			txt_file.write('\nSolver will write file: {}\n\n'.format( os.path.basename(opt.options.wlp )))
 
 		SE.write( '[        ] Reading data files.'); SE.flush()
 		txt_file.write( 'Reading data files.')
@@ -1473,7 +1489,7 @@ def solve_perfect_foresight ( model, optimizer, options ):
 		#dirty fix. This used passed as parameter. - TODO - Suyash provide me one
 		new_dir = options.path_to_db_io+os.sep+file_ty.group(1)+'_'+options.scenario+'_model'
 		
-		if path.isfile(options.path_to_logs+os.sep+'OutputLog.log') and path.exists(new_dir+os.sep+options.scenario):
+		if path.isfile(options.path_to_logs+os.sep+'OutputLog.log') and path.exists(new_dir):
 			copyfile(options.path_to_logs+os.sep+'OutputLog.log', new_dir+os.sep+options.scenario+'_OutputLog.log')
 
 	if options.generateSolverLP:
@@ -1483,7 +1499,8 @@ def solve_perfect_foresight ( model, optimizer, options ):
 		new_dir = options.path_to_db_io+os.sep+file_ty.group(1)+'_'+options.scenario+'_model'
 		
 		if path.isfile(opt.options.wlp) and path.exists(new_dir):
-			move(opt.options.wlp, new_dir+os.sep+opt.options.wlp)
+			copyfile(opt.options.wlp, new_dir+os.sep+os.path.basename(opt.options.wlp[:-3])+'.lp')
+			#move(opt.options.wlp, new_dir+os.sep+opt.options.wlp)
 
 def solve_true_cost_of_guessing ( optimizer, options, epsilon=1e-6 ):
 	import multiprocessing as MP, os, cPickle as pickle
@@ -2132,12 +2149,14 @@ def parse_args ( ):
 
 	# First, the options that exit or do not perform any "real" computation
 	if options.version:
-		version()
+		version(options)
 		# this function exits
+		return
 
 	if options.how_to_cite:
-		bibliographicalInformation()
+		bibliographicalInformation(options)
 		# this function exits.
+		return
 
 	# It would be nice if this implemented with add_mutually_exclusive_group
 	# but I /also/ want them in separate groups for display.  Bummer.
@@ -2189,13 +2208,28 @@ def parse_args ( ):
 
 
 def temoa_solve_ui ( model, config_filename ):
-    
+	
 	available_solvers, default_solver = get_solvers()
 
 	temoa_config = TemoaConfig(d_solver=default_solver)
 	temoa_config.build(config=config_filename)
 	options = temoa_config
+	
+	#################################################################
+	#FIXME: Put logic from parse_args() here that are not covered in
+	#temoa_config.py. Like --how_to_cite & --version options.
+	if options.version:
+		version(options)
+		# this function exits
+		return
 
+	if options.how_to_cite:
+		bibliographicalInformation(options)
+		# this function exits.
+		return
+		
+	##################################################################
+	
 	run_solve(model, options)
 
 
