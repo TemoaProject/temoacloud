@@ -300,10 +300,51 @@ def pformat_results ( pyomo_instance, pyomo_result, options ):
 				for i in cur:
 					tagged_file = i[0]
 				tagged_file = re.sub('["]', "", tagged_file)
-				
+
 				if tagged_file == options.dot_dat[0]:
 					#If Input_file name matches, add output and check tech/comm
-					pass
+					tech_existing = set()
+					comm_existing = set()
+					tech_new = set()
+					comm_new = set()
+					
+					cur.execute("SELECT tech FROM technologies;")
+					for row in cur:
+						tech_existing.add(row[0])
+						
+					cur.execute("SELECT comm_name FROM commodities;")
+					for row in cur:
+						comm_existing.add(row[0])
+					
+					
+					comm_new, tech_new = dat_to_db(options.dot_dat[0], con, True)
+					
+					decision_flag = compare_energysystems(tech_existing, tech_new, comm_existing, comm_new)
+					
+					#We assume either something has been added or something has been removed. Not both!
+					if decision_flag == 0: #SAME ENERGYSYSTEMS. DONT DELETE ANYTHING.
+						pass
+						
+					elif decision_flag == 1: #SOMETHING SUBTRACTED. DONT DELETE ANYTHING.
+						pass
+						
+					elif decision_flag == 2: #SOMETHING ADDED. KEEP NEW FILE. DONT DELETE PREV RESULTS.
+						for i in db_tables:
+							cur.execute("DELETE FROM "+i+";")
+							cur.execute("VACUUM;")
+						
+						dat_to_db(options.dot_dat[0], con)
+						
+					elif decision_flag == 3: #NOT VALID USECASE. DELETE OLD RESULTS.
+						for i in db_tables:
+							cur.execute("DELETE FROM "+i+";")
+							cur.execute("VACUUM;")		
+					
+						for i in tables.keys():
+							cur.execute("DELETE FROM "+tables[i]+";")
+							cur.execute("VACUUM;")
+						
+						dat_to_db(options.dot_dat[0], con)
 				else:
 					#If not a match, delete output tables and update input_file. Call dat_to_db
 					for i in db_tables:
@@ -383,7 +424,77 @@ def pformat_results ( pyomo_instance, pyomo_result, options ):
 	return output
 
 
-def dat_to_db(input_file, output_schema):
+def compare_energysystems(A_old, A_new, B_old, B_new):
+	A_flag = None
+	B_flag = None
+	
+	if len(A_old) == len(A_new):
+		if A_old.issuperset(A_new):
+			#All good
+			A_flag = 0
+		else:
+			return 3
+	
+	elif len(A_old) > len(A_new):
+		if A_old.issuperset(A_new):
+			#All good
+			A_flag = 1
+		else:
+			return 3
+			
+	elif len(A_old) < len(A_new):
+		if A_old.issubset(A_new):
+			#All good
+			A_flag = 2
+		else:
+			return 3
+	
+	if len(B_old) == len(B_new):
+		if B_old.issuperset(B_new):
+			#All good
+			B_flag = 0
+		else:
+			return 3
+	
+	elif len(B_old) > len(B_new):
+		if B_old.issuperset(B_new):
+			#All good
+			B_flag = 1
+		else:
+			return 3
+			
+	elif len(B_old) < len(B_new):
+		if B_old.issubset(B_new):
+			#All good
+			B_flag = 2
+		else:
+			return 3
+	
+	if A_flag == 0:
+		if B_flag == 0:
+			return 0 #SAME FILES
+		if B_flag == 1:
+			return 1 #SUBTRACTION
+		if B_flag == 2:
+			return 2 #ADDITION
+	
+	elif A_flag == 1:
+		if B_flag == 0:
+			return 1 #SUBTRACTION
+		if B_flag == 1:
+			return 1 #SUBTRACTION
+		if B_flag == 2:
+			return 3 #NOT VALID.
+	
+	elif A_flag == 2:
+		if B_flag == 0:
+			return 2 #ADDITION
+		if B_flag == 1:
+			return 3 #NOT VALID
+		if B_flag == 2:
+			return 2 #ADDITION
+	
+def dat_to_db(input_file, output_schema, run_partial=False):
 
 	def traverse_dat(dat_filename, search_tablename):
 		
@@ -412,6 +523,10 @@ def dat_to_db(input_file, output_schema):
 				'tech_baseload', 'tech_resource', 'tech_production', 'tech_storage', \
 				'commodity_physical', 'commodity_demand', 'commodity_emissions']
 	
+	partial_run_tech = ['tech_baseload', 'tech_resource', 'tech_production', 'tech_storage']
+
+	partial_run_comm = ['commodity_physical', 'commodity_demand', 'commodity_emissions']
+	
 	tables_multiple_value = ['ExistingCapacity', 'Efficiency', 'LifetimeTech', \
 								'LifetimeProcess', 'EmissionActivity']
 							
@@ -422,6 +537,35 @@ def dat_to_db(input_file, output_schema):
 	#	output_schema.execute("ATTACH DATABASE ? AS db2;", "'"+input_file+"'")
 	#	for i in db_tables:
 	#		output_schema.execute("INSERT INTO "+i+" SELECT * FROM db2."+i+";")
+	
+	if run_partial:
+		comm_set = set()
+		tech_set = set()
+		for i in partial_run_comm:
+			raw_string = traverse_dat(input_file, i)
+			raw_string = re.sub("\s+", " ", raw_string)
+			raw_string = re.sub("^.*[:][=]", "", raw_string)
+			raw_string = re.sub(";\s*$", "", raw_string)
+			raw_string = re.sub("^\s+|\s+$", "", raw_string)
+			parsed_data[i] = re.split(" ", raw_string)
+			for datas in parsed_data[i]:
+				if datas == '':
+					continue
+				comm_set.add(datas)
+		
+		for i in partial_run_tech:
+			raw_string = traverse_dat(input_file, i)
+			raw_string = re.sub("\s+", " ", raw_string)
+			raw_string = re.sub("^.*[:][=]", "", raw_string)
+			raw_string = re.sub(";\s*$", "", raw_string)
+			raw_string = re.sub("^\s+|\s+$", "", raw_string)
+			parsed_data[i] = re.split(" ", raw_string)
+			for datas in parsed_data[i]:
+				if datas == '':
+					continue
+				tech_set.add(datas)
+				
+		return comm_set, tech_set
 	
 	#This is an input dat file
 	for i in tables_single_value:
