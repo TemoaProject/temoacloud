@@ -80,7 +80,7 @@ def runModel(request):
     random = str(uuid.uuid4().get_hex().upper()[0:6])
     output_dirname = 'db_io/db_io_' + random 
     #print "Zipping: " + settings.BASE_DIR + "/" + generatedfolderpath + " | " + output_dirname
-    if path.exists(generatedfolderpath) and path.exists(settings.RESULT_DIR + output_dirname ):
+    if path.exists(generatedfolderpath):
       shutil.make_archive( settings.RESULT_DIR + output_dirname , 'zip', generatedfolderpath)
     
       zip_path = output_dirname + ".zip"
@@ -203,7 +203,7 @@ def runInput(request):
   
   zip_file = ""
   
-  if path.exists(output_dirname) and path.exists(folder + "_" + random):
+  if path.exists(output_dirname) :
     shutil.make_archive(folder + "_" + random , 'zip', output_dirname)
   
     zip_file = mode + "/" + folder + "_" + random + ".zip"
