@@ -249,6 +249,9 @@ function initForm() {
              //Make download button ready
 			   $(".spinner").addClass("invisible");
             
+            $("#inputdatafilename").trigger("change");
+            $("#outputdatafilename").trigger("change");
+            
             if(data.zip_path != "")
                 $("#download-button").addClass("btn-yellow").attr("href", "/static/" + data.zip_path);
             
