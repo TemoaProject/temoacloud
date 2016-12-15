@@ -57,7 +57,7 @@
         $("#outputdatafilename").html(options);
         $("#inputdatafilename").html(options);
         
-        showDownloadButtonWithHelp(true, mode, fileList.name);
+        showDownloadButtonWithHelp(true, str, fileList.name);
   
         //if(str == "input")
             
