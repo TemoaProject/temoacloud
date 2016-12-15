@@ -15,7 +15,8 @@
             });
             $("#"+str+"datafilename").html(options);
             
-            showDownloadButtonWithHelp(true, str, $("#"+str+"datafilename").val());
+            if( $("#"+str+"datafilename").val() != "--Select data File--")
+                showDownloadButtonWithHelp(true, str, $("#"+str+"datafilename").val());
             
         }
     });
