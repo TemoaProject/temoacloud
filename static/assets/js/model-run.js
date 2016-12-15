@@ -15,6 +15,8 @@
             });
             $("#"+str+"datafilename").html(options);
             
+            showDownloadButtonWithHelp(true, str, $("#"+str+"datafilename").val());
+            
         }
     });
 }
