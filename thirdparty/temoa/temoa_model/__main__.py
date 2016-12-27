@@ -24,5 +24,6 @@ from temoa_lib import temoa_solve, TemoaError
 
 try:
 	runModel()
+	#temoa_solve( model )
 except TemoaError, e:
 	raise SystemExit( '\n' + str(e) )
