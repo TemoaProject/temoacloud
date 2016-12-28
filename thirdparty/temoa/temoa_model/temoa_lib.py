@@ -1347,7 +1347,7 @@ def solve_perfect_foresight ( model, optimizer, options ):
 		dot_dats = options.dot_dat
 
 		if options.generateSolverLP:
-			opt.options.wlp = '/srv/thirdparty/temoa/db_io' + os.sep + path.basename( dot_dats[0] )[:-4] + '.lp'
+			opt.options.wlp = temp_lp_dest + path.basename( dot_dats[0] )[:-4] + '.lp'
 			SE.write('\nSolver will write file: {}\n\n'.format( os.path.basename(opt.options.wlp )))
 			txt_file.write('\nSolver will write file: {}\n\n'.format( os.path.basename(opt.options.wlp )))
 
@@ -2216,6 +2216,8 @@ def temoa_solve_ui ( model, config_filename ):
 	options = temoa_config
 	
 	#################################################################
+	global temp_lp_dest
+	temp_lp_dest = '/srv/thirdparty/temoa/db_io/'
 	#FIXME: Put logic from parse_args() here that are not covered in
 	#temoa_config.py. Like --how_to_cite & --version options.
 	if options.version:
@@ -2239,6 +2241,9 @@ def temoa_solve ( model ):
 
 	options = parse_args()
 
+	global temp_lp_dest
+	temp_lp_dest = ''
+	
 	run_solve(model,options)
 
 	
