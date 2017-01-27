@@ -42,7 +42,7 @@ def modelRun(request):
   return render_to_response('ModelRun.html', { 'title' : 'Model Run'} , context_instance=RequestContext(request))
 
 def _getLog():
-  originalLogFile = settings.RESULT_DIR +  "debug_logs/OutputLog.log"
+  originalLogFile = settings.RESULT_DIR +  "debug_logs/Complete_OutputLog.log"
   archiveLogFile = settings.RESULT_DIR + "debug_logs/OutputLog__"+str(datetime.now().date()) + "__" +str(datetime.now().time())+".log"
 
   file = open(originalLogFile, 'r')

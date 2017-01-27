@@ -106,9 +106,9 @@ def run_model(request):
     
     if runoption == "Uncertainty-Analysis" :
       values["--mga"] = "{" + \
-        "\n  --slack = " + request.POST.get("MGASlackValue", "") + \
-        "\n  --iteration = " + request.POST.get("NumberofMGAIterations", "") + \
-        "\n  --weight = " + request.POST.get("MGAWeightingMethod", "") + \
+        "\n  slack = " + request.POST.get("MGASlackValue", "") + \
+        "\n  iteration = " + request.POST.get("NumberofMGAIterations", "") + \
+        "\n  weight = " + request.POST.get("MGAWeightingMethod", "") + \
       "\n}"
     
     
@@ -122,7 +122,7 @@ def run_model(request):
     #  values['--generate_solver_text_file'] = ""
     
     if request.POST.get("generatelpfileoption", ""):
-      values["--generate_solver_lp_file"] = ""
+      values["--keep_pyomo_lp_file"] = ""
     
    
     
