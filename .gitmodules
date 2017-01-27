@@ -1,0 +1,3 @@
+[submodule "thirdparty/temoa"]
+	path = thirdparty/temoa
+	url = https://github.com/TemoaProject/temoa.git
