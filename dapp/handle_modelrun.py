@@ -92,7 +92,9 @@ def run_model(request):
     
     inputfilename = request.POST.get("inputdatafilename", "")
     values['--input'] = settings.UPLOADED_DIR + inputfilename
-    values['--output'] = settings.UPLOADED_DIR + request.POST.get("outputdatafilename", "")
+    output_filename = request.POST.get("outputdatafilename", "")
+    if output_filename != '0':
+        values['--output'] = settings.UPLOADED_DIR + output_filename
     values["--scenario"] =request.POST.get("scenarioname", "")
     values["--solver"] =request.POST.get("solver", "")
     values["--path_to_db_io"] =   settings.RESULT_DIR + "db_io"
