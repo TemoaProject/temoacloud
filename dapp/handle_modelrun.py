@@ -108,9 +108,9 @@ def run_model(request):
     
     if runoption == "Uncertainty-Analysis" :
       values["--mga"] = "{" + \
-        "\n  slack = " + request.POST.get("MGASlackValue", "") + \
-        "\n  iteration = " + request.POST.get("NumberofMGAIterations", "") + \
-        "\n  weight = " + request.POST.get("MGAWeightingMethod", "") + \
+        "\n  slack=" + request.POST.get("MGASlackValue", "") + \
+        "\n  iteration=" + request.POST.get("NumberofMGAIterations", "") + \
+        "\n  weight=" + request.POST.get("MGAWeightingMethod", "") + \
       "\n}"
     
     
