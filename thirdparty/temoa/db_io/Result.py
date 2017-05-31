@@ -1,42 +1,47 @@
 import sqlite3, sys
+import matplotlib
+matplotlib.use('Agg')
 from matplotlib import pyplot as plt
 from IPython import embed as IP
 import numpy as np
 import random
+import time
 
 class Result:
 
 	def __init__(self, path_to_db, super_categories=False):
 		self.db_path = path_to_db
 		self.extractFromDatabase()
-		self.userPrompt(super_categories)
+		self.directory = '/srv/result/matplot/'
+		#self.userPrompt(super_categories)
 
-	def userPrompt(self, super_categories):
-		input=raw_input("Please select the plot type:\n1. Capacity\n2. Output Flow\n3. Emissions\n4. Exit\n")
-		while (input != '4'):
-			print "Please enter the sector name:"
+	# Only for command line Testing.
+	# def userPrompt(self, super_categories):
+	# 	input=raw_input("Please select the plot type:\n1. Capacity\n2. Output Flow\n3. Emissions\n4. Exit\n")
+	# 	while (input != '4'):
+	# 		print "Please enter the sector name:"
 			
-			sector_names = self.getSectors(int(input))
+	# 		sector_names = self.getSectors(int(input))
 			
-			for i, s in enumerate(sector_names):
-				print str(i+1)+"."+s
+	# 		for i, s in enumerate(sector_names):
+	# 			print str(i+1)+"."+s
 			
-			sector_i = int(raw_input())-1
-			if (sector_i < 0 or sector_i >= len(sector_names)):
-				print "Invalid Input"
-				continue
+	# 		sector_i = int(raw_input())-1
+	# 		if (sector_i < 0 or sector_i >= len(sector_names)):
+	# 			print "Invalid Input"
+	# 			continue
 
-			sector = sector_names[sector_i]
+	# 		sector = sector_names[sector_i]
 
-			if (input == '1'):
-				self.generatePlotForCapacity(sector, super_categories)
-			elif (input == '2'):
-				self.generatePlotForOutputFlow(sector, super_categories)
-			elif (input == '3'):
-				self.generatePlotForEmissions(sector, super_categories)
-			else:
-				print "Invalid Selection"
-			input=raw_input("Please select the plot type:\n1. Capacity\n2. Output Flow\n3. Emissions\n4. Exit\n")
+	# 		if (input == '1'):
+	# 			self.generatePlotForCapacity(sector, super_categories)
+	# 		elif (input == '2'):
+	# 			self.generatePlotForOutputFlow(sector, super_categories)
+	# 		elif (input == '3'):
+	# 			self.generatePlotForEmissions(sector, super_categories)
+	# 		else:
+	# 			print "Invalid Selection"
+	# 		input=raw_input("Please select the plot type:\n1. Capacity\n2. Output Flow\n3. Emissions\n4. Exit\n")
 
 
 	def extractFromDatabase(self):
@@ -57,7 +62,9 @@ class Result:
 		cur.execute("SELECT tech, tech_category FROM technologies")
 		self.tech_categories = cur.fetchall()
 		self.tech_categories = [[str(word) for word in tuple] for tuple in self.tech_categories]
+		#self.tech_categories = []
 		con.close()
+
 
 	def getSectors(self, type):
 		sectors = set()
@@ -92,7 +99,7 @@ class Result:
 				row[2] = tech_dict.get(row[2],row[2])
 
 		for row in inputData:
-			if (row[0] == sector):
+			if (row[0] == sector or sector=='all'):
 				periods.add(row[1])  # Reminder: indexing starts at 0
 				techs.add(row[2])
 
@@ -104,7 +111,7 @@ class Result:
 		for tech in techs:
 			output_values[tech] = [0]*len(periods)    #this just creates a blank table
 		for row in inputData:
-			if (row[0] == sector):
+			if (row[0] == sector or sector=='all'):
 				output_values[row[2]][periods.index(row[1])] += row[-1]
 		
 		output_values['periods']=periods
@@ -112,17 +119,30 @@ class Result:
 
 	def generatePlotForCapacity(self,sector, super_categories=False):
 		output_values = self.processData(self.capacity_output, sector, super_categories)
-		self.makeStackedBarPlot(output_values, "Years", "Capacity (GW)", 'periods')
+		outfile = 'capacity_'+sector+'_'+str(int(time.time()*1000))+'.png'
+		self.output_file_name = self.directory + outfile
+		self.output_file_name = self.output_file_name.replace(" ", "")
+		title = 'Capacity Plot for ' + sector + ' sector'
+		self.makeStackedBarPlot(output_values, "Years", "Capacity (GW)", 'periods', title)
+		return outfile
 
 	def generatePlotForOutputFlow(self, sector, super_categories=False):
 		output_values = self.processData(self.output_vflow, sector, super_categories)
-		self.makeStackedBarPlot(output_values, "Years", "Activity (PJ)", 'periods')
-		return;
+		outfile = 'output_flow_'+sector+'_'+str(int(time.time()*1000))+'.png'
+		self.output_file_name = self.directory + outfile
+		self.output_file_name = self.output_file_name.replace(" ", "")
+		title = 'Output Flow Plot for ' + sector + ' sector'
+		self.makeStackedBarPlot(output_values, "Years", "Activity (PJ)", 'periods', title)
+		return outfile;
 
 	def generatePlotForEmissions(self, sector, super_categories=False):
 		output_values = self.processData(self.output_emissions, sector, super_categories)
-		self.make_line_plot(output_values.copy(), 'Emissions')
-		return;
+		outfile ='emissions_'+sector+'_'+str(int(time.time()*1000))+'.png'
+		self.output_file_name = self.directory + outfile
+		self.output_file_name = self.output_file_name.replace(" ", "")
+		title = 'Emissions Plot for ' + sector + ' sector'
+		self.make_line_plot(output_values.copy(), 'Emissions', title)
+		return outfile;
 	
 
 	def get_random_color(self, pastel_factor = 0.5):
@@ -144,7 +164,7 @@ class Result:
 	            best_color = color
 	    return best_color
 
-	def makeStackedBarPlot(self, data, xlabel, ylabel, xvar):
+	def makeStackedBarPlot(self, data, xlabel, ylabel, xvar, title):
 		random.seed(10)
 
 		handles = list()
@@ -155,7 +175,7 @@ class Result:
 		
 		colorMapForBars=dict()
 	  	colors = []
-	  	
+	  	plt.figure()
 	  	for i in range(0,len(stackedBars)):
 	  		colors.append(self.generate_new_color(colors,pastel_factor = 0.9))
 			colorMapForBars[data.keys()[i]]=colors[i]
@@ -163,7 +183,7 @@ class Result:
 		width = 1.5
 		b = [0]*len(xaxis)
 
-		plt.figure()
+		#plt.figure()
 
 		for bar in stackedBars:
 			h = plt.bar(xaxis, data[bar], width, bottom = b, color = colorMapForBars[bar])
@@ -173,8 +193,10 @@ class Result:
 		plt.xlabel(xlabel)
 		plt.ylabel(ylabel)
 		plt.xticks(xaxis)
-		plt.legend([h[0] for h in handles], stackedBars, bbox_to_anchor = (1.1, 1),fontsize=7.5)
-		plt.show()
+		plt.title(title)
+		lgd = plt.legend([h[0] for h in handles], stackedBars, bbox_to_anchor = (1.2, 1),fontsize=7.5)
+		#plt.show()
+		plt.savefig(self.output_file_name, bbox_extra_artists=(lgd,), bbox_inches='tight')
 
 	def make_stacked_bar_plot(self, plot_var, label):
 		handles = list()
@@ -185,6 +207,7 @@ class Result:
 		random.seed(10)
 		color_map=dict()
 	  	colors = []
+	  	plt.figure()
 	  	for i in range(0,len(techs)):
 	  		colors.append(self.generate_new_color(colors,pastel_factor = 0.9))
 			color_map[plot_var.keys()[i]]=colors[i]
@@ -200,10 +223,11 @@ class Result:
 		plt.ylabel(label)
 		#plt.xticks([i + width*0.5 for i in periods], [str(i) for i in periods])
 		plt.xticks(periods)
-		plt.legend([h[0] for h in handles], techs, bbox_to_anchor = (1.1, 1),fontsize=7.5)
-		plt.show()
+		lgd = plt.legend([h[0] for h in handles], techs, bbox_to_anchor = (1.2, 1),fontsize=7.5)
+		#plt.show()
+		plt.savefig(self.output_file_name, bbox_extra_artists=(lgd,), bbox_inches='tight')
 
-	def make_line_plot(self, plot_var, label):
+	def make_line_plot(self, plot_var, label, title):
 		handles = list()
 		periods=plot_var['periods']
 		plot_var.pop('periods',0)
@@ -212,6 +236,7 @@ class Result:
 		color_map=dict()
 	  	colors = []
 	  	width = 1.5
+	  	plt.figure()
 	  	for i in range(0,len(techs)):
 	    		colors.append(self.generate_new_color(colors,pastel_factor = 0.9))
 			color_map[plot_var.keys()[i]]=colors[i]
@@ -225,17 +250,8 @@ class Result:
 		plt.ylabel(label)
 		#plt.xticks([i + width*0.5 for i in periods], [str(i) for i in periods])
 		plt.xticks(periods)
-		plt.legend([h[0] for h in handles], techs, bbox_to_anchor = (1.1, 1),fontsize=7.5)
-		plt.show()
+		plt.title(title)
+		lgd = plt.legend([h[0] for h in handles], techs, bbox_to_anchor = (1.2, 1),fontsize=7.5)
+		#plt.show()
+		plt.savefig(self.output_file_name, bbox_extra_artists=(lgd,), bbox_inches='tight')
 
-
-
-
-
-
-
-
-if (len(sys.argv) < 2):
-	r = Result('temoa_utopia.sqlite')
-elif (sys.argv[1] == '--only-super'):
-	r = Result('temoa_utopia.sqlite', True)
