@@ -16,7 +16,7 @@ function populateFileList(mode){
             });
 
             $("#datafilename").html(options);
-
+            $("#db-plot-datafilename").html(options);
         }
     });
 }
@@ -275,11 +275,161 @@ function showDownloadButtonWithHelp()
     $("#download-button-help").removeClass('hidden');
 }
 
+function addTabMatPlot(tabcontent)
+{
+
+    var id = $("#mathplot-tabs").children().length + 1; //think about it ;)
+
+
+    var tabId = 'result_' + id;
+    
+    $("#mathplot-tabs").append('<li><a href="#result_' + id + '">Plot ' + id +'</a> <span> x </span></li>');
+    
+    $('#mathplot-content')
+    .append('<div class="tab-pane" id="' + tabId + '"> ' + tabcontent + '</div>');
+    
+    $('#mathplot-tabs li:nth-child(' + id + ') a').click();
+}
+
+function initJsMathPlot()
+{
+    $("#db-plot-input-file-error").hide();
+    $('.plot-type-class').hide();
+    $('#plot-type-error').hide();
+    $('.sector-name-class').hide();
+    $('#sector-type-error').hide();
+    
+    $('#db-plot-datafilename').change(function(){
+
+        filename = $('#db-plot-datafilename').val();
+        if (filename == "0") {
+            $('#db-plot-input-file-error').show();
+            $('.plot-type-class').hide();
+            $('.sector-name-class').hide();
+        }
+        else {
+            $('#db-plot-input-file-error').hide();
+            $('.plot-type-class').show();
+            $('.plot-type-class').val('0');
+        }
+
+    });
+
+    $('#plot-type-name').change(function(){
+
+        filename = $('#db-plot-datafilename').val();
+        plottype = $(this).val();
+        if (plottype == null || plottype == "0") {
+            $('#plot-type-error').show();
+            return
+        }
+        else {
+            $('#plot-type-error').hide();
+        }
+
+        $('.sector-name-class').show();
+        
+
+        var url = '/loadsector';
+        $.ajax({
+            url: url,
+            dataType: 'json',
+            method: 'get',
+            data: {
+                'filename': filename,
+                'plottype': plottype,
+            },
+            success: function(result) {
+                if(result.error)
+                {
+                    alert(result.error)
+                    return;
+                }
+
+                var options = '<option value="0">--Select sector type--</option>';
+                options += "<option value='all'> All </option>";
+                $.each(result.data, function(index, obj) {
+                    if (obj != null) {
+                        options += "<option value=" + obj + ">" + obj + "</option>";
+                    }
+                });
+
+                $("#sector-type-name").html(options);
+            }
+        });
+
+    });
+
+    $('#sector-type-name').change(function(){
+        sector = $(this).val();
+        if (sector == "0") {
+            $('#sector-type-error').show();
+            return;
+        }
+        else {
+            $('#sector-type-error').hide();
+        }
+    });
+
+    var url = '/generateplot';
+
+    $("#plot-form").submit(function(e) {
+
+        e.preventDefault();
+
+        fileInput = $("#db-plot-datafilename").val();
+
+        plottype = $('#plot-type-name').val();
+
+        sector = $('#sector-type-name').val();
+
+        if (fileInput == "0") {
+            $('#db-plot-input-file-error').show();
+            $('.plot-type-class').hide();
+            $('.sector-name-class').hide();
+            return;
+        }
+
+        if (plottype == null) {
+            $('#plot-type-error').show();
+            $('.sector-name-class').hide();
+            return;
+        }
+
+        if (sector == "0") {
+            $('#sector-type-error').show();
+            return;
+        }
+        
+        $(".spinner").removeClass("invisible");
+
+        $.post( url, $('form#plot-form').serialize(), function(data) {
+
+                //alert(data.filename + data.mode);
+                $(".spinner").addClass("invisible");
+                
+                if(data.error)
+                {
+                    alert(data.error);
+                    return;
+                }
+
+                var tabcontent = '<iframe class="result-frame" src="' + data.data + '" width="1000" alt="Output Plot"></iframe> ';
+
+                addTabMatPlot(tabcontent);
+
+            },
+            'json' // I expect a JSON response
+        );
+    });
+
+}
+
 function initJs(mode)
 {
     initForm(mode);
 
-    
+    initJsMathPlot();
 
     populateFileList(mode);
 

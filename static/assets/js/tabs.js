@@ -12,8 +12,9 @@ $(".nav-tabs")
     {
         var anchor = $(this).siblings('a');
         $(anchor.attr('href')).remove();
+        $(this).parent().parent().children('li').first().children('a').click();
         $(this).parent().remove();
-        $(".nav-tabs li").children('a').first().click();
+        //$(".nav-tabs li").children('a').first().click();
     });
 
 

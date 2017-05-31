@@ -14,5 +14,7 @@ urlpatterns = [
     url(r'^runinput$', views.runInput, name='runinput'),
     url(r'^loadfilelist$', views.loadFileList, name='loadfilelist'),
     url(r'^loadctlist$', views.loadCTList, name='loadctlist'),
-    url(r'^dbquery/$', views.dbQuery, name='dbquery')
+    url(r'^dbquery/$', views.dbQuery, name='dbquery'),
+    url(r'^generateplot$', views.generateplot, name='generateplot'),
+    url(r'^loadsector$', views.loadsector, name='loadsector'),
 ]

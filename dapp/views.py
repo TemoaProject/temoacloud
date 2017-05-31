@@ -25,6 +25,7 @@ from handle_modelrun import run_model
 from thirdparty.temoa.temoa_model import get_comm_tech
 
 from thirdparty.temoa.db_io.db_query import get_flags
+from thirdparty.temoa.db_io.Result import Result
 
 def login(request):
   return render_to_response('login.html', context_instance=RequestContext(request))
@@ -316,6 +317,47 @@ def loadFiles():
   
   return [each for each in os.listdir(settings.UPLOADED_DIR) if each.endswith(types)]
   
+def loadsector(request):
+  filename = request.GET.get('filename')
+  plottype = int(request.GET.get('plottype', '1'))
+  db_path = settings.UPLOADED_DIR + filename
+
+  sectors =[]
+  error = ''
+  try:
+    res = Result(db_path)
+    sectors = res.getSectors(plottype)
+  except:
+    error = 'Database file not supported: ' +db_path
+
+  return JsonResponse({"data" : sectors, "error": error})
+
+def generateplot(request):
+  filename =request.POST.get("db-plot-datafilename", "")
+  plottype = int(request.POST.get("plot-type-name", "1"))
+  sector =request.POST.get("sector-type-name", "")
+  supercategories = request.POST.get("merge-tech", False)
+
+
+  # filename = request.GET.get('filename')
+  # plottype = int(request.GET.get('plottype', '1'))
+  # sector = request.GET.get('sector')
+
+  #db_path = 'thirdparty/temoa/db_io/' + filename
+  db_path = settings.UPLOADED_DIR + filename
+
+  res = Result(db_path)
+  #plotpath = 'thirdparty/temoa/db_io/'
+  plotpath = 'static/matplot/'
+  error = ""
+  if (plottype == 1):
+    plotpath += res.generatePlotForCapacity(sector, supercategories)
+  elif (plottype == 2):
+    plotpath += res.generatePlotForOutputFlow(sector, supercategories)
+  elif (plottype == 3):
+    plotpath += res.generatePlotForEmissions(sector, supercategories)
+
+  return JsonResponse({"data" : plotpath, "error": error})
 
 
 def loadCTList(request):
