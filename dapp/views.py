@@ -25,7 +25,7 @@ from handle_modelrun import run_model
 from thirdparty.temoa.temoa_model import get_comm_tech
 
 from thirdparty.temoa.db_io.db_query import get_flags
-from thirdparty.temoa.db_io.Result import Result
+from thirdparty.temoa.db_io.MakeOutputPlots import OutputPlotGenerator
 
 def login(request):
   return render_to_response('login.html', context_instance=RequestContext(request))
@@ -325,7 +325,7 @@ def loadsector(request):
   sectors =[]
   error = ''
   try:
-    res = Result(db_path)
+    res = OutputPlotGenerator(db_path)
     sectors = res.getSectors(plottype)
   except:
     error = 'Database file not supported: ' +db_path
@@ -346,7 +346,7 @@ def generateplot(request):
   #db_path = 'thirdparty/temoa/db_io/' + filename
   db_path = settings.UPLOADED_DIR + filename
 
-  res = Result(db_path)
+  res = OutputPlotGenerator(db_path)
   #plotpath = 'thirdparty/temoa/db_io/'
   plotpath = 'static/matplot/'
   error = ""
