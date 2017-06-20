@@ -1,6 +1,13 @@
 *.pyc
+/result/debug_logs/*
+/result/matplot/*
+/result/db_io/*
 /result/input/*
 /result/output/*
+/uploads/uploaded/*
 /uploads/config_temp/*
+/uploads/input/*
+/uploads/output/*
 /result/debug_logs/OutputLog.log
 /env/*
+/tprojectenv/*
