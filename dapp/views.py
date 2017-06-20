@@ -151,7 +151,7 @@ def runInput(request):
   inputs = { 
             "-i" : settings.UPLOADED_DIR + filename , 
             "-f" : format,
-            "-o" : settings.RESULT_DIR  + mode
+            "-o" : settings.RESULT_DIR  + mode,
   }
           
   if( colorscheme == "grey"):
@@ -168,6 +168,7 @@ def runInput(request):
   elif mode == "output":
 
     inputs["--scenario"] = random
+    inputs["--year"] = dateRange
 
     imagepath = folder + "_" + random + "/results/results"+ dateRange +".svg"
 
@@ -209,7 +210,7 @@ def runInput(request):
   
     zip_file = mode + "/" + folder + "_" + random + ".zip"
   else:
-    error = "Result folders are missing"
+    error = "Result folders are missing" + output_dirname
 
   #check if image exists or not
   #base result mode
