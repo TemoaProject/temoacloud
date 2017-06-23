@@ -349,7 +349,7 @@ def generateplot(request):
 
   res = OutputPlotGenerator(db_path)
   #plotpath = 'thirdparty/temoa/db_io/'
-  plotpath = 'static/matplot/'
+  plotpath = 'result/matplot/'
   error = ""
   if (plottype == 1):
     plotpath += res.generatePlotForCapacity(sector, supercategories)
