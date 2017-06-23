@@ -298,6 +298,8 @@ function initJsMathPlot()
     $('#plot-type-error').hide();
     $('.sector-name-class').hide();
     $('#sector-type-error').hide();
+    $('.plot-scenario-class').hide();
+    $('#plot-scenario-error').hide();
     
     $('#db-plot-datafilename').change(function(){
 
@@ -306,18 +308,69 @@ function initJsMathPlot()
             $('#db-plot-input-file-error').show();
             $('.plot-type-class').hide();
             $('.sector-name-class').hide();
+            $('.scenario-class').hide();
+            $('.plot-scenario-class').hide();
         }
         else {
             $('#db-plot-input-file-error').hide();
-            $('.plot-type-class').show();
-            $('.plot-type-class').val('0');
+            // $('.plot-type-class').show();
+            // $('.plot-type-class').val('0');
+            $('.plot-scenario-class').show();
+
+            filename = $('#db-plot-datafilename').val();
+
+            $.ajax({
+                url: '/loadctlist',
+                dataType: 'json',
+                method: 'get',
+                data: {
+                    mode: "output",
+                    filename: filename,
+                    'type':"scenario"
+                },
+                success: function(result) {
+                    if(result.error)
+                    {
+                        alert(result.error)
+                        return;
+                    }
+
+                    var options = '<option value="0">--Select scenario value--</option>';
+                    $.each(result.data, function(index, obj) {
+                        options += "<option value=" + obj + ">" + obj + "</option>";
+                    });
+                    
+                    $("#plot-scenario-name").html(options);
+                }
+            });
+            
         }
+
+    });
+
+    $('#plot-scenario-name').change(function(){
+        filename = $('#db-plot-datafilename').val();
+        if (filename == "0") {
+            $('#db-plot-input-file-error').show();
+            return
+        }
+        scenario = $("#plot-scenario-name").val();
+        if (scenario == "0") {
+            $('#plot-scenario-error').show();
+            return
+        }
+
+        $('#db-plot-input-file-error').hide();
+        $('#plot-scenario-error').hide();
+        $('.plot-type-class').show();
+        $('.plot-type-class').val('0');
 
     });
 
     $('#plot-type-name').change(function(){
 
         filename = $('#db-plot-datafilename').val();
+        scenario = $("#plot-scenario-name").val();
         plottype = $(this).val();
         if (plottype == null || plottype == "0") {
             $('#plot-type-error').show();
@@ -325,6 +378,14 @@ function initJsMathPlot()
         }
         else {
             $('#plot-type-error').hide();
+        }
+
+        if (scenario == "0") {
+            $('#plot-scenario-error').show();
+            return;
+        }
+        else {
+            $('#plot-scenario-error').hide();
         }
 
         $('.sector-name-class').show();
@@ -337,6 +398,7 @@ function initJsMathPlot()
             method: 'get',
             data: {
                 'filename': filename,
+                'scenario': scenario,
                 'plottype': plottype,
             },
             success: function(result) {
@@ -379,6 +441,8 @@ function initJsMathPlot()
 
         fileInput = $("#db-plot-datafilename").val();
 
+        scenario = $("#plot-scenario-name").val();
+
         plottype = $('#plot-type-name').val();
 
         sector = $('#sector-type-name').val();
@@ -387,6 +451,11 @@ function initJsMathPlot()
             $('#db-plot-input-file-error').show();
             $('.plot-type-class').hide();
             $('.sector-name-class').hide();
+            return;
+        }
+
+        if (scenario == "0") {
+            $('#plot-scenario-error').show();
             return;
         }
 

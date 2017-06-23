@@ -320,13 +320,14 @@ def loadFiles():
   
 def loadsector(request):
   filename = request.GET.get('filename')
+  scenario = request.GET.get("scenario")
   plottype = int(request.GET.get('plottype', '1'))
   db_path = settings.UPLOADED_DIR + filename
 
   sectors =[]
   error = ''
   try:
-    res = OutputPlotGenerator(db_path)
+    res = OutputPlotGenerator(db_path, scenario)
     sectors = res.getSectors(plottype)
   except:
     error = 'Database file not supported: ' +db_path
@@ -335,6 +336,7 @@ def loadsector(request):
 
 def generateplot(request):
   filename =request.POST.get("db-plot-datafilename", "")
+  scenario = request.POST.get("plot-scenario-name", "")
   plottype = int(request.POST.get("plot-type-name", "1"))
   sector =request.POST.get("sector-type-name", "")
   supercategories = request.POST.get("merge-tech", False)
@@ -347,7 +349,7 @@ def generateplot(request):
   #db_path = 'thirdparty/temoa/db_io/' + filename
   db_path = settings.UPLOADED_DIR + filename
 
-  res = OutputPlotGenerator(db_path)
+  res = OutputPlotGenerator(db_path, scenario)
   #plotpath = 'thirdparty/temoa/db_io/'
   plotpath = 'result/matplot/'
   error = ""
