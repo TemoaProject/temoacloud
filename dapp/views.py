@@ -197,6 +197,9 @@ def runInput(request):
     shutil.rmtree(output_dirname, ignore_errors=True)
   
     makeGraph(inputs)
+
+    if not path.exists(imagepath):
+      error = "The selected technology or commodity doesn't exist for selected period"
   except:
     error = 'An error occured. Please try again.'
     
@@ -219,8 +222,6 @@ def runInput(request):
   #if not os.path.isfile( tempimgpath ):
     #print "not found"
     #imagepath = "assets/avatars/no_image_available.svg"
-  
-  
 
 
   return JsonResponse( 
