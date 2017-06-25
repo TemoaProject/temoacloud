@@ -98,7 +98,7 @@ def runModel(request):
 
 
 def index(request):
-  return HttpResponse("Nothing for now...")
+  return render_to_response('About-Us.html', context_instance=RequestContext(request))
 
 
 def about(request):
@@ -350,21 +350,30 @@ def generateplot(request):
   #db_path = 'thirdparty/temoa/db_io/' + filename
   db_path = settings.UPLOADED_DIR + filename
 
+  image_path_dir = settings.RESULT_DIR + 'matplot/'
   res = OutputPlotGenerator(db_path, scenario)
   #plotpath = 'thirdparty/temoa/db_io/'
-  plotpath = 'result/matplot/'
+  plotpath = ''
   error = ""
-  if (plottype == 1):
-    plotpath += res.generatePlotForCapacity(sector, supercategories)
-  elif (plottype == 2):
-    plotpath += res.generatePlotForOutputFlow(sector, supercategories)
-  elif (plottype == 3):
-    plotpath += res.generatePlotForEmissions(sector, supercategories)
+  try:
+    if (plottype == 1):
+      plotpath = res.generatePlotForCapacity(sector, supercategories, image_path_dir)
+    elif (plottype == 2):
+      plotpath = res.generatePlotForOutputFlow(sector, supercategories, image_path_dir)
+    elif (plottype == 3):
+      plotpath = res.generatePlotForEmissions(sector, supercategories, image_path_dir)
+  except Exception as e:
+    plotpath = ""
+    error = "An error occured. Please try again in some time."
+  
 
   return JsonResponse({"data" : plotpath, "error": error})
 
 
 def loadCTList(request):
+  error = ''  
+  data = {}
+
   mode = request.GET.get('mode','input')
   filename = request.GET.get('filename')
   listType = request.GET.get('type','')
@@ -372,6 +381,11 @@ def loadCTList(request):
   
   input = {"--input" : settings.UPLOADED_DIR + filename}
   
+  _, fext = os.path.splitext(filename)
+  if mode == "output" and fext == '.dat':
+    error = "For output, only database files supported (.sqlite)"
+    return JsonResponse( { "data" : data , "error" : error } )
+
   if listType == 'commodity':
     input["--comm"] = True
 
@@ -384,9 +398,6 @@ def loadCTList(request):
   elif listType == 'period':
     input["--period"] = True  
     
-  error = ''  
-  data = {}
-  
   try:
     data = get_comm_tech.get_info(input)
   except:

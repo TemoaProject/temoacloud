@@ -409,7 +409,7 @@ function initJsMathPlot()
                 }
 
                 var options = '<option value="0">--Select sector type--</option>';
-                options += "<option value='all'> All </option>";
+                // options += "<option value='all'> All </option>";
                 $.each(result.data, function(index, obj) {
                     if (obj != null) {
                         options += "<option value=" + obj + ">" + obj + "</option>";
@@ -483,7 +483,8 @@ function initJsMathPlot()
                     return;
                 }
 
-                var tabcontent = '<iframe class="result-frame" src="' + data.data + '" width="1000" alt="Output Plot"></iframe> ';
+                imgsrc = '/static/matplot/' + data.data
+                var tabcontent = '<iframe class="result-frame" src="' + imgsrc + '" width="1000" alt="Output Plot"></iframe> ';
 
                 addTabMatPlot(tabcontent);
 
