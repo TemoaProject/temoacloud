@@ -353,21 +353,21 @@ def generateplot(request):
   image_path_dir = settings.RESULT_DIR + 'matplot/'
   res = OutputPlotGenerator(db_path, scenario)
   #plotpath = 'thirdparty/temoa/db_io/'
-  plotpath = ''
+  plotpath = 'result/matplot/'
   error = ""
   try:
     if (plottype == 1):
-      plotpath = res.generatePlotForCapacity(sector, supercategories, image_path_dir)
+      plotpath += res.generatePlotForCapacity(sector, supercategories, image_path_dir)
     elif (plottype == 2):
-      plotpath = res.generatePlotForOutputFlow(sector, supercategories, image_path_dir)
+      plotpath += res.generatePlotForOutputFlow(sector, supercategories, image_path_dir)
     elif (plottype == 3):
-      plotpath = res.generatePlotForEmissions(sector, supercategories, image_path_dir)
+      plotpath += res.generatePlotForEmissions(sector, supercategories, image_path_dir)
   except Exception as e:
     plotpath = ""
     error = "An error occured. Please try again in some time."
   
 
-  return JsonResponse({"data" : image_path_dir + plotpath, "error": error})
+  return JsonResponse({"data" : plotpath, "error": error})
 
 
 def loadCTList(request):
