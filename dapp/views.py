@@ -367,7 +367,7 @@ def generateplot(request):
     error = "An error occured. Please try again in some time."
   
 
-  return JsonResponse({"data" : plotpath, "error": error})
+  return JsonResponse({"data" : img_path_dir + plotpath, "error": error})
 
 
 def loadCTList(request):

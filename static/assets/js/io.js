@@ -483,8 +483,7 @@ function initJsMathPlot()
                     return;
                 }
 
-                imgsrc = '/static/matplot/' + data.data
-                var tabcontent = '<iframe class="result-frame" src="' + imgsrc + '" width="1000" alt="Output Plot"></iframe> ';
+                var tabcontent = '<iframe class="result-frame" src="' + data.data + '" width="1000" alt="Output Plot"></iframe> ';
 
                 addTabMatPlot(tabcontent);
 
@@ -581,6 +580,7 @@ function initJs(mode)
 
 
 }
+
 
 
 
