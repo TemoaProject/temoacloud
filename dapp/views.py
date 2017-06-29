@@ -42,6 +42,12 @@ def outputData(request):
 def modelRun(request):
   return render_to_response('ModelRun.html', { 'title' : 'Model Run'} , context_instance=RequestContext(request))
 
+def index(request):
+  return render_to_response('About-Us.html', context_instance=RequestContext(request))
+
+def about(request):
+  return render_to_response('About-Us.html', context_instance=RequestContext(request))
+
 def _getLog():
   originalLogFile = settings.RESULT_DIR +  "debug_logs/Complete_OutputLog.log"
   archiveLogFile = settings.RESULT_DIR + "debug_logs/OutputLog__"+str(datetime.now().date()) + "__" +str(datetime.now().time())+".log"
@@ -94,23 +100,12 @@ def runModel(request):
   #  result = False
   
     return JsonResponse( {"result" : result , "message" : msg , 'zip_path' : zip_path, "output" : _getLog()  } )
-  
-
-
-def index(request):
-  return render_to_response('About-Us.html', context_instance=RequestContext(request))
-
-
-def about(request):
-  return render_to_response('About-Us.html', context_instance=RequestContext(request))
 
 
 #get posted data
 def runInput(request):
-  
   if request.method != 'POST':
     return HttpResponse("Use post method only", status = 403)
-  
   
   format = request.POST.get("format", "svg")
   colorscheme = request.POST.get("colorscheme", "color")
@@ -127,27 +122,6 @@ def runInput(request):
   
   imagepath = ""
     
-  #fulldirpath = os.path.dirname(os.path.abspath(__file__))
-  #print settings.BASE_DIR
-  #filename = "/home/yash/Projects/dapp/thirdparty/temoa/db_io/temoa_utopia.sqlite"
-  #if opt in ("-i", "input"):
-    #ifile = arg
-  #elif opt in ("-f", "--format"):
-    #graph_format = arg
-  #elif opt in ("-c", "--show_capacity"):
-    #show_capacity = True
-  #elif opt in ("-v", "--splinevar") :
-    #splinevar = True
-  #elif opt in ("-t", "--graph_type") :
-    #graph_type = arg
-  #elif opt in ("-s", "--scenario") :
-    #scenario = arg
-  #elif opt in ("-n", "--name") :
-    #quick_name = arg
-  #elif opt in ("-o", "--output") :
-    #res_dir = arg
-  #elif opt in ("-g", "--grey") :
-    
   inputs = { 
             "-i" : settings.UPLOADED_DIR + filename , 
             "-f" : format,
@@ -155,73 +129,49 @@ def runInput(request):
   }
           
   if( colorscheme == "grey"):
-    inputs['-g'] = colorscheme
-    
-    
+    inputs['-g'] = None
 
   if mode == "input":
-    
     inputs["-n"]= random
-    
-    imagepath = folder + "_" + random + "/" + folder + "_" + random + ".svg"
-
   elif mode == "output":
-
     inputs["--scenario"] = random
     inputs["--year"] = dateRange
-
-    imagepath = folder + "_" + random + "/results/results"+ dateRange +".svg"
-
     
   if type == 'commodity':
-  
     inputs["--comm"] = value
-    imagepath = folder + "_" + random + "/commodities/rc_" + value + "_" + dateRange + ".svg" if mode == "output" else folder + "_" + random + "/" + folder + "_" + random + ".svg"
-    
-
   elif type == 'technology':
-  
     inputs["--tech"] = value
-    #imagepath = 
-    imagepath = folder + "_" + random + "/results/results_" + value + "_" + dateRange + ".svg" if mode == "output" else folder + "_" + random + "/" + folder + "_" + random + ".svg"
     
   print inputs
 
-  output_dirname = inputs['-o'] + "/" + folder + "_" + random
-  #remove existing folder
-  
   
   error = ''
-  try:  
-    
-    shutil.rmtree(output_dirname, ignore_errors=True)
-  
-    makeGraph(inputs)
+  try:
+    imagepath = Make_Graphviz.createGraphBasedOnInput(inputs)
+    full_path = os.path.join(settings.RESULT_DIR, mode, imagepath)
 
-    if not path.exists(imagepath):
+    print "output_file_path = ", imagepath
+    if not path.exists(full_path):
       error = "The selected technology or commodity doesn't exist for selected period"
   except:
     error = 'An error occured. Please try again.'
-    
-
-  print "Zipping: " + output_dirname
+  
+  output_folder_name = imagepath.split('/')[0]
+  output_dirname = inputs['-o'] + "/" + output_folder_name
   
   zip_file = ""
   
   if path.exists(output_dirname) :
-    shutil.make_archive(folder + "_" + random , 'zip', output_dirname)
-  
-    zip_file = mode + "/" + folder + "_" + random + ".zip"
+    print "Zipping: " + output_dirname
+    zip_file = mode + "/" + output_folder_name+'/'+output_folder_name + ".zip"
+    zip_file_path = os.path.join(settings.RESULT_DIR, zip_file)
+
+    if (os.path.exists(zip_file_path)):
+      os.remove(zip_file_path)
+    shutil.make_archive(output_folder_name, 'zip', output_dirname)
+    
   else:
     error = "Result folders are missing" + output_dirname
-
-  #check if image exists or not
-  #base result mode
-  #tempimgpath = "{0}/{1}".format(inputs['-o'], imagepath)
-  #print "imagepatth", tempimgpath
-  #if not os.path.isfile( tempimgpath ):
-    #print "not found"
-    #imagepath = "assets/avatars/no_image_available.svg"
 
 
   return JsonResponse( 
@@ -229,7 +179,7 @@ def runInput(request):
           "error" : error, 
           "filename" : imagepath , 
           "zip_path": zip_file, 
-          "folder" : folder + "_" + random , 
+          "folder" : output_folder_name , 
           "mode" : mode 
           } )
     
@@ -244,11 +194,6 @@ def dbQuery(request):
   result = get_flags(inputs)
 
   return  JsonResponse( {"result" : result })
-  
-
-# Create your views here.
-def makeGraph(inputs):
-  return Make_Graphviz.createGraphBasedOnInput(inputs)
 
 
 @csrf_exempt
@@ -342,17 +287,11 @@ def generateplot(request):
   sector =request.POST.get("sector-type-name", "")
   supercategories = request.POST.get("merge-tech", False)
 
-
-  # filename = request.GET.get('filename')
-  # plottype = int(request.GET.get('plottype', '1'))
-  # sector = request.GET.get('sector')
-
-  #db_path = 'thirdparty/temoa/db_io/' + filename
   db_path = settings.UPLOADED_DIR + filename
 
   image_path_dir = settings.RESULT_DIR + 'matplot/'
   res = OutputPlotGenerator(db_path, scenario)
-  #plotpath = 'thirdparty/temoa/db_io/'
+
   plotpath = 'result/matplot/'
   error = ""
   try:
@@ -402,11 +341,6 @@ def loadCTList(request):
     data = get_comm_tech.get_info(input)
   except:
     error = 'An error occured. Please try again.'  
-    
-    #FIXME remove this when we get scenerios from tables
-    #return JsonResponse( { "data" : {"Test1" : "Test1" , "Test2" : "Test2"} } )
-  
- 
-  
+      
   
   return JsonResponse( { "data" : data , "error" : error } )
