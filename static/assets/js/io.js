@@ -281,9 +281,9 @@ function addTabMatPlot(tabcontent)
     var id = $("#mathplot-tabs").children().length + 1; //think about it ;)
 
 
-    var tabId = 'result_' + id;
+    var tabId = 'matplot_result_' + id;
     
-    $("#mathplot-tabs").append('<li><a href="#result_' + id + '">Plot ' + id +'</a> <span> x </span></li>');
+    $("#mathplot-tabs").append('<li><a href="#matplot_result_' + id + '">Plot ' + id +'</a> <span> x </span></li>');
     
     $('#mathplot-content')
     .append('<div class="tab-pane" id="' + tabId + '"> ' + tabcontent + '</div>');
