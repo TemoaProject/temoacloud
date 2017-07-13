@@ -146,6 +146,9 @@ def runInput(request):
 
   
   error = ''
+  zip_file = ''
+  imagepath = ''
+  output_folder_name = ''
   try:
     imagepath = Make_Graphviz.createGraphBasedOnInput(inputs)
     full_path = os.path.join(settings.RESULT_DIR, mode, imagepath)
@@ -153,26 +156,26 @@ def runInput(request):
     print "output_file_path = ", imagepath
     if not path.exists(full_path):
       error = "The selected technology or commodity doesn't exist for selected period"
-  except:
-    error = 'An error occured. Please try again.'
-  
-  output_folder_name = imagepath.split('/')[0]
-  output_dirname = inputs['-o'] + "/" + output_folder_name
-  
-  zip_file = ""
-  
-  if path.exists(output_dirname) :
-    print "Zipping: " + output_dirname
-    zip_file = mode + "/" + output_folder_name+'/'+output_folder_name + ".zip"
-    zip_file_path = os.path.join(settings.RESULT_DIR, zip_file)
 
-    if (os.path.exists(zip_file_path)):
-      os.remove(zip_file_path)
-    shutil.make_archive(output_folder_name, 'zip', output_dirname)
+    output_folder_name = imagepath.split('/')[0]
+    output_dirname = inputs['-o'] + "/" + output_folder_name
     
-  else:
-    error = "Result folders are missing" + output_dirname
+    zip_file = ""
 
+    if path.exists(output_dirname) :
+      print "Zipping: " + output_dirname
+      zip_file = mode + "/" + output_folder_name+'/'+output_folder_name + ".zip"
+      zip_file_path = os.path.join(settings.RESULT_DIR, zip_file)
+
+      if (os.path.exists(zip_file_path)):
+        os.remove(zip_file_path)
+      shutil.make_archive(output_folder_name, 'zip', output_dirname)
+    else:
+      error = "Result folders are missing" + output_dirname
+
+  except Exception as E:
+    print E.message
+    error = 'An error occured. Please try again.'
 
   return JsonResponse( 
         {
@@ -254,13 +257,16 @@ def handle_uploaded_file(f, mode, overwrite):
 
 
 def loadFileList(request):
-  #mode = request.GET.get('mode','input')
-  fileList = { "data" : loadFiles() }
+  mode = request.GET.get('mode','input')
+  fileList = { "data" : loadFiles(mode) }
   return JsonResponse(fileList)
 
-def loadFiles():
+def loadFiles(mode):
   #print mode
-  types = ('.data', '.sqlite', '.sqlite3', '.dat') # the tuple of file types
+  if (mode == 'input'):
+    types = ('.data', '.sqlite', '.sqlite3', '.dat') # the tuple of file types
+  else:
+    types = ('.sqlite', '.sqlite3') # the tuple of file types
   
   return [each for each in os.listdir(settings.UPLOADED_DIR) if each.endswith(types)]
   
