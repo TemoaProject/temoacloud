@@ -21,6 +21,7 @@ from os import path
 #Custom / Thirdparty
 from thirdparty import test
 from thirdparty.temoa.db_io import Make_Graphviz
+from thirdparty.temoa.db_io.MakeGraphviz import GraphvizDiagramGenerator
 from handle_modelrun import run_model
 from thirdparty.temoa.temoa_model import get_comm_tech
 
@@ -114,75 +115,58 @@ def runInput(request):
   filename =request.POST.get("datafile", "")
   mode =request.POST.get("mode", "")
 
-  random =request.POST.get("scenario-name", "")
+  scenario =request.POST.get("scenario-name", "")
   dateRange =request.POST.get("date-range", "")
   
-  folder, file_extension = os.path.splitext(filename)
-  
-  
-  imagepath = ""
-    
-  inputs = { 
-            "-i" : settings.UPLOADED_DIR + filename , 
-            "-f" : format,
-            "-o" : settings.RESULT_DIR  + mode,
-  }
-          
-  if( colorscheme == "grey"):
-    inputs['-g'] = None
-
-  if mode == "input":
-    inputs["-n"]= random
-  elif mode == "output":
-    inputs["--scenario"] = random
-    inputs["--year"] = dateRange
-    
-  if type == 'commodity':
-    inputs["--comm"] = value
-  elif type == 'technology':
-    inputs["--tech"] = value
-    
-  print inputs
-
-  
   error = ''
-  zip_file = ''
   imagepath = ''
-  output_folder_name = ''
+  zip_file_path = ''
   try:
-    imagepath = Make_Graphviz.createGraphBasedOnInput(inputs)
-    full_path = os.path.join(settings.RESULT_DIR, mode, imagepath)
+    graphGen = GraphvizDiagramGenerator(dbFile=settings.UPLOADED_DIR+filename, scenario=scenario, outDir=settings.RESULT_DIR  + mode, verbose=0)
+    graphGen.connect()
+    graphGen.setGraphicOptions(greyFlag = (colorscheme == "grey"))
+
+    if (mode == "input"):
+      if (type == 'commodity'):
+        folderpath, imagepath = graphGen.createCompleteInputGraph(inp_comm=value, outputFormat=format)
+      elif (type == 'technology'):
+        folderpath, imagepath = graphGen.createCompleteInputGraph(inp_tech=value, outputFormat=format)
+    elif (mode == 'output'):
+      if (type == 'commodity' and (value != "")):
+        folderpath, imagepath = graphGen.CreateCommodityPartialResults(period = dateRange, comm=value, outputFormat=format)
+      elif (type == 'technology' and (value != "")):
+        folderpath, imagepath = graphGen.CreateTechResultsDiagrams(period = dateRange, tech=value, outputFormat=format)
+      else:
+        folderpath, imagepath = graphGen.CreateMainResultsDiagram(period = dateRange, outputFormat=format)
+
+    graphGen.close()
 
     print "output_file_path = ", imagepath
-    if not path.exists(full_path):
+    if not path.exists(imagepath):
       error = "The selected technology or commodity doesn't exist for selected period"
-
-    output_folder_name = imagepath.split('/')[0]
-    output_dirname = inputs['-o'] + "/" + output_folder_name
-    
-    zip_file = ""
-
-    if path.exists(output_dirname) :
-      print "Zipping: " + output_dirname
-      zip_file = mode + "/" + output_folder_name+'/'+output_folder_name + ".zip"
-      zip_file_path = os.path.join(settings.RESULT_DIR, zip_file)
-
-      if (os.path.exists(zip_file_path)):
-        os.remove(zip_file_path)
-      shutil.make_archive(output_folder_name, 'zip', output_dirname)
     else:
-      error = "Result folders are missing" + output_dirname
+      if path.exists(folderpath) :
+        print "Zipping: " + folderpath
+        zip_file_path = folderpath+'_zip'
+
+        if (os.path.exists(zip_file_path+'.zip')):
+          os.remove(zip_file_path+'.zip')
+        shutil.make_archive((zip_file_path), 'zip', folderpath)
+        zip_file_path = os.path.relpath(zip_file_path+'.zip', settings.RESULT_DIR)
+        imagepath = os.path.relpath(imagepath, os.path.join(settings.RESULT_DIR, mode)) 
+      else:
+        error = "Folder is missing at " + folderpath
 
   except Exception as E:
-    print E.message
-    error = 'An error occured. Please try again.'
+    print E
+    error = 'An error occured. Please try again.'    
 
   return JsonResponse( 
         {
-          "error" : error, 
-          "filename" : imagepath , 
-          "zip_path": zip_file, 
-          "folder" : output_folder_name , 
+          "error" : error,
+          "filename" : imagepath,
+          "zip_path": zip_file_path,
+          "folder" : '' ,
           "mode" : mode 
           } )
     
