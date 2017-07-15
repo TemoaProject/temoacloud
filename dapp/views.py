@@ -20,7 +20,6 @@ from os import path
 
 #Custom / Thirdparty
 from thirdparty import test
-from thirdparty.temoa.db_io import Make_Graphviz
 from thirdparty.temoa.db_io.MakeGraphviz import GraphvizDiagramGenerator
 from handle_modelrun import run_model
 from thirdparty.temoa.temoa_model import get_comm_tech
@@ -122,7 +121,7 @@ def runInput(request):
   imagepath = ''
   zip_file_path = ''
   try:
-    graphGen = GraphvizDiagramGenerator(dbFile=settings.UPLOADED_DIR+filename, scenario=scenario, outDir=settings.RESULT_DIR  + mode, verbose=0)
+    graphGen = GraphvizDiagramGenerator(dbFile=settings.UPLOADED_DIR+filename, scenario=scenario, outDir=settings.RESULT_DIR  + mode, verbose=1)
     graphGen.connect()
     graphGen.setGraphicOptions(greyFlag = (colorscheme == "grey"))
 
@@ -131,6 +130,8 @@ def runInput(request):
         folderpath, imagepath = graphGen.createCompleteInputGraph(inp_comm=value, outputFormat=format)
       elif (type == 'technology'):
         folderpath, imagepath = graphGen.createCompleteInputGraph(inp_tech=value, outputFormat=format)
+      else:
+        folderpath, imagepath = graphGen.createCompleteInputGraph(outputFormat=format)
     elif (mode == 'output'):
       if (type == 'commodity' and (value != "")):
         folderpath, imagepath = graphGen.CreateCommodityPartialResults(period = dateRange, comm=value, outputFormat=format)
