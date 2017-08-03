@@ -1,10 +1,11 @@
 #Django
 from django.template import RequestContext
 from django.shortcuts import render, render_to_response
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, StreamingHttpResponse
 from django.conf import settings
 from django import forms
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import condition
 
 #System
 import json
@@ -65,19 +66,31 @@ def _getLog():
 
   return output
 
-
 def runModel(request):
+  # resp = StreamingHttpResponse( generateStuff(request.POST.get("outputdatafilename")), content_type='text/html')
+  resp = StreamingHttpResponse( runModel2(request), content_type='text/html')
+  return resp
+
+  # return JsonResponse( {"result" : msg , "message" : msg } )
+
+def runModel2(request):
   
   msg = 'Successfully generated'
   result = True
   generatedfolderpath = ''
   zip_path = ''
   outputFilename = request.POST.get("outputdatafilename")
+  inputfilename =  request.POST.get("inputdatafilename")
+  scenario = request.POST.get("scenarioname")
   
   #try:
     #This function will handle 
     #TODO try catch handling
-  generatedfolderpath = run_model(request)
+  yield "Starting Model Run\n"
+  for k in run_model(request):
+    yield k
+  generatedfolderpath =  settings.RESULT_DIR + "db_io/" + os.path.splitext(inputfilename)[0] + "_" + scenario + "_model"
+  yield "Model Run Compelete\n"
   
   #if not generatedfolderpath:
   #  raise "Error detected"
@@ -91,15 +104,16 @@ def runModel(request):
       shutil.make_archive( settings.RESULT_DIR + output_dirname , 'zip', generatedfolderpath)
     
       zip_path = output_dirname + ".zip"
+      yield "Zip file is at path <" + zip_path + ">"
       
     else:
-      msg = "Failed to generate"
+      yield "Failed to generate zip file\n"
   
   #except:
   #  msg = 'An error occured. Please try again.'
   #  result = False
   
-    return JsonResponse( {"result" : result , "message" : msg , 'zip_path' : zip_path, "output" : _getLog()  } )
+    # return JsonResponse( {"result" : result , "message" : msg , 'zip_path' : zip_path, "output" : _getLog()  } )
 
 
 #get posted data

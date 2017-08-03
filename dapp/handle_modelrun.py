@@ -76,7 +76,6 @@ def extractFlags(values, flags):
       values["--{0}".format(val[0])] = ""
       
 
-
 def run_model(request):
   
   #print ( "this is a very %s" % ("someman")
@@ -129,8 +128,10 @@ def run_model(request):
    
     
     filename = create_config(values)
-  
-    data = temoa_model.runModelUI(filename)
+    
+    #yield "About to call runmodel UI\n"
+    for k in temoa_model.runModelUI(filename):
+      yield k
     
     
     #Remove this temp config file
@@ -144,7 +145,8 @@ def run_model(request):
     
     print generatedfolderpath
     print runoption
+    yield "runmodelUI finished\n"
     
-    return generatedfolderpath
+    #return generatedfolderpath
     
     

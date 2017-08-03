@@ -187,6 +187,7 @@ function initForm() {
 	
     
     $("#model-run-form").submit(function(e) {
+    // function submitForm(e) {
             
         e.preventDefault();
         
@@ -243,26 +244,37 @@ function initForm() {
             
        $(".spinner").removeClass("invisible");     
         
-        
-        $.post( url, $('form#model-run-form').serialize(), function(data) {
-            
-            
-            //alert(data.message);
+        xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("POST", url, true);
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.onreadystatechange = function(){
+            if (xmlhttp.readyState > 2){
+                // alert(xmlhttp.responseText);
+                $("#outputarea").html(xmlhttp.responseText);
+                // Add Code here for the zip file part.
+            }
+            if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                str = xmlhttp.responseText
+                lindex = str.lastIndexOf("\n")
+                zip = str.substr(lindex)
+                str = str.substr(0,lindex)
+                $("#outputarea").html(str);
+                if (zip != "") {
+                    start_index = zip.lastIndexOf('<')+1
+                    end_index = zip.lastIndexOf('>')
+                    zippath = zip.substring(start_index, end_index)
+                    if(zippath != "")
+                        $("#download-button").addClass("btn-yellow").attr("href", "/static/" + zippath);
+                }
+                
+                $(".spinner").addClass("invisible");
+                $("#inputdatafilename").trigger("change");
+                $("#outputdatafilename").trigger("change");
+            }
 
-            $("#outputarea").val(data.output);
-            
-             //Make download button ready
-			   $(".spinner").addClass("invisible");
-            
-            $("#inputdatafilename").trigger("change");
-            $("#outputdatafilename").trigger("change");
-            
-            if(data.zip_path != "")
-                $("#download-button").addClass("btn-yellow").attr("href", "/static/" + data.zip_path);
-            
-        },
-       'json' // I expect a JSON response
-    );
+        }
+
+        xmlhttp.send($('form#model-run-form').serialize());
 });
 }
 
