@@ -86,11 +86,11 @@ def runModel2(request):
   #try:
     #This function will handle 
     #TODO try catch handling
-  yield "Starting Model Run\n"
+  yield "<div>Starting Model Run <br/>"
   for k in run_model(request):
     yield k
   generatedfolderpath =  settings.RESULT_DIR + "db_io/" + os.path.splitext(inputfilename)[0] + "_" + scenario + "_model"
-  yield "Model Run Compelete\n"
+  yield "Model Run Compelete</div>"
   
   #if not generatedfolderpath:
   #  raise "Error detected"
@@ -104,10 +104,10 @@ def runModel2(request):
       shutil.make_archive( settings.RESULT_DIR + output_dirname , 'zip', generatedfolderpath)
     
       zip_path = output_dirname + ".zip"
-      yield "Zip file is at path <" + zip_path + ">"
+      yield "*Zip file is at path {" + zip_path + "}"
       
     else:
-      yield "Failed to generate zip file\n"
+      yield "Failed to generate zip file"
   
   #except:
   #  msg = 'An error occured. Please try again.'

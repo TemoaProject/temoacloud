@@ -131,7 +131,8 @@ def run_model(request):
     
     #yield "About to call runmodel UI\n"
     for k in temoa_model.runModelUI(filename):
-      yield k
+      yield "<div>"+k+"</div>"
+      yield " "*1024
     
     
     #Remove this temp config file
@@ -145,7 +146,7 @@ def run_model(request):
     
     print generatedfolderpath
     print runoption
-    yield "runmodelUI finished\n"
+    yield "runmodelUI finished<br/>"
     
     #return generatedfolderpath
     

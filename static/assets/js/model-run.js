@@ -249,20 +249,21 @@ function initForm() {
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.onreadystatechange = function(){
             if (xmlhttp.readyState > 2){
-                // alert(xmlhttp.responseText);
+                str = xmlhttp.responseText;
+                str = str.replace("\n", "<br/>");
                 $("#outputarea").html(xmlhttp.responseText);
-                // Add Code here for the zip file part.
             }
             if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                str = xmlhttp.responseText
-                lindex = str.lastIndexOf("\n")
-                zip = str.substr(lindex)
-                str = str.substr(0,lindex)
+                str = xmlhttp.responseText;
+                str = str.replace("\n", "<br/>");
+                lindex = str.lastIndexOf("*");
+                zip = str.substring(lindex);
+                str = str.substring(0,lindex);
                 $("#outputarea").html(str);
                 if (zip != "") {
-                    start_index = zip.lastIndexOf('<')+1
-                    end_index = zip.lastIndexOf('>')
-                    zippath = zip.substring(start_index, end_index)
+                    start_index = zip.lastIndexOf('{')+1;
+                    end_index = zip.lastIndexOf('}');
+                    zippath = zip.substring(start_index, end_index);
                     if(zippath != "")
                         $("#download-button").addClass("btn-yellow").attr("href", "/static/" + zippath);
                 }
@@ -275,6 +276,7 @@ function initForm() {
         }
 
         xmlhttp.send($('form#model-run-form').serialize());
+        xmlhttp.responseType = "text/html";
 });
 }
 
