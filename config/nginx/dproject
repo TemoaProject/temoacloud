@@ -1,6 +1,9 @@
 server {
     listen 80;
     server_name 72.15.201.14;
+    client_max_body_size 500M;
+    proxy_connect_timeout 5000s;
+    proxy_read_timeout 5000s;
 
     #rewrite    ^/static/input/$    $1/result/input/$2;
 
