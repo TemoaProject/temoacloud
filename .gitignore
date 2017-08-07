@@ -1,5 +1,6 @@
 *.pyc
-/result/debug_logs/*
+/result/debug_logs/*.log
+/result/debug_logs/lp_files/*.lp
 /result/matplot/*
 /result/db_io/*
 /result/input/*
