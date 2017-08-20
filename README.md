@@ -1,3 +1,5 @@
+The default branch for this repository is "merged"
+
 #Ubuntu based settings
 
 ## Required
