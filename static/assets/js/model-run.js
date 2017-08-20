@@ -190,6 +190,9 @@ function initForm() {
     // function submitForm(e) {
             
         e.preventDefault();
+
+        str = '<pre name="output_pre"></pre>';
+        $("#outputarea").html(str)
         
         var isErrors;
         
@@ -248,18 +251,30 @@ function initForm() {
         xmlhttp.open("POST", url, true);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.onreadystatechange = function(){
-            if (xmlhttp.readyState > 2){
+            if(xmlhttp.readyState == 4) {
                 str = xmlhttp.responseText;
-                str = str.replace("\n", "<br/>");
-                $("#outputarea").html(xmlhttp.responseText);
-            }
-            if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                str = xmlhttp.responseText;
-                str = str.replace("\n", "<br/>");
+                //str = str.replace("\n", "<br/>");
                 lindex = str.lastIndexOf("*");
-                zip = str.substring(lindex);
-                str = str.substring(0,lindex);
-                $("#outputarea").html(str);
+                
+                zip = ''
+                if ( lindex > 0 ) {
+                    zip = str.substring(lindex);
+                    str = str.substring(0,lindex);
+                }
+                str = '<pre name="output_pre">' + str + '</pre>';
+                var html = str
+                var first_line = (html.split('\n')[0].match(/^\s+/));
+                if (first_line != null) {
+                    var blankLen = (first_line[0]).length;
+                    $("#outputarea").html($.trim(html.replace(eval("/^ {" + blankLen + "}/gm"), "")));    
+                }
+                else {
+                    var blankLen = 0;
+                    $("#outputarea").html($.trim(html.replace(eval("/^ {" + blankLen + "}/gm"), "")));    
+                }
+                
+                
+
                 if (zip != "") {
                     start_index = zip.lastIndexOf('{')+1;
                     end_index = zip.lastIndexOf('}');
@@ -267,11 +282,28 @@ function initForm() {
                     if(zippath != "")
                         $("#download-button").addClass("btn-yellow").attr("href", "/static/" + zippath);
                 }
-                
+
                 $(".spinner").addClass("invisible");
                 $("#inputdatafilename").trigger("change");
                 $("#outputdatafilename").trigger("change");
+
+            } else if (xmlhttp.readyState > 2){
+                str = xmlhttp.responseText;
+                //str = str.replace("\n", "<br/>");
+                str = '<pre name="output_pre">' + str + '</pre>';
+
+                var html = str
+                var first_line = (html.split('\n')[0].match(/^\s+/));
+                if (first_line != null) {
+                    var blankLen = (first_line[0]).length;
+                    $("#outputarea").html($.trim(html.replace(eval("/^ {" + blankLen + "}/gm"), "")));    
+                }
+                else {
+                    var blankLen = 0;
+                    $("#outputarea").html($.trim(html.replace(eval("/^ {" + blankLen + "}/gm"), "")));    
+                }
             }
+            
 
         }
 
@@ -297,3 +329,4 @@ function showDownloadButtonWithHelp(isShow, mode, datafilename)
         $("#download-"+mode+"-button-help").addClass('hidden');
     }
 }
+

@@ -86,7 +86,7 @@ def runModel2(request):
   #try:
     #This function will handle 
     #TODO try catch handling
-  yield "<div>Starting Model Run <br/>"
+  yield "<div>Starting Model Run \n"
   for k in run_model(request):
     yield k
   generatedfolderpath =  settings.RESULT_DIR + "db_io/" + os.path.splitext(inputfilename)[0] + "_" + scenario + "_model"
@@ -213,7 +213,7 @@ def fileUpload(request):
       #fileList = loadFiles()
       #JsonResponse( {'success' : 'File uploading finished'} )
 
-      return JsonResponse( {"data" : loadFiles(), 'mode' : mode })
+      return JsonResponse( {"data" : loadFiles(mode), 'mode' : mode })
       
     
     return JsonResponse({'error': result}, status = 403)

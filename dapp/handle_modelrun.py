@@ -132,7 +132,7 @@ def run_model(request):
     #yield "About to call runmodel UI\n"
     for k in temoa_model.runModelUI(filename):
       yield "<div>"+k+"</div>"
-      yield " "*1024
+      #yield " " * 1024
     
     
     #Remove this temp config file
