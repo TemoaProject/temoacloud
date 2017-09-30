@@ -61,13 +61,8 @@
         $("#inputdatafilename").html(options);
         
         showDownloadButtonWithHelp(true, str, fileList.name);
-  
-        //if(str == "input")
             
-        if(str == "output")
-        {
-           outputBlank(false);
-        }
+        outputBlank(false);
 
         myDropzone.removeAllFiles();
 
@@ -151,7 +146,12 @@ function initForm() {
         }
         else
         {
-            outputBlank(false);
+            if ($("#inputdatafilename").val() == 0){
+                outputBlank(true);    
+            }
+            else {
+                outputBlank(false);
+            }
             showDownloadButtonWithHelp(true, 'output', $(this).val());
         }
               
@@ -162,10 +162,17 @@ function initForm() {
 
         if($(this).val() == 0 )
         {
+            outputBlank(true);
             showDownloadButtonWithHelp(false, 'input', '');
         }
         else
         {
+            if ($("#outputdatafilename").val() != 0) {
+                outputBlank(false);
+            }
+            else {
+                outputBlank(true);
+            }
             showDownloadButtonWithHelp(true, 'input', $(this).val() );
         }
               
@@ -284,8 +291,8 @@ function initForm() {
                 }
 
                 $(".spinner").addClass("invisible");
-                $("#inputdatafilename").trigger("change");
-                $("#outputdatafilename").trigger("change");
+                // $("#inputdatafilename").trigger("change");
+                // $("#outputdatafilename").trigger("change");
 
             } else if (xmlhttp.readyState > 2){
                 str = xmlhttp.responseText;
