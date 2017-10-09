@@ -86,10 +86,16 @@ def runModel2(request):
   #try:
     #This function will handle 
     #TODO try catch handling
+  
+  generatedfolderpath =  settings.RESULT_DIR + "db_io/" + os.path.splitext(inputfilename)[0] + "_" + scenario + "_model"
+
+  if path.exists(generatedfolderpath):
+    shutil.rmtree(generatedfolderpath)
+
   yield "<div>Starting Model Run \n"
   for k in run_model(request):
     yield k
-  generatedfolderpath =  settings.RESULT_DIR + "db_io/" + os.path.splitext(inputfilename)[0] + "_" + scenario + "_model"
+
   yield "Model Run Compelete</div>"
   
   #if not generatedfolderpath:

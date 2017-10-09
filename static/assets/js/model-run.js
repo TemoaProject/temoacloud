@@ -252,7 +252,8 @@ function initForm() {
         if(isErrors)
             return false;
             
-       $(".spinner").removeClass("invisible");     
+        $(".spinner").removeClass("invisible");
+        $("#download-button").removeClass("btn-yellow").attr("href", "#");
         
         xmlhttp = new XMLHttpRequest();
         xmlhttp.open("POST", url, true);
