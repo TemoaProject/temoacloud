@@ -131,7 +131,8 @@ def run_model(request):
     
     #yield "About to call runmodel UI\n"
     for k in temoa_model.runModelUI(filename):
-      yield "<div>"+k+"</div>"
+      #yield "<div>"+k+"</div>"
+      yield k
       #yield " " * 1024
     
     
