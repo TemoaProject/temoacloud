@@ -21,12 +21,12 @@ from os import path
 
 #Custom / Thirdparty
 from thirdparty import test
-from thirdparty.temoa.db_io.MakeGraphviz import GraphvizDiagramGenerator
+from thirdparty.temoa.data_processing.MakeGraphviz import GraphvizDiagramGenerator
 from handle_modelrun import run_model
 from thirdparty.temoa.temoa_model import get_comm_tech
 
-from thirdparty.temoa.db_io.db_query import get_flags
-from thirdparty.temoa.db_io.MakeOutputPlots import OutputPlotGenerator
+from thirdparty.temoa.data_processing.db_query import get_flags
+from thirdparty.temoa.data_processing.MakeOutputPlots import OutputPlotGenerator
 
 def login(request):
   return render_to_response('login.html', context_instance=RequestContext(request))
