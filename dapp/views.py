@@ -273,7 +273,9 @@ def loadFiles(mode):
   else:
     types = ('.sqlite', '.sqlite3') # the tuple of file types
   
-  return [each for each in os.listdir(settings.UPLOADED_DIR) if each.endswith(types)]
+  filelist = [each for each in os.listdir(settings.UPLOADED_DIR) if each.endswith(types)]
+
+  return sorted(filelist, key=lambda s: s.lower())
   
 def loadsector(request):
   filename = request.GET.get('filename')
