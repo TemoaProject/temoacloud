@@ -1,0 +1,22 @@
+{% load custom_tags %}
+<ul class="list-group list-group-bordered">
+                  <li class="list-group-item">
+                    <b>Commodity Type</b> <p class="float-right">{{comm_tech_data.name}}</p>
+                  </li>
+                  <li class="list-group-item">
+                    <b>Commodity Value</b> <p class="float-right">{{comm_tech_data.value}}</p>
+                  </li>
+                  <li class="list-group-item">
+                    <b>Color Scheme</b> <p class="float-right">{{input_data.color_scheme}}</p>
+                  </li>
+                  <li class="list-group-item">
+                    <b>Output Format</b> <p class="float-right">{{input_data.output_format}}</p>
+                  </li>
+                  <!--<li class="list-group-item">
+                    <b>Uploaded File</b> <p class="float-right">{{data_file.name | filer_tag}}<a class="ml-2 btn btn-outline-primary px-2 py-1"
+                                   download
+                                   href="{% url 'files.download' project_uid 'scenarios' data_file.name %}"> &lt;!&ndash;fix me&ndash;&gt;
+                                    <i class="fa fa-download" aria-hidden="true"></i>
+                                </a></p>
+                  </li>-->
+                </ul>

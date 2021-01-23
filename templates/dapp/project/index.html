@@ -1,0 +1,192 @@
+{% extends 'layout.html' %}
+{% block body_block %}
+
+<style>
+
+
+/* The Modal (background) */
+#emptyProject {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+#emptyProject .modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  width: 50%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+  from {top:-300px; opacity:0}
+  to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+  from {top:-300px; opacity:0}
+  to {top:0; opacity:1}
+}
+
+/* The Close Button */
+#emptyProject .close {
+  color:#1b1616;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+#emptyProject .close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#emptyProject .modal-header {
+  padding: 2px 16px;
+}
+
+#emptyProject .modal-body {
+padding: 2px 16px;
+text-align: center;
+}
+
+#emptyProject .modal-footer {
+  text-align: center;
+  display: block;
+}
+</style>
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Projects</h5>
+            </div>
+            <div class="card-body overflow-auto">
+                 <div class="d-flex flex-row mb-4">
+            <a class="btn btn-primary" d="modelCreateProject" href="{% url 'project.add'%}"><i
+                    class="fas fa-plus mr-2"></i>Create Project
+            </a>
+        </div>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Created</th>
+                        <th>Updated</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for project in projects %}
+                    <tr>
+                        <td>{{ project.name }}</td>
+                        <td>{{ project.desc|truncatechars:30 }}</td>
+                        <td>{{ project.created }}</td>
+                        <td>{{ project.updated }}</td>
+                        <td>
+                            <div class="btn-group1" role="group" aria-label="Actions">
+                                <a class="btn btn-outline-primary px-2 py-1"
+                                   href="{% url 'project.view' project.uid %}" title="View" >
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                </a>
+
+                                <a class="btn btn-outline-danger px-2 py-1"
+                                   href="javascript://;"
+                                   data-toggle="modal" 
+                                   data-target="#confirm-delete"
+                                   data-href="{% url 'project.delete' project.uid %}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                            </div>
+
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5">No Project to display</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </div>
+</section>
+
+<!-- The Empty project Modal -->
+<div id="emptyProject" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+    </div>
+    <div class="modal-body">
+        <img src="/static/assets/img/empty_folder.png" width="100px">
+      <p>Looks A Little Empty Here</p>
+      <p>The first step is to create a new project using the button in the paper right hand corner.</p>
+    </div>
+    <div class="modal-footer">
+<a class="btn btn-info" href="/project/add"><i class="fas fa-plus mr-2"></i>Create Project
+            </a>
+    </div>
+  </div>
+
+</div>
+{% include "common/confirm_dialog.html" with message="Are you sure?" %}
+
+{% endblock %}
+
+{% block javascript %}
+<script src="/static/assets/js/confirm_dialog.js"></script>
+
+<script>
+
+$(document).ready(function() {
+        init_confirm_dialog()
+        {% if projects.count == 0 %}
+        var modal = document.getElementById("emptyProject");
+         modal.style.display = "block";
+        {% endif%}
+    });
+
+// Get the modal
+var modal = document.getElementById("emptyProject");
+
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+</script>
+{% endblock %}

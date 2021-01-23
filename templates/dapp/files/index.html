@@ -1,0 +1,81 @@
+{% extends 'layout.html' %}
+{% block body_block %}
+<section class="content">
+    <div class="container-fluid">
+        <div class="row mb-4">
+            <div class="col-12">
+                 <a class="btn btn-info float-right" href="{% url 'project.view' project.uid %}"><i
+                    class="fas fa-chevron-left mr-2"></i>Back to Scenarios
+            </a>
+            </div>
+
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Manage Files</h5>
+            </div>
+            <div class="card-body overflow-auto">
+            <div class="d-flex flex-row mb-4">
+                 <a class="btn btn-primary" d="modelCreateProject" href="{% url 'files.upload' project.uid%}"><i
+                    class="fas fa-plus mr-2"></i>Create Scenario
+            </a>
+            </div>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Scenario</th>
+                        <th>Created</th>
+                        <th>Updated</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for file in files %}
+                    <tr>
+                        {% load custom_tags %}
+                        <td>{{ file.name | filer_tag }}</td>
+                        <td>{{ file.scenario.name }}</td>
+                        <td>{{ file.created }}</td>
+                        <td>{{ file.updated }}</td>
+                        <td>
+                            <div class="btn-group1" role="group" aria-label="Actions">
+                                <a class="btn btn-outline-primary px-2 py-1"
+                                   download
+                                   href="{% url 'files.download' file.project.uid 'files' file.name %}"> <!--fix me-->
+                                    <i class="fa fa-download" aria-hidden="true"></i>
+                                </a>
+
+                                <!--<a class="btn btn-outline-danger px-2 py-1"
+                                   href="javascript://;"
+                                   data-toggle="modal"
+                                   data-target="#confirm-delete"
+                                data-href="{% url 'files.delete' project.uid file.uid %}"><i class="fa fa-trash" aria-hidden="true"></i></a>-->
+                            </div>
+
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5">No files to display</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </div>
+</section>
+{% include "common/confirm_dialog.html" with message="Are you sure?" %}
+
+{% endblock %}
+
+{% block javascript %}
+<script src="/static/assets/js/confirm_dialog.js"></script>
+<script>
+    $(document).ready(function() {
+        init_confirm_dialog()
+    });
+</script>
+{% endblock %}

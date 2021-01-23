@@ -1,0 +1,134 @@
+{% extends 'layout.html' %} {% block body_block %}
+
+<!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-12">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="{% url 'project.view' project.uid %}">Scenarios</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'scenario.index' project.uid scenario.uid %}">Actions</a></li>
+              <li class="breadcrumb-item active">{{title}}</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+<div class=" fixed-remove-pad">
+    <form id="input-form"
+      class="form-horizontal"
+      action="{% url 'input_data.run_input' project.uid scenario.uid%}"
+      method="POST"
+      enctype="multipart/form-data"
+      role="form">
+    {% csrf_token %}
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title"><strong>{{title}}</strong>- Project: <strong>{{project.name}}</strong> / Scenario: <strong>{{scenario.name}}</strong></h5>
+                    <input id="datafilename" name="datafilename" type="hidden" value="{{data_file_uid}}"/>
+                    <input name="mode" type="hidden" value="{{mode}}"/>
+                </div>
+                <div class="card-body">
+                    <h5> Network Diagram Options </h5>
+                    <hr>
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            Select Commodity/Technology Type
+                            <select class="form-control" id="commodity-technology-type" name="commodity-technology-type"
+                                    data-placeholder="Choose a Format...">
+                                <option value="none">NONE</option>
+                                <option value="commodity">Commodity</option>
+                                <option value="technology">Technology</option>
+                            </select>
+
+                            <div id="commodity-file-error" class="mark-error">Error: Please first select model</div>
+                        </div>
+                        <div class="col-sm-6">
+                            <span id="commodity-label">Commodity/Technology Value</span>
+                            <select class="form-control" id="commodity-technology-value"
+                                    name="commodity-technology-value"
+                                    data-placeholder="Choose a Commodity/Technology...">
+                                <option value="1">COAL</option>
+                                <option value="1">COAL</option>
+                            </select>
+                            <div id="commodity-value-error" class="mark-error">Error: Please select value from above
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            Color Scheme
+                            <div class="control-group">
+
+                                <label style="margin-right:20px;">
+                                    <input name="colorscheme" type="radio" class="ace" value="grey">
+                                    <span class="lbl"> Grey Scale </span>
+                                </label>
+
+                                <label>
+                                    <input name="colorscheme" type="radio" checked="checked" class="ace" value="color">
+                                    <span class="lbl"> Color</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            Output Format
+                            <select class="form-control" id="output-format" name="format"
+                                    data-placeholder="Choose a Format...">
+                                <option value="svg">SVG</option>
+                                <!--option value="canvas">Canvas</option-->
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex flex-row justify-content-end mb-2">
+
+                <div class="spinner spinner--steps2 icomoon-spinner-7 invisible" aria-hidden="true"></div>
+
+                <button id="submit-button" type="submit" class="btn btn-info mr-2"><i class="fas fa-play"></i> Render
+                    Network Diagram
+                </button>
+                <a id="download-button" class="btn btn-outline-info" href="#"><i class="fas fa-download"></i>
+                    Download</a>
+
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Generated Energy Network Diagram</h5>
+                </div>
+                <div class="card-body">
+                    <div id="networkDiagram"></div>
+                    <div class="tabcontainer">
+                    </div>
+                     <!-- Nav tabs -->
+            <ul class="nav nav-tabs border-bottom-0" id="graphviz-tabs" role="tablist"></ul>
+            <!-- Tab panes -->
+            <div class="tab-content" id="graphviz-content" style="background:white"></div>
+                </div>
+            </div>
+
+
+        </div>
+    </section>
+</form>
+
+</div>
+
+<script src="/static/assets/js/input-run.js"></script>
+<script>
+    $(document).ready(function() {
+
+        initJs('{{mode}}', '{{project.uid}}', {{project.account.id}}, '{{scenario.uid}}', {{result_url}}, '{{data_file_uid}}' );
+
+    });
+</script>
+{% endblock %}
+
+

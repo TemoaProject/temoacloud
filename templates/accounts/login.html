@@ -1,0 +1,40 @@
+{% extends 'account.html' %}
+{% block body_block %}
+​
+<form id="loginForm" class="form-horizontal" action="{% url 'login' %}" method="post">
+    {% csrf_token %}
+
+    <div class="form-group input-group mb-3">
+        <input type="email" name="email" class="form-control" placeholder="Email">
+        <div class="input-group-append">
+            <div class="input-group-text">
+                <span class="fas fa-envelope"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group input-group mb-3">
+        <input type="password" name="password" class="form-control" placeholder="Password">
+        <div class="input-group-append">
+            <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary btn-block">Login</button>
+        </div>
+    </div>
+    <div class="text-center pt-4 pb-2">
+        <span>Forgot Password?</span>
+        <a href="{% url 'password_reset' %}">Reset here</a>
+    </div>
+    <div class="text-center">
+        <span>Create an account?</span>
+        <a href="{% url 'register' %}">Sign up</a>
+    </div>
+</form>
+{% endblock %}
+
