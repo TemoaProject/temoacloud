@@ -10,50 +10,30 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
+from .secret import *
 import os
+from django.contrib.messages import constants
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-UPLOADED_DIR = BASE_DIR + '/uploads/uploaded/files/'
-#UPLOADED_DIR = BASE_DIR + '/uploads/uploaded/input/'
-#UPLOADED_OUTPUT_DIR = BASE_DIR + '/uploads/uploaded/input/'
-
-CONFIG_TEMP = BASE_DIR + '/uploads/uploaded/config_temp/'
-
-RESULT_DIR = BASE_DIR + '/result/'
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '1()u&f)^aq!1t1(kp%k+6%yq$_u%4_wmo-f&a6d)rq(ddubcg_'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
-
-# Application definition
 
 INSTALLED_APPS = [
+    'dapp.apps.DappConfig',
+    'accounts.apps.AccountsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'dapp'
+
 ]
 
-MIDDLEWARE_CLASSES = [
+MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware', 
-   # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    # 'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -63,7 +43,9 @@ ROOT_URLCONF = 'dproject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [''],
+        'DIRS': [os.path.join(BASE_DIR, 'templates/dapp'),
+                 os.path.join(BASE_DIR, 'templates/accounts')],
+        # os.path.join(BASE_DIR,'registration/')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -72,29 +54,20 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries':{
+                'custom_tags': 'dapp.views.customtags.custom_tags',
+
+            }
         },
     },
 ]
 
 WSGI_APPLICATION = 'dproject.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
-
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
 
-AUTH_PASSWORD_VALIDATORS = [
-    {
+AUTH_PASSWORD_VALIDATORS = [{
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
     {
@@ -108,32 +81,46 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+AUTH_USER_MODEL = 'accounts.Account'
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
+# what is this?
+# SILENCED_SYSTEM_CHECKS = [
+#     'admin.E408',
+#     'admin.E409',
+#     'admin.E410'
+# ]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
+#
+LOGIN_REDIRECT_URL = '/input/'
+LOGIN_URL = '/login/'
 
 STATIC_URL = '/static/'
+
+PUBLIC_URL = os.getenv('PUBLIC_URL')
+RESULT_URL = os.getenv('RESULT_URL')
+
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     os.path.join(BASE_DIR, "assets"),
     os.path.join(BASE_DIR, "uploads"),
-    os.path.join(BASE_DIR, "result")
+    os.path.join(BASE_DIR, "result"),
+    os.path.join(BASE_DIR, "uploaded"),
 ]
-STATIC_ROOT = ""
-#STATIC_ROOT = "/home/vivek/code/dapp/static/"
 
-
+MESSAGE_TAGS = {
+    constants.SUCCESS: 'success',
+    constants.ERROR: 'danger'
+}
