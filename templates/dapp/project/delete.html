@@ -1,0 +1,17 @@
+{% extends 'single.html' %}
+
+
+{% block body_block %}
+
+
+<form action="." method="post">
+    <div role="dialog">
+    {% csrf_token %}
+    <h1>Do you want to delete the project {{ object.name }}</h1>
+    <p><input type="submit" value="Yes"> <a href="/projects">Cancel</a></p>
+        </div>
+</form>
+
+
+{% endblock %}
+

@@ -1,0 +1,19 @@
+{% extends 'account.html' %}
+{% block body_block %}
+​
+<form id="registerForm" class="form-horizontal" method="post">
+    {% csrf_token %}
+    {{registration_form.as_p}}
+
+    <!-- /.col -->
+    <div class="row">
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary btn-block">Register</button>
+        </div>
+    </div>
+    <div class="text-center pt-4 pb-2">
+        <span>Already have an account?</span>
+        <a href="{% url 'login' %}">Login here</a>
+    </div>
+</form>
+{% endblock %}

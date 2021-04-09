@@ -1,0 +1,72 @@
+{% extends 'single.html' %}
+
+{% block title %}Update Project{% endblock %}
+
+{% block body_block %}
+
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="card-header ch-alt">
+                <h2>Update Project</h2>
+                </h2>
+            </div>
+
+            <div class="table-responsive">
+
+                <div class="bs-callout bs-callout-warning d-none">
+                    <h4>Oh snap!</h4>
+                    <p>This form seems to be invalid :(</p>
+                </div>
+
+                <div class="bs-callout bs-callout-info d-none">
+                    <h4>Yay!</h4>
+                    <p>Everything seems to be ok :)</p>
+                </div>
+
+
+                <form action="" method="post" id="update-project">
+
+                    {% csrf_token %}
+                    <table class="table  projects">
+
+
+                        <tr>
+                            <th>{{form.name.label_tag}}</th>
+                            <td>{{form.name}} {{form.name.help_text}}</td>
+                        </tr>
+
+                        <tr>
+                            <th>{{form.desc.label_tag}}</th>
+                            <td>{{form.desc}}</td>
+                        </tr>
+
+                        <tr>
+                            <th>{{form.mode.label_tag}}</th>
+                            <td>{{form.mode}}</td>
+                        </tr>
+
+                        <tr>
+                            <th></th>
+                            <td><input type="submit" class="btn btn-primary  add-project-btn" value="Update"/>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+
+            </div>
+
+        </div>
+
+        <!--                      <div class="ln_solid"></div>-->
+
+
+    </div>
+
+
+</div>
+
+
+{% endblock %}
+

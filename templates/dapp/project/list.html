@@ -1,0 +1,49 @@
+{% extends 'layout.html' %}
+{% block title %}List Images{% endblock %}
+{% load components fopthumbnail %}
+
+{% block body_block %}
+
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+
+        <div class="card">
+
+            <div class="table-responsive">
+
+                <table class="table table-striped ">
+                    <thead>
+                    <tr>
+                        <th data-css-class="name-width" data-column-id="name">Name</th>
+                        <th data-column-id="url">Url</th>
+                        <th data-column-id="caption">Caption</th>
+                        <th data-column-id="delete" data-formatter="delete" data-sortable="false">Delete</th>
+                    </tr>
+                    </thead>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock %}
+
+{% block custom_js %}
+
+<script src="/static/admin/js/admin.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        var header = '{% filter escapenewline %}{% include "admin/common/headerpartial.html" with  create_new="image.add" heading="Manage Images" sub="All images are listed here" %}{% endfilter %}';
+        var url = '{% url "image.datagrid"%}'
+        initJs(url, header, {});
+    });
+
+</script>
+
+{% endblock %}

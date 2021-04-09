@@ -174,15 +174,15 @@
   box-sizing: border-box; }
 
 .dropzone {
-  
-  
+
+
 /*  min-height: 150px;*/
   border: 1px solid rgba(0, 0, 0, 0.1);
   background: white;
   padding: 0;
-  border-top: none;
-  
-  
+ /* border-top: none;*/
+
+
   }
   .dropzone.dz-clickable {
     cursor: pointer; }
@@ -196,14 +196,14 @@
     border-style: solid; }
     .dropzone.dz-drag-hover .dz-message {
       opacity: 0.5; }
-  .dropzone .dz-message 
+  .dropzone .dz-message
   {
     text-align: center;
-    margin: 2em 0; 
+    margin: 2em 0;
     font-weight: bold;
     color:  #aaa;
     text-transform: uppercase;
-    
+
   }
   .dropzone .dz-preview {
     position: relative;

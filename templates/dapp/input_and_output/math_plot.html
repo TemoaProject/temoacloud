@@ -1,0 +1,113 @@
+<form id="plot-form"
+      class="form-horizontal"
+      action="{%url 'output_data.generate_plot' project.uid scenario.uid%}"
+      method="POST"
+      enctype="multipart/form-data"
+      role="form">
+    {% csrf_token %}
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-header">
+<h5 class="card-title"><strong>{{title}}</strong>- Project: <strong>{{project.name}}</strong> / Scenario: <strong>{{scenario.name}}</strong></h5>
+                </div>
+                <div class="card-body">
+                    <h5> Output Plot</h5>
+                    <hr>
+                    <div class="form-group" style="display:none">
+                        <label class="col-sm-3 control-label no-padding-right">Select a Database </label>
+                        <div class="col-sm-5">
+                            <div id="db-plot-dropArea" class="dropzone">
+                                <select class="form-control" id="db-plot-datafilename" name="db-plot-datafilename"
+                                        data-placeholder=""></select>
+                            </div>
+
+                            <div id="db-plot-input-file-error" class="mark-error">Error: Please select input data file
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group plot-scenario-class">
+                        <label class="col-sm-3 control-label no-padding-right plot-scenario-class">Select a
+                            scenario </label>
+                        <div class="col-sm-5 plot-scenario-class">
+                            <div id="scenario-dropArea plot-scenario-class" class="dropzone">
+                                <select class="form-control plot-scenario-class" id="plot-scenario-name"
+                                        name="plot-scenario-name">
+                                </select>
+                            </div>
+
+                            <div id="plot-scenario-error" class="mark-error">Error: Please select scenario type</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group plot-type-class">
+                        <label class="col-sm-3 control-label no-padding-right plot-type-class">Select a plot
+                            type </label>
+                        <div class="col-sm-5 plot-type-class">
+                            <div id="plot-type-dropArea plot-type-class" class="dropzone">
+                                <select class="form-control plot-type-class" id="plot-type-name" name="plot-type-name">
+                                    <option disabled selected value="0"> -- select an option --</option>
+                                    <option value="1">Capacity</option>
+                                    <option value="2">Output Flow</option>
+                                    <option value="3">Emissions</option>
+                                </select>
+                            </div>
+
+                            <div id="plot-type-error" class="mark-error">Error: Please select plot type</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group sector-name-class">
+                        <label class="col-sm-3 control-label no-padding-right sector-name-class">Select the
+                            sector </label>
+                        <div class="col-sm-5 sector-name-class">
+                            <div id="sector-type-dropArea" class="dropzone sector-name-class">
+                                <select class="form-control sector-name-class" id="sector-type-name"
+                                        name="sector-type-name">
+                                </select>
+                            </div>
+                            <div id="sector-type-error" class="mark-error">Error: Please select a sector</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-3 no-padding-right">&nbsp;</div>
+                        <div class="control-label col-sm-4 no-padding-right" style="text-align:left">
+                            <label>
+                                <input type="checkbox" value=True name="merge-tech" id="merge-tech" class="ace"/>
+                                <span class="lbl"> Group technologies by category </span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex flex-row justify-content-end mb-2">
+                <div class="spinner spinner--steps2 icomoon-spinner-7 invisible" aria-hidden="true"></div>
+                <button id="plot-submit-button" type="submit" class="btn btn-info"><i class="fas fa-play"></i> Generate
+                    Output Plot
+                </button>
+            </div>
+
+
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Generated Plot</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row align-center">
+                        <div id="outputPlot"></div>
+                        <div class="tabcontainer">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs" id="mathplot-tabs" role="tablist"></ul>
+                            <!-- Tab panes -->
+                            <div class="tab-content" id="mathplot-content"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</form>

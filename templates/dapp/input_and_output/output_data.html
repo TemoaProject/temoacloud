@@ -1,0 +1,55 @@
+{% extends 'layout.html' %} {% block body_block %}
+<!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-12">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="{% url 'project.view' project.uid %}">Scenarios</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'scenario.index' project.uid scenario.uid %}">Actions</a></li>
+              <li class="breadcrumb-item active">{{title}}</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+{% if title == "Output Data" %}
+<div class="tab-container  fixed-remove-pad">
+    <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
+        <li role="presentation" class="nav-item">
+            <a href="#Graphviz" class="nav-link active" aria-controls="home"
+               role="tab" data-toggle="tab">Network Diagram</a>
+        </li>
+        <li role="presentation" class="nav-item">
+            <a href="#Matplot" class="nav-link " aria-controls="home" role="tab"
+               data-toggle="tab">Output Plots</a>
+        </li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content mt-4">
+        <div role="tabpanel" class="tab-pane active mini-height overflow-auto" id="Graphviz">
+            {% include "input_and_output/graphviz.html" with title=title project=project %}
+        </div>
+        <div role="tabpanel" class="tab-pane mini-height overflow-auto" id="Matplot">
+            {% include "input_and_output/math_plot.html" with title=title project=project %}
+        </div>
+    </div>
+</div>
+
+{%else%}
+<div class=" fixed-remove-pad">
+    {% include "input_and_output/graphviz.html" with title=title project=project %}
+</div>
+{% endif%}
+
+
+<script src="/static/assets/js/output-run.js"></script>
+<script>
+    $(document).ready(function() {
+
+        initJs('{{mode}}', '{{project.uid}}', {{project.account.id}}, '{{scenario.uid}}', {{result_url}}, '{{data_file_uid}}');
+
+    });
+</script>
+{% endblock %}
