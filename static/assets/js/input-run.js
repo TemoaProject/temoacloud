@@ -60,6 +60,7 @@ function initForm(mode, project_uid, scenario_uid, result_url, data_file_name) {
     $('#commodity-technology-value').hide();
     $('#commodity-label').hide();
     $("#commodity-value-error").hide();
+    $("#region-error").hide();
     $(".date-range").hide();
 
 
@@ -89,6 +90,12 @@ function initForm(mode, project_uid, scenario_uid, result_url, data_file_name) {
         {
             $("#input-file-error").hide();
         }*/
+        region_value = $('#region-value').val();
+        if(region_value == '')
+        {
+            $("#region-error").show();
+            return;
+        }
 
 
         type = $('#commodity-technology-type').val();
@@ -122,6 +129,7 @@ function initForm(mode, project_uid, scenario_uid, result_url, data_file_name) {
             }
             if(data.success) {
             PNotify.success({text:data.success})}
+            $("#region-error").hide();
 
 
             displayNetworkDiagram(data.mode, data.filename, result_url );
@@ -135,7 +143,7 @@ function initForm(mode, project_uid, scenario_uid, result_url, data_file_name) {
 });
 }
 
-function showHideCommodityTechnology(mode, project_uid, data_file_name){
+function showHideCommodityTechnology(mode, project_uid, scenario_uid, data_file_name){
 
     $('#commodity-technology-type').change(function(){
 
@@ -162,13 +170,13 @@ function showHideCommodityTechnology(mode, project_uid, data_file_name){
             $('#commodity-label').show();
 
 
-            getCTList(mode, type, filename, project_uid);
+            getCTList(mode, type, filename, project_uid, scenario_uid);
         }
     });
 }
 
-function getCTList(mode, type, filename, project_uid){
-    var url = '/project/files/get-ct-list/' + project_uid;
+function getCTList(mode, type, filename, project_uid, scenario_uid){
+    var url = '/project/files/get-ct-list/' + project_uid + '/' + scenario_uid;
 
 
     $.ajax({
@@ -199,6 +207,36 @@ function getCTList(mode, type, filename, project_uid){
     });
 }
 
+function getRegionList(filename, project_uid, scenario_uid){
+    var url = '/project/files/get-region-list/' + project_uid + '/' + scenario_uid;
+
+
+    $.ajax({
+        url: url,
+        dataType: 'json',
+        data: {
+            filename: filename,
+        },
+        success: function(result) {
+            if(result.error)
+            {
+                alert(result.error)
+                return;
+            }
+
+
+            var options = '<option value="">--Select Region value--</option>';
+            $.each(result.data, function(index, obj) {
+                options += "<option value=" + obj + ">" + obj + "</option>";
+            });
+
+
+            $("#region-value").html(options);
+
+        }
+    });
+}
+
 function showDownloadButtonWithHelp()
 {
     $("#download-db").removeClass('hidden');
@@ -211,7 +249,9 @@ function initJs(mode, project_uid, account_id, scenario_uid, result_url, data_fi
 
    /* populateFileList(mode, project_uid, account_id);*/
 
-    showHideCommodityTechnology(mode, project_uid, data_file_name);
+
+    showHideCommodityTechnology(mode, project_uid, scenario_uid, data_file_name);
+    getRegionList(data_file_name, project_uid, scenario_uid)
 
     /*$('#datafilename').change(function(){
 

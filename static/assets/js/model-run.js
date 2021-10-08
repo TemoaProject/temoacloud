@@ -309,7 +309,7 @@ function initForm(project_id, scenario_uid) {
                     end_index = zip.lastIndexOf('}');
                     zippath = zip.substring(start_index, end_index);
                     if(zippath != "")
-                        $("#download-button").addClass("btn-yellow").attr("href", settings.RESULT_URL + zippath);
+                        $("#download-button").addClass("btn-yellow").attr("href", "/public/results/" + zippath);
                 }
 
                 $(".spinner").addClass("invisible");
@@ -350,7 +350,7 @@ function showDownloadButtonWithHelp(isShow, mode, datafilename)
         $("#download-"+mode+"-db").removeClass('hidden');
         $("#download-"+mode+"-button-help").removeClass('hidden');
 
-        $("#download-"+mode+"-db").attr("href", settings.RESULT_URL + "uploaded/files/" + datafilename );
+        $("#download-"+mode+"-db").attr("href", "/static/uploaded/files/" + "uploaded/files/" + datafilename );
 
     }
     else

@@ -1,2 +1,3 @@
 *.pyc
-
+data_files/debug_logs/*.log
+data_files/debug_logs/lp_files/*

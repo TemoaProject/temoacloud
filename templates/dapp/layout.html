@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" style="background-color:#f7f7f7 !important;height: auto">
 <head>
+    <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!--Bootstrap CSS-->
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
     <link rel="stylesheet" href="/static/assets/css/dropzone.css"/>
      <link rel="stylesheet" href="/static/assets/css/main.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
@@ -21,10 +26,12 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/pnotify/3.2.1/pnotify.buttons.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/pnotify/3.2.1/pnotify.mobile.css">
     <link rel="stylesheet" href="/static/assets/css/tab.css">
+    <link rel="stylesheet" href="/static/assets/css/profile.css">
     <meta charset="utf-8"/>
     <title>{{title}} - TEMOA</title>
     <meta name="description" content="Draggabble Widget Boxes &amp; Containers"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
     <style>
    .hidden {
    display: none;
@@ -52,19 +59,21 @@
                 <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
             </li>
         </ul>
+
         <ul class="navbar-nav ml-auto">
+            <div class="dropdown show">
+            <a class="btn btn-danger" href="/memberships">
+                Upgrade Plans
+            </a>
+        </div>
             <li class="nav-item dropdown user-menu">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
 
-                    <span class="d-none d-md-inline"> Welcome <i class="fa fa-caret-down" aria-hidden="true"></i>
-</span>
+                    <span class="d-none d-md-inline"> Welcome <i class="fa fa-caret-down" aria-hidden="true"></i></span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                     <!-- User image -->
                     <li class="user-header bg-info">
-
-
-
                         {{user}}
                         </p>
                     </li>
@@ -80,7 +89,7 @@
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-info elevation-4">
         <!-- Brand Logo -->
-        <a href="http://model.temoacloud.com/" class="brand-link">
+        <a href="https://temoacloud.com/" class="brand-link">
             <img src="/static/assets/css/images/smallLogo.png" alt="AdminLTE Logo"
                  class="brand-image img-circle elevation-3"
                  style="opacity: .8">
@@ -98,6 +107,17 @@
                         <a class="nav-link" role="tab" href="{% url 'project.index' %}">
                             <i class="far fa-circle nav-icon"></i> Projects
                         </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" role="tab" href="/memberships/profile">
+                            <i class="far fa-circle nav-icon"></i> Profile
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" role="tab" href="https://www.youtube.com/watch?v=fxYO_kIs364&ab_channel=JoeDeCarolis" target="_blank">
+	                        <i class="far fa-circle nav-icon"></i> Video Tutorial
+                        </a>
+{#
                     </li>
                 </ul>
             </nav>
@@ -120,7 +140,14 @@
         </div>
     </footer>
 </div>
+<!-- Checkout -->
+
+
 <!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
 <script src="/static/assets/js/jquery.min.js"></script>
 <script src="/static/assets/js/jquery-ui.min.js"></script>
 <!-- Bootstrap 4 -->

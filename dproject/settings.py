@@ -24,6 +24,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'memberships.apps.MembershipsConfig',
+    'django_cron',
+    'django_crontab',
+
 
 ]
 
@@ -44,7 +48,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'templates/dapp'),
-                 os.path.join(BASE_DIR, 'templates/accounts')],
+                 os.path.join(BASE_DIR, 'templates/accounts'),
+                 os.path.join(BASE_DIR, 'templates/memberships')],
         # os.path.join(BASE_DIR,'registration/')],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -124,3 +129,8 @@ MESSAGE_TAGS = {
     constants.SUCCESS: 'success',
     constants.ERROR: 'danger'
 }
+CRONJOBS = [
+    ('0 1 * * *', 'dapp.views.scheduler.delete_data',
+     )
+]
+

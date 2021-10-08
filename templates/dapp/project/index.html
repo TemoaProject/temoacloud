@@ -73,6 +73,19 @@ text-align: center;
   text-align: center;
   display: block;
 }
+.isa_info {
+    color: #D8000C;
+    background-color: #fad8d8;
+    margin: 10px 0px;
+    padding:12px;
+    list-style: none;
+}
+.isa_info i{
+    margin:10px 22px;
+    font-size:2em;
+    vertical-align:middle;
+
+}
 </style>
 <section class="content">
     <div class="container-fluid">
@@ -83,10 +96,29 @@ text-align: center;
             </div>
             <div class="card-body overflow-auto">
                  <div class="d-flex flex-row mb-4">
-            <a class="btn btn-primary" d="modelCreateProject" href="{% url 'project.add'%}"><i
-                    class="fas fa-plus mr-2"></i>Create Project
-            </a>
-        </div>
+                    <a class="btn btn-primary" d="modelCreateProject" href="{% url 'project.add'%}"><i
+                            class="fas fa-plus mr-2"></i>Create Project
+                    </a>
+                </div>
+            {% if messages %}
+              <div class="row">
+              <div class="col-sm-6 col-sm-offset-3">
+                  {% for message in messages %}
+                  <div class="alert alert-{{ message.tags }}" role="alert">
+                      <i class="fa fa-info-circle"></i> {{ message }}
+                  </div>
+                  {% endfor %}
+                </div>
+
+              </div>
+            {% endif %}
+{#                    {% if messages %}#}
+{#                        <ul class="messages">#}
+{#                            {% for message in messages %}#}
+{#                            <li{% if message.tags %} class="alert-{{ message.tags }}"{% endif %}><i class="fa fa-info-circle"></i>{{ message }}</li>#}
+{#                            {% endfor %}#}
+{#                        </ul>#}
+{#                    {% endif %}#}
                 <table class="table table-bordered table-striped">
                     <thead>
                     <tr>

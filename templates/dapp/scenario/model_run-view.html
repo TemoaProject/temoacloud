@@ -33,16 +33,9 @@
                   </li>
                     {% endif%}
                   <li class="list-group-item">
-                    <b>Uploaded Input File</b> <p class="float-right">{{input_data_file.name | filer_tag}}<a class="ml-2 btn btn-outline-primary px-2 py-1"
+                    <b>Database File</b> <p class="float-right">{{input_data_file.name | filer_tag}}<a class="ml-2 btn btn-outline-primary px-2 py-1"
                                    download
-                                   href="{% url 'files.download' project_uid 'scenarios' input_data_file.name %} "> <!--fix me-->
-                                    <i class="fa fa-download" aria-hidden="true"></i>
-                                </a></p>
-                  </li>
-                  <li class="list-group-item">
-                    <b>Uploaded Output File</b> <p class="float-right">{{output_data_file.name | filer_tag}}<a class="ml-2 btn btn-outline-primary px-2 py-1"
-                                   download
-                                   href="{% url 'files.download' project_uid 'scenarios' output_data_file.name %}"> <!--fix me-->
+                                   href="{% url 'files.download' project_uid scenario.uid 'files' input_data_file.name %} ">
                                     <i class="fa fa-download" aria-hidden="true"></i>
                                 </a></p>
                   </li>

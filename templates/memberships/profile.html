@@ -1,0 +1,148 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% load timetags %}
+
+{#<link rel="stylesheet" type="text/css" href="{% static '/assets/css/profile.css' %}">#}
+<style>
+
+.table-container {
+    margin-top: 5px;
+}
+</style>
+{% block body_block %}
+
+
+<div class="page-content page-container" id="page-content">
+    <div class="padding">
+        <div class="row container d-flex justify-content-center">
+            <div class="card-bg bg-white pl-0 pr-0 col-xl-12 col-md-12">
+                <div class="card user-card-full">
+                    <div class="row m-l-0 m-r-0">
+
+                        <div class="col-sm-4 bg-c-lite-green user-profile">
+                            <div class="card-block text-center text-white">
+                                <div class="m-b-25"> <img src="https://img.icons8.com/bubbles/100/000000/user.png" class="img-radius" alt="User-Profile-Image"> </div>
+                                <p class="f-w-300">Current Membership:</p>
+                                <h5>{{ user_membership.membership.membership_type }}</h5>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-8 pb-2">
+                            <div class="card-block">
+                                <h5 class="m-b-20 p-b-5 b-b-default f-w-600">My Profile</h5>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <p class="m-b-10 f-w-600">Email: </p>
+                                    </div>
+                                    <div class="">
+                                        <p class="dic">{{ user }}</p>
+                                    </div>
+                                </div>
+
+                                {% if user_subscription.active != False %}
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <p class="m-b-10 f-w-600">Activation Date:</p>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <p class="dic">{{ user_subscription.get_created_date }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <p class="m-b-10 f-w-600">Payment due:</p>
+
+                                        </div>
+                                    <div class="col-sm-7">
+                                            <p class="dic">{{ user_subscription.get_next_billing_date }}</p>
+                                        </div>
+                                    </div>
+                                    {% if user_subscription != None %}
+                                    <div class="col-sm-7 p-0">
+                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal">
+                                            Cancel Subscription
+                                        </button>
+                                    <!-- The Modal -->
+                                      <div class="modal" id="myModal">
+                                        <div class="modal-dialog">
+                                          <div class="modal-content">
+                                            <!-- Modal Header -->
+                                            <div class="modal-header">
+                                              <h4 class="modal-title">Cancel Subscription</h4>
+                                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            </div>
+                                            <!-- Modal footer -->
+                                                  <!-- Modal body -->
+                                                <div class="modal-body">
+                                                  Are you Sure..
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+                                                    <a class="btn btn-success" href="{% url 'memberships:cancel' %}">Yes</a>
+                                                </div>
+                                              {% endif %}
+                                          </div>
+                                        </div>
+                                      </div>
+                                        </div>
+{#                                        Model End#}
+                                    </div>
+                                </div>
+                                {% else %}
+                                    <div class="row">
+                                        <div class="col">
+                                        <p class="m-b-10 message f-w-600">You don't have an active membership plan. Check them out
+                                            <a href="{% url 'memberships:select' %}">here</a></p>
+                                    </div>
+                                {% endif %}
+                                </div>
+                            </div>
+                        </div>
+            {#                Table start #}
+                            <div class="table-container bg-white col-sm-12 col-md-12 col-lg-12">
+                                <div class="text-center mb-4">
+                                    <h3>Your Order History</h3>
+{#                                    <hr>#}
+                                </div>
+                                <table class="table table-bordered table-striped pl-0 pr-0">
+                                  <tr>
+                                    <th>Email</th>
+                                    <th>Description</th>
+                                    <th>Created Date</th>
+                                    <th>Due Date</th>
+                                    <th>Status</th>
+                                    <th>Price</th>
+                                    <th>Transaction ID</th>
+                                  </tr>
+                                  {% for list in lists %}
+                                      <tr>
+                                        <td >{{ list.customer_email }}</td>
+
+                                        {% for ip in list.lines %}
+                                            <td >{{ ip.description |slice:"3:-20" }}</td>
+                                            <td>{{ ip.period.start | print_timestamp }}</td>
+                                            <td>{{ ip.period.end | print_timestamp }}</td>
+                                        {% endfor %}
+                                        <td>{{ list.status }}</td>
+                                        <td>$ {{ list.amount_paid | cut:"0" }}</td>
+                                        <td>{{ list.id }}</td>
+
+
+                                      </tr>
+                                  {% endfor %}
+                                </table>
+                            </div>
+{#                Table End#}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+{% endblock %}

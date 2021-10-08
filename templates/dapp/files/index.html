@@ -42,7 +42,7 @@
                             <div class="btn-group1" role="group" aria-label="Actions">
                                 <a class="btn btn-outline-primary px-2 py-1"
                                    download
-                                   href="{% url 'files.download' file.project.uid 'files' file.name %}"> <!--fix me-->
+                                   href="{% url 'files.download' file.project.uid file.scenario.uid 'files' file.name %}"> <!--fix me-->
                                     <i class="fa fa-download" aria-hidden="true"></i>
                                 </a>
 

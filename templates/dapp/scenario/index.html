@@ -48,6 +48,8 @@
                             Input Diagram
                             {% elif action.mode == 'output' %}
                             Output Diagram
+                            {% elif action.mode == 'plot' %}
+                                Output Plot
                             {% else %}
                             Model Run
                             {% endif %}
@@ -65,7 +67,7 @@
                                    href="javascript://;"
                                    data-toggle="modal"
                                    data-target="#confirm-delete"
-                                   data-href="{% url 'actions.delete' project.uid scenario.uid action.uid %}"><i
+                                   data-href="{% url 'actions.delete' project.uid scenario.uid 'scenarios' action.uid %}"><i
                                         class="fa fa-trash" aria-hidden="true"></i></a>
                             </div>
 
@@ -178,7 +180,7 @@
         init_confirm_dialog()
     });
     document.addEventListener('DOMContentLoaded', function() {
-             readFile('{% url 'files.download' project.uid 'files' data_file.name %}');
+             readFile('{% url 'files.download' project.uid scenario.uid 'files' data_file.name %}');
     }, false);
 </script>
 {% endblock %}

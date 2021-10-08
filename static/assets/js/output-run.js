@@ -65,6 +65,7 @@ function initForm(mode, project_uid, scenario_uid, result_url) {
     $("#input-file-error").hide();
     $("#scenario-name-error").hide();
     $("#date-range-error").hide();
+    $("#region-error").hide();
 
     var url = '/project/output-data/run-output/' + project_uid + '/' + scenario_uid;
 
@@ -76,6 +77,13 @@ function initForm(mode, project_uid, scenario_uid, result_url) {
         e.preventDefault();
 
         $("#commodity-value-error").hide();
+
+        region_value = $('#region-value').val();
+        if(region_value == '')
+        {
+            $("#region-error").show();
+            return;
+        }
 
         var fileInput = $("#datafilename option:selected").text();
         if (fileInput == '--Select data File--' || fileInput == '')
@@ -148,7 +156,7 @@ function initForm(mode, project_uid, scenario_uid, result_url) {
             }
             if(data.success) {
             PNotify.success({text:data.success})}
-
+            $("#region-error").hide();
 
             displayNetworkDiagram(data.mode, data.filename, result_url );
 
@@ -191,7 +199,7 @@ function initForm(mode, project_uid, scenario_uid, result_url) {
 
 }
 
-function showHideCommodityTechnology(mode, project_uid){
+function showHideCommodityTechnology(mode, project_uid, scenario_uid){
 
 
 
@@ -221,13 +229,13 @@ function showHideCommodityTechnology(mode, project_uid){
             $('#commodity-label').show();
 
 
-            getCTList(mode, type, filename, project_uid);
+            getCTList(mode, type, filename, project_uid, scenario_uid);
         }
     });
 }
 
-function getCTList(mode, type, filename, project_uid){
-    var url = '/project/files/get-ct-list/' + project_uid;
+function getCTList(mode, type, filename, project_uid, scenario_uid){
+    var url = '/project/files/get-ct-list/' + project_uid + '/' + scenario_uid;
 
 
     $.ajax({
@@ -269,6 +277,37 @@ function getCTList(mode, type, filename, project_uid){
     });
 }
 
+function getRegionList(filename, project_uid, scenario_uid){
+    var url = '/project/files/get-region-list/' + project_uid + '/' + scenario_uid;
+
+
+    $.ajax({
+        url: url,
+        dataType: 'json',
+        data: {
+            filename: filename,
+        },
+        success: function(result) {
+            if(result.error)
+            {
+                alert(result.error)
+                return;
+            }
+
+
+            var options = '<option value="">--Select Region value--</option>';
+            $.each(result.data, function(index, obj) {
+                options += "<option value=" + obj + ">" + obj + "</option>";
+            });
+
+
+            $("#region-value").html(options);
+            $("#plot-region-value").html(options);
+
+        }
+    });
+}
+
 function showDownloadButtonWithHelp()
 {
     $("#download-db").removeClass('hidden');
@@ -301,6 +340,7 @@ function initJsMathPlot(project_uid, scenario_uid, datafilename_uid)
     $('#sector-type-error').hide();
     $('.plot-scenario-class').hide();
     $('#plot-scenario-error').hide();
+    $("#plot-region-error").hide();
 
 
 
@@ -321,7 +361,7 @@ function initJsMathPlot(project_uid, scenario_uid, datafilename_uid)
             filename = datafilename_uid;
 
             $.ajax({
-                url: '/project/files/get-ct-list/' + project_uid,
+                url: '/project/files/get-ct-list/' + project_uid + '/' + scenario_uid,
                 dataType: 'json',
                 method: 'get',
                 data: {
@@ -370,10 +410,10 @@ function initJsMathPlot(project_uid, scenario_uid, datafilename_uid)
     });
 
     $('#plot-type-name').change(function(){
-
         filename = $('#db-plot-datafilename').val();
         scenario = $("#plot-scenario-name").val();
         plottype = $(this).val();
+        selected_region = $('#plot-region-value').val();
         if (plottype == null || plottype == "0") {
             $('#plot-type-error').show();
             return
@@ -402,6 +442,7 @@ function initJsMathPlot(project_uid, scenario_uid, datafilename_uid)
                 'filename': filename,
                 'scenario': scenario,
                 'plottype': plottype,
+                'selected_region': selected_region,
             },
             success: function(result) {
                 if(result.error)
@@ -455,6 +496,13 @@ function initJsMathPlot(project_uid, scenario_uid, datafilename_uid)
             $('.sector-name-class').hide();
             return;
         }
+        region_value = $('#plot-region-value').val();
+
+        if(region_value == '')
+        {
+            $("#plot-region-error").show();
+            return;
+        }
 
         if (scenario == "0") {
             $('#plot-scenario-error').show();
@@ -484,7 +532,7 @@ function initJsMathPlot(project_uid, scenario_uid, datafilename_uid)
                     alert(data.error);
                     return;
                 }
-
+                $("#plot-region-error").hide();
                 var tabcontent = '<iframe class="result-frame" src="' + data.data + '" width="1600" height="800" alt="Output Plot"></iframe> ';
 
                 addTabMatPlot(tabcontent);
@@ -505,7 +553,9 @@ function initJs(mode, project_uid, account_id, scenario_uid, result_url, datafil
 
     populateFileList(mode, project_uid, account_id);
 
-    showHideCommodityTechnology(mode, project_uid);
+    showHideCommodityTechnology(mode, project_uid, scenario_uid);
+
+    getRegionList(datafilename_uid, project_uid, scenario_uid)
 
 
 
@@ -524,7 +574,7 @@ function initJs(mode, project_uid, account_id, scenario_uid, result_url, datafil
 
 
         if(mode == "output")
-            getCTList(mode, "scenario", datafilename_uid, project_uid);
+            getCTList(mode, "scenario", datafilename_uid, project_uid, scenario_uid);
 
 
 
@@ -533,7 +583,7 @@ function initJs(mode, project_uid, account_id, scenario_uid, result_url, datafil
 
     $('#scenario-name').change(function(){
 
-        getCTList(mode, "period", $('#datafilename').val(), project_uid );
+        getCTList(mode, "period", $('#datafilename').val(), project_uid, scenario_uid );
     });
 
 }

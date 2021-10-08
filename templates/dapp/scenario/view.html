@@ -17,13 +17,15 @@
                     <div class="card-body">
                         {% if action.mode == "input" or action.mode == "output"%}
                         {% include "scenario/input-output-view.html"%}
+                        {% elif action.mode == 'plot' %}
+                        {% include "scenario/output-plot-view.html"%}
                         {% else %}
                         {% include "scenario/model_run-view.html"%}
                         {% endif%}
 
                         <div style="padding-top:1em; text-align:right">
                             <a id="download-button" class="btn btn-outline-info" download
-                                   href="{% url 'files.download_result' project_uid 'scenarios' 'results' action.uid '.zip' %}"><i class="fas fa-download"></i>
+                                   href="{% url 'files.download_result' project_uid scenario.uid 'scenarios' action.uid 'results' action.uid '.zip' %}"><i class="fas fa-download"></i>
 
                     Result Download</a>
                             </div>
@@ -130,10 +132,10 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-     {% if action.mode == "input" or action.mode == "output"%}
-                        readFile('{% url 'files.download' project_uid 'files' data_file.name %}');
+     {% if action.mode == "input" or action.mode == "output" or action.mode == "plot"%}
+                        readFile('{% url 'files.download' project_uid scenario.uid 'files' data_file.name %}');
                         {% else %}
-                        readFile('{% url 'files.download' project_uid 'files' input_data_file.name %}');
+                        readFile('{% url 'files.download' project_uid scenario.uid 'files' input_data_file.name %}');
                         {% endif%}
     }, false);
 </script>

@@ -4,7 +4,21 @@
 
 {% block body_block %}
 
+<style>
+.isa_info {
+    color: #D8000C;
+    background-color: #fad8d8;
+    margin: 10px 0px;
+    padding:12px;
+    list-style: none;
+}
+.isa_info i{
+    margin:10px 22px;
+    font-size:2em;
+    vertical-align:middle;
 
+}
+</style>
 <section class="content">
     <div class="container-fluid">
 
@@ -18,6 +32,13 @@
             <div class="card-header">
                 <h5 class="card-title">Upload File</h5>
             </div>
+                    {% if messages %}
+                        <ul class="isa_info">
+                            {% for message in messages %}
+                            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}><i class="fa fa-info-circle"></i>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
             <div class="card-body">
                 <form action="" method="post" id="upload-file">
                     {% csrf_token %}
