@@ -53,7 +53,7 @@ def index(request, project_uid, scenario_uid):
 def run_input(request, project_uid, scenario_uid):
     if request.method != 'POST':
         return HttpResponse("Use post method only", status=403)
-
+    selected_region = request.POST.get("region-value", "")
     criterion1 = Q(uid=project_uid)
     criterion2 = Q(account=request.user)
     criterion_sc = Q(uid=scenario_uid)
@@ -125,12 +125,14 @@ def run_input(request, project_uid, scenario_uid):
     image_path = ''
     folder_path = ''
     zip_file_path = ''
+
     try:
         graph_gen = GraphvizDiagramGenerator(
             dbFile=data_file.file.path,
             scenario=scenario,
             outDir=settings.RESULT_DIR + mode,
-            verbose=1
+            verbose=1,
+            region=selected_region
         )
         graph_gen.connect()
         graph_gen.setGraphicOptions(greyFlag=(color_scheme == "grey"))
@@ -139,16 +141,18 @@ def run_input(request, project_uid, scenario_uid):
 
             if commodity_technology_type == 'commodity':
                 folder_path, image_path = graph_gen.createCompleteInputGraph(
+                    region=selected_region,
                     inp_comm=commodity_technology_value,
                     outputFormat=color_format
                 )
             elif commodity_technology_type == 'technology':
                 folder_path, image_path = graph_gen.createCompleteInputGraph(
+                    region=selected_region,
                     inp_tech=commodity_technology_value,
                     outputFormat=color_format
                 )
             else:
-                folder_path, image_path = graph_gen.createCompleteInputGraph(outputFormat=color_format)
+                folder_path, image_path = graph_gen.createCompleteInputGraph(region=selected_region, outputFormat=color_format)
 
         graph_gen.close()
 
@@ -159,7 +163,10 @@ def run_input(request, project_uid, scenario_uid):
             if path.exists(folder_path):
                 print("Zipping: " + folder_path)
                 zip_file_path = folder_path + '_zip'
-                result_download_folder_path = settings.UPLOADED_PROJECTS_DIR + str(project.uid) + '/scenarios/results/' + str(ac.uid)
+                result_download_folder_path = settings.UPLOADED_PROJECTS_DIR + '{0}/{1}/scenarios/{2}/results/{3}'.format(
+                    project.uid,
+                    scenario_obj.uid,
+                    ac.uid, ac.uid)
 
                 if os.path.exists(result_download_folder_path + '.zip'):
                     os.remove(result_download_folder_path + '.zip')

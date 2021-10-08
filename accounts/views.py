@@ -1,3 +1,4 @@
+import stripe
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -6,6 +7,8 @@ from django.shortcuts import render, reverse
 from django.http import HttpResponse, JsonResponse, StreamingHttpResponse, HttpResponseRedirect
 from accounts.models import Account
 from django.contrib import messages
+
+from memberships.models import UserMembership, Membership
 
 
 def registration_view(request):
@@ -16,6 +19,15 @@ def registration_view(request):
             email = request.POST['email']
             password = request.POST['password1']
             user = authenticate(email=email, password=password)
+            user_membership, created = UserMembership.objects.get_or_create(
+                user=user)
+
+            if user_membership.stripe_customer_id is None or user_membership.stripe_customer_id == '':
+                new_customer_id = stripe.Customer.create(email=user.email)
+                free_membership = Membership.objects.get(membership_type='Free')
+                user_membership.stripe_customer_id = new_customer_id['id']
+                user_membership.membership = free_membership
+                user_membership.save()
             if user:
                 login(request, user)
                 return HttpResponseRedirect(reverse("project.index"))

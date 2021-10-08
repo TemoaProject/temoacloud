@@ -10,6 +10,8 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.core.files import File
 from django.db import transaction
+from dapp.models import Plan
+from memberships.models import UserMembership, Membership
 
 # System
 
@@ -31,6 +33,8 @@ def index(request, project_uid, scenario_uid):
     criterion3 = Q(project=project)
     criterion4 = Q(uid=scenario_uid)
     scenario = get_object_or_404(Scenario, criterion2 & criterion3 & criterion4)
+    user_plan = UserMembership.objects.get(user=request.user)
+    plan = Plan.objects.get(membership=user_plan.membership)
 
     criterion5 = Q(scenario=scenario)
 
@@ -42,6 +46,7 @@ def index(request, project_uid, scenario_uid):
         'mode': 'model',
         'data_file_uid': data_file.uid,
         'scenario': scenario,
+        'membership_type': plan.membership,
     }
 
     if request.method == 'POST':
@@ -167,13 +172,13 @@ def running(request, project_uid, scenario_uid, scenario):
     # This function will handle
     # TODO try catch handling
 
-    generated_folder_path = settings.RESULT_DIR + "db_io/" + os.path.splitext(input_file_uid)[0] + "_" + action_name + "_model"
+    generated_folder_path = settings.RESULT_DIR + "db_io/" + os.path.splitext(input_data_file.name)[0] + "_" + scenario + "_model"
 
     if path.exists(generated_folder_path):
         shutil.rmtree(generated_folder_path)
 
     yield "<div>Starting Model Run \n"
-    for k in run_model(request, action_name, input_data_file, output_data_file):
+    for k in run_model(request, scenario, input_data_file, output_data_file):
         yield k
 
     yield "Model Run Complete</div>"
@@ -187,11 +192,10 @@ def running(request, project_uid, scenario_uid, scenario):
         output_dirname = 'db_io/db_io_' + random
         # print "Zipping: " + settings.BASE_DIR + "/" + generatedfolderpath + " | " + output_dirname
 
-        result_download_folder_path = settings.UPLOADED_PROJECTS_DIR + str(project.uid) + '/scenarios/results/' + str(ac.uid)
-
-        if os.path.exists(result_download_folder_path + '.zip'):
-            os.remove(result_download_folder_path + '.zip')
-        shutil.make_archive(result_download_folder_path, 'zip', generated_folder_path)
+        result_download_folder_path = settings.UPLOADED_PROJECTS_DIR + '{0}/{1}/scenarios/{2}/results/{3}'.format(
+                    project.uid,
+                    scenario_obj.uid,
+                    ac.uid, ac.uid)
 
         if path.exists(generated_folder_path):
             shutil.make_archive(settings.RESULT_DIR + output_dirname, 'zip', generated_folder_path)
@@ -201,6 +205,10 @@ def running(request, project_uid, scenario_uid, scenario):
 
         else:
             yield "Failed to generate zip file"
+
+        if os.path.exists(result_download_folder_path + '.zip'):
+            os.remove(result_download_folder_path + '.zip')
+        shutil.make_archive(result_download_folder_path, 'zip', generated_folder_path)
 
     # except:
     #  msg = 'An error occurred. Please try again.'

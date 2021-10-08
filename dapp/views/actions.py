@@ -1,4 +1,5 @@
-from dapp.models import Scenario, Project, InputDataRun, OutputDataRun, CommTech, InputOutputDataFile, ModelRun, Actions
+from dapp.models import Scenario, Project, InputDataRun, OutputDataRun, CommTech, InputOutputDataFile, ModelRun, \
+    Actions, OutputPlot
 
 from django.shortcuts import  get_object_or_404, render
 from django.db.models import Q
@@ -6,6 +7,10 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
 from dapp.views import files
+
+from django.conf import settings
+from os import path
+import shutil
 
 
 @login_required
@@ -30,7 +35,7 @@ def index(request, project_uid, scenario_uid):
 
 
 @login_required()
-def delete(request, project_uid, scenario_uid, action_uid):
+def delete(request, project_uid, scenario_uid, action_base, action_uid):
 
     criterion1 = Q(uid=action_uid)
     criterion2 = Q(account=request.user)
@@ -39,6 +44,11 @@ def delete(request, project_uid, scenario_uid, action_uid):
     s = action.delete()
 
     if s:
+        action_folder_path = settings.UPLOADED_PROJECTS_DIR + '{0}/{1}/{2}/{3}'.format(project_uid,
+                                                                                       scenario_uid,
+                                                                                       action_base, action_uid)
+        if path.exists(action_folder_path):
+            shutil.rmtree(action_folder_path)
         return JsonResponse({'message': 'Successfully deleted'})
 
     return JsonResponse({'error': 'Failed to delete'})
@@ -57,6 +67,8 @@ def view(request, project_uid, scenario_uid, action_uid):
         class_name = InputDataRun
     elif action.mode == 'output':
         class_name = OutputDataRun
+    elif action.mode == 'plot':
+        class_name = OutputPlot
     else:
         class_name = ModelRun
     input_data = get_object_or_404(class_name, criterion2 & criterion3)
@@ -70,6 +82,15 @@ def view(request, project_uid, scenario_uid, action_uid):
                                                       'scenario': scenario,
                                                       'input_data': input_data, 'comm_tech_data': comm_tech_data,
                                                       'data_file': io_data_file, 'files': files})
+    elif action.mode == 'plot':
+        output_data = input_data
+        criterion5 = Q(id=input_data.input_file_id)
+        io_data_file = get_object_or_404(InputOutputDataFile, criterion5)
+        return render(request, 'scenario/view.html', {'action': action, 'project_uid': project_uid,
+                                                      'scenario': scenario,
+                                                      'output_data': output_data,
+                                                      'data_file': io_data_file, 'files': files})
+
     else:
         model_run = input_data
         criterion1 = Q(id=model_run.input_id)

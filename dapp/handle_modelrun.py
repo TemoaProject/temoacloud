@@ -98,7 +98,7 @@ def run_model(request, scenario, input_data_file, output_data_file):
             values["--neos"] = ""
 
         values["--solver"] = request.POST.get("solver", "")
-        values["--path_to_db_io"] = settings.RESULT_DIR + "db_io"
+        values["--path_to_data"] = settings.RESULT_DIR + "db_io"
         values["--path_to_logs"] = settings.RESULT_DIR + "debug_logs"
 
         runoption = request.POST.get("runoption", "")

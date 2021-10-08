@@ -1,4 +1,6 @@
 # Django
+from django.contrib import messages
+
 from dapp.models import DataFile, Project
 from accounts.models import Account
 from django.conf import settings
@@ -6,6 +8,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import uuid
 from django.core import serializers
+from dapp.models import Scenario, Plan
+from memberships.models import UserMembership
 from django.template.defaultfilters import slugify
 
 # System
@@ -14,7 +18,7 @@ import os
 
 # Custom / Thirdparty
 from dapp.views.customtags.custom_tags import check_name
-from thirdparty.temoa.temoa_model import get_comm_tech
+from thirdparty.temoa.temoa_model import get_comm_tech, get_region
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
@@ -46,12 +50,18 @@ def view(request, project_uid, file_uid):
 
 
 @login_required
-def download(request, project_uid, file_type, file_name):
-    return render(request, '/' + settings.PUBLIC_URL + 'projects/' + project_uid + '/' + file_type + '/' + file_name, {})
+def download(request, project_uid, scenario_uid, file_type, file_name):
+    return render(request,
+                  '/' + settings.PUBLIC_URL + 'projects/' + project_uid + '/' +
+                  scenario_uid + '/' + file_type + '/' + file_name, {})
 
 @login_required
-def download_result(request, project_uid, scenario_base, result_base, action_uid, file_ext):
-    return render(request, '/' + settings.PUBLIC_URL + 'projectss/' + project_uid + '/' + scenario_base + '/' + result_base + '/' + action_uid + '' + file_ext, {})
+def download_result(request, project_uid, scenario_uid, scenario_base, action_uid_base, result_base, action_uid, file_ext):
+    return render(request,
+                  '/' + settings.PUBLIC_URL + 'projects/' + project_uid + '/' +
+                  scenario_uid + '/' + scenario_base + '/' + action_uid_base +
+                  '/' + result_base + '/' + action_uid + '' + file_ext,
+                  {})
 
 
 @login_required
@@ -68,11 +78,15 @@ def delete(request, project_uid, file_uid):
 def upload(request, project_uid):
     criterion1 = Q(uid=project_uid)
     criterion2 = Q(account=request.user)
-
+    user_plan = UserMembership.objects.get(user=request.user)
     project = get_object_or_404(Project, criterion1 & criterion2)
-
+    plan = Plan.objects.get(membership=user_plan.membership)
     criterion3 = Q(project_uid=project_uid)
     # files = DataFile.objects.filter(criterion1 & criterion2 & criterion3)
+    user_number_of_scenarios = len(Scenario.objects.filter(criterion2))
+    if plan.number_of_scenarios.isnumeric():
+        if str(user_number_of_scenarios) >= plan.number_of_scenarios:
+            messages.success(request, 'Please upgrade your subscription plan')
     if request.method == 'POST':
 
         scenario_name = str(request.POST.get("scenario_name", ""))
@@ -107,7 +121,7 @@ def upload(request, project_uid):
                  scenario=scenario,
             )
 
-            if request.FILES['file'].size > MAX_FILE_SIZE:
+            if request.FILES['file'].size > plan.file_size:
                 return JsonResponse({'error': 'File too big'}, status=403)
             else:
                 data_file.save()
@@ -193,7 +207,7 @@ def get_file_list(request, project_uid):
 
 
 @login_required
-def get_ct_list(request, project_uid):
+def get_ct_list(request, project_uid, scenario_uid):
     error = ''
     data = {}
 
@@ -214,10 +228,10 @@ def get_ct_list(request, project_uid):
     project = get_object_or_404(Project, criterion1 & criterion2)
 
     if mode == "output":
-        input_dict = {"--input": settings.UPLOADED_PROJECTS_DIR + str(project.uid) + '/files/' + filename}
+        input_dict = {"--input": settings.UPLOADED_PROJECTS_DIR + str(project.uid) + '/' + str(scenario_uid) + '/files/' + filename}
         _, fext = os.path.splitext(filename)
     else:
-        input_dict = {"--input": settings.UPLOADED_PROJECTS_DIR + str(project.uid) + '/files/' + filename}
+        input_dict = {"--input": settings.UPLOADED_PROJECTS_DIR + str(project.uid) + '/' + str(scenario_uid) + '/files/' + filename}
         _, fext = os.path.splitext(filename)
 
     if mode == "output" and fext == '.dat':
@@ -238,6 +252,27 @@ def get_ct_list(request, project_uid):
 
     try:
         data = get_comm_tech.get_info(input_dict)
+    except Exception as e:
+        error = 'An error occurred. Please try again.'
+
+    return JsonResponse({"data": data, "error": error})
+    # return JsonResponse( {"result" : msg , "message" : msg } )
+
+
+@login_required
+def get_region_list(request, project_uid, scenario_uid):
+    error = ''
+    data = {}
+
+    file_uid = request.GET.get('filename')
+    criterion_data_file1 = Q(account=request.user)
+    criterion_data_file2 = Q(uid=file_uid)
+    data_file = get_object_or_404(DataFile, criterion_data_file1 & criterion_data_file2)
+    filename = data_file.name
+    file = settings.UPLOADED_PROJECTS_DIR + str(project_uid) + '/' + str(scenario_uid) + '/files/' + filename
+
+    try:
+        data = get_region.get_region_list(file)
     except Exception as e:
         error = 'An error occurred. Please try again.'
 

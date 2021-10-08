@@ -1,14 +1,14 @@
 from __future__ import unicode_literals
 from django.contrib.auth import get_user_model
-# from django.db import models
+from django.db import models
 from datetime import datetime
 from uuid import uuid4
 from django.conf import settings
-
+from memberships.models import Membership
 from django.utils.timezone import now
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db.models import ForeignKey, Model, CASCADE
-from django.db.models import BooleanField, DateTimeField, TextField, CharField, FileField, UUIDField
+from django.db.models import BooleanField, DateTimeField, TextField, CharField, FileField, UUIDField, IntegerField
 
 from accounts.models import Account, MyAccountManager
 
@@ -17,17 +17,22 @@ MODE_CHOICES = (
         ('INPUT', 'Input'),
         ('OUTPUT', 'Output'),
         ('Model', 'Model'),
+        ('PLOT', 'plot'),
+
 )
 
 
-# /uploads/projects/project_uid/scenarios/filename
+# /uploads/projects/project_uid/scenario_uid/scenarios/action_uid/filename
 def io_upload_file_to(instance, filename):
-    return settings.UPLOADED_PROJECTS_DIR + '{0}/scenarios/{1}'.format(instance.project.uid, filename)
+    return settings.UPLOADED_PROJECTS_DIR + '{0}/{1}/scenarios/{2}/{3}'.format(instance.project.uid,
+                                                                               instance.scenario.uid,
+                                                                               instance.actions.uid, filename)
 
 
-# /uploads/projects/project_uid/files/filename
+# /uploads/projects/project_uid/scenario_uid/files/filename
 def upload_file_to(instance, filename):
-    return settings.UPLOADED_PROJECTS_DIR + '{0}/files/{1}'.format(instance.project.uid, filename)
+    return settings.UPLOADED_PROJECTS_DIR + '{0}/{1}/files/{2}'.format(instance.project.uid, instance.scenario.uid,
+                                                                       filename)
 
 
 class Project(Model):
@@ -189,3 +194,31 @@ class OutputDataRun(Model):
 
     created = DateTimeField(default=now)
     updated = DateTimeField(default=now)
+
+
+class Plan(Model):
+    membership = models.ForeignKey(
+        Membership, on_delete=models.CASCADE, null=True)
+    number_of_projects = CharField(max_length=500)
+    number_of_scenarios = CharField(max_length=500)
+
+    price = CharField(max_length=500)
+    file_size = IntegerField()
+    support = CharField(max_length=500)
+    solver = CharField(max_length=500)
+
+    created = DateTimeField(default=now)
+    updated = DateTimeField(default=now)
+
+
+class OutputPlot(Model):
+    uid = UUIDField(default=uuid4)
+    region = CharField(max_length=500)
+    selected_scenario = CharField(max_length=500)
+    plot_type = CharField(max_length=500)
+    sector = CharField(max_length=500)
+    actions = ForeignKey(Actions, on_delete=CASCADE)
+    project = ForeignKey(Project, on_delete=CASCADE)
+    account = ForeignKey(Account, on_delete=CASCADE)
+    scenario = ForeignKey(Scenario, on_delete=CASCADE)
+    input_file = ForeignKey(InputOutputDataFile, on_delete=CASCADE, null=True)

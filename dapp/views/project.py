@@ -5,8 +5,14 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db.models import Q
 # APP
-from dapp.models import Project, Scenario
+from dapp.models import Project, Scenario, Plan
+from memberships.models import UserMembership
 from dapp.forms.project import ProjectForm
+from django.contrib import messages
+from django.conf import settings
+
+from os import path
+import shutil
 
 
 @login_required()
@@ -49,7 +55,14 @@ def add(request):
 
         if form.is_valid():
             form.instance.account = request.user
-            form.save()
+            user_plan = UserMembership.objects.get(user=request.user)
+            plan = Plan.objects.get(membership=user_plan.membership)
+            user_number_of_projects = len(Project.objects.filter(account=request.user))
+            if plan.number_of_projects.isnumeric():
+                if str(user_number_of_projects) >= plan.number_of_projects:
+                    messages.warning(request, 'Please upgrade your subscription plan')
+                else:
+                    form.save()
 
             return redirect('project.index')
     else:
@@ -98,6 +111,10 @@ def delete(request, project_uid):
     p = project.delete()
 
     if p:
+        project_folder_path = settings.UPLOADED_PROJECTS_DIR + '{0}'.format(project_uid)
+        if path.exists(project_folder_path):
+            shutil.rmtree(project_folder_path)
+
         return JsonResponse({'message': 'Successfully deleted'})
 
     return JsonResponse({'error': 'Failed to delete'})

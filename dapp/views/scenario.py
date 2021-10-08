@@ -8,6 +8,11 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 
 from dapp.models import Scenario, Project, DataFile, InputDataRun, OutputDataRun, CommTech, InputOutputDataFile, ModelRun, Actions
 from dapp.views import files
+
+from django.conf import settings
+
+from os import path
+import shutil
 # System
 
 # Custom / Thirdparty
@@ -68,6 +73,9 @@ def delete(request, project_uid, scenario_uid):
     s = scenario.delete()
 
     if s:
+        scenario_folder_path = settings.UPLOADED_PROJECTS_DIR + '{0}/{1}'.format(project_uid, scenario_uid)
+        if path.exists(scenario_folder_path):
+            shutil.rmtree(scenario_folder_path)
         return JsonResponse({'message': 'Successfully deleted'})
 
     return JsonResponse({'error': 'Failed to delete'})
