@@ -3,11 +3,10 @@ from django.conf.urls import url
 from django.urls import path
 from dapp.views import project, model_run, scenario, files, input_data, output_data, dashboard, actions
 
-
 urlpatterns = [
 
     # SITE general URLS
-    url('^$', dashboard.index, name='index'),
+    url('^$', project.index, name='index'),
 
     # FILES
 
@@ -17,9 +16,14 @@ urlpatterns = [
     path('project/files/upload/<uuid:project_uid>', files.upload, name='files.upload'),
     path('project/files/file-upload/<uuid:project_uid>', files.file_upload, name='files.file_upload'),
     path('project/files/get-file-list/<uuid:project_uid>', files.get_file_list, name='files.get_file_list'),
-    path('project/files/get-ct-list/<uuid:project_uid>', files.get_ct_list, name='files.get_ct_list'),
-    path(settings.PUBLIC_URL + 'projects/<uuid:project_uid>/<str:type>/<str:file_name>', files.download, name='files.download'),
-    path(settings.PUBLIC_URL + 'projects/<uuid:project_uid>/<str:scenario_base>/<str:result_base>/<uuid:action_uid><str:file_ext>', files.download_result, name='files.download_result'),
+    path('project/files/get-ct-list/<uuid:project_uid>/<uuid:scenario_uid>', files.get_ct_list, name='files.get_ct_list'),
+    path('project/files/get-region-list/<uuid:project_uid>/<uuid:scenario_uid>', files.get_region_list,
+         name='files.get_region_list'),
+    path(settings.PUBLIC_URL + 'projects/<uuid:project_uid>/<uuid:scenario_uid>/<str:type>/<str:file_name>',
+         files.download, name='files.download'),
+    path(
+        settings.PUBLIC_URL + 'projects/<uuid:project_uid>/<uuid:scenario_uid>/<str:scenario_base>/<uuid:action_uid_base>/<str:result_base>/<uuid:action_uid><str:file_ext>',
+        files.download_result, name='files.download_result'),
     # Add more like delete files, download files etc
 
     # RUN INPUT
@@ -32,7 +36,8 @@ urlpatterns = [
     # path('^/project/model-run/post/<uuid:project_uid>', model_run.run, name='model'),
 
     # RUN OUTPUT
-    path('project/output-data/index/<uuid:project_uid>/<uuid:scenario_uid>', output_data.index, name='output_data.index'),
+    path('project/output-data/index/<uuid:project_uid>/<uuid:scenario_uid>', output_data.index,
+         name='output_data.index'),
     path('project/output-data/run-output/<uuid:project_uid>/<uuid:scenario_uid>',
          output_data.run_output, name='output_data.run_output'),
     path('project/output-data/generate-plot/<uuid:project_uid>/<uuid:scenario_uid>',
@@ -58,9 +63,8 @@ urlpatterns = [
     # ACTIONS
     path('project/scenario/<uuid:project_uid>/<uuid:scenario_uid>/<uuid:action_uid>',
          actions.index, name='actions.index'),
-    path('project/scenario/delete/<uuid:project_uid>/<uuid:scenario_uid>/<uuid:action_uid>',
+    path('project/scenario/delete/<uuid:project_uid>/<uuid:scenario_uid>/<str:action_base>/<uuid:action_uid>',
          actions.delete, name='actions.delete'),
     path('project/scenario/view/<uuid:project_uid>/<uuid:scenario_uid>/<uuid:action_uid>',
          actions.view, name='actions.view'),
 ]
-
