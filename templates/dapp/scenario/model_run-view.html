@@ -1,0 +1,49 @@
+{% load custom_tags %}
+<ul class="list-group list-group-bordered">
+                  <li class="list-group-item">
+                    <b>Scenario Name</b> <p class="float-right">{{model_run.scenario_name}}</p>
+                  </li>
+                  <li class="list-group-item">
+                    <b>Create Spreadsheet Output</b> <p class="float-right">{{model_run.create_spreadsheet}}</p>
+                  </li>
+                  <li class="list-group-item">
+                    <b>Create Text-file Output</b> <p class="float-right">{{model_run.create_text_file_output}}</p>
+                  </li>
+                  <li class="list-group-item">
+                    <b>Generate LP File</b> <p class="float-right">{{model_run.generate_lp_file}}</p>
+                  </li>
+                  <li class="list-group-item">
+                    <b>Solver</b> <p class="float-right">{{model_run.solver}}</p>
+                  </li>
+                  <li class="list-group-item">
+                    <b>Run Option</b> <p class="float-right">{{model_run.run_option}}</p>
+                  </li>
+                  <li class="list-group-item">
+                    <b>Custom flags</b> <p class="float-right">{{model_run.custom_flags}}</p>
+                  </li>
+                   {% if model_run.run_option == "Uncertainty-Analysis"%}
+                  <li class="list-group-item">
+                    <b>MGA Slack Value</b> <p class="float-right">{{model_run.mga_slack_value}}</p>
+                  </li>
+                  <li class="list-group-item">
+                    <b>Number of MGA Iterations</b> <p class="float-right">{{model_run.number_of_mga_iterations}}</p>
+                  </li>
+                   <li class="list-group-item">
+                    <b>MGA Weighting Method</b> <p class="float-right">{{model_run.mga_weighting_method}}</p>
+                  </li>
+                    {% endif%}
+                  <li class="list-group-item">
+                    <b>Uploaded Input File</b> <p class="float-right">{{input_data_file.name | filer_tag}}<a class="ml-2 btn btn-outline-primary px-2 py-1"
+                                   download
+                                   href="{% url 'files.download' project_uid 'scenarios' input_data_file.name %} "> <!--fix me-->
+                                    <i class="fa fa-download" aria-hidden="true"></i>
+                                </a></p>
+                  </li>
+                  <li class="list-group-item">
+                    <b>Uploaded Output File</b> <p class="float-right">{{output_data_file.name | filer_tag}}<a class="ml-2 btn btn-outline-primary px-2 py-1"
+                                   download
+                                   href="{% url 'files.download' project_uid 'scenarios' output_data_file.name %}"> <!--fix me-->
+                                    <i class="fa fa-download" aria-hidden="true"></i>
+                                </a></p>
+                  </li>
+                </ul>

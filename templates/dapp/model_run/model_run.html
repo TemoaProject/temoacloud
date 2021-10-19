@@ -1,0 +1,532 @@
+{% extends 'layout.html' %} {% block body_block %}
+<section class="content">
+        <div class="container-fluid">
+            <form id="model-run-form"
+                  action="{% url 'model_run.index' project.uid scenario.uid %}"
+                  method="POST"
+                  class="form-horizontal"
+                  enctype="multipart/form-data"
+                  role="form">
+                    {% csrf_token %}
+            <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-12">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="{% url 'project.view' project.uid%}">Scenarios</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'scenario.index' project.uid scenario.uid%}">Actions</a></li>
+              <li class="breadcrumb-item active">{{title}}</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+                <div class="container-fluid">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title"><strong>Model Run</strong>- Project: <strong>{{project.name}}</strong> / Scenario: <strong>{{scenario.name}}</strong></h5>
+                    <input id="inputdatafilename" name="inputdatafilename" type="hidden" value="{{data_file_uid}}"/>
+                    <input id="outputdatafilename" name="outputdatafilename" type="hidden" value="{{data_file_uid}}"/>
+                </div>
+                <div class="card-body">
+                    <!--<div class="form-group no-margin-bottom row">
+                        <label class="col-sm-4 control-label no-padding-right">Please Select Your Model Input </label>
+                        <div class="col-sm-5">
+                            <div id="inputdropArea">
+                                <select class="form-control" id="inputdatafilename" name="inputdatafilename"></select>
+                            </div>
+                            <div class="mark-error" id="input-file-error">Error: Please select input data file</div>
+                        </div>
+                        <div class="col-sm-1 text-left ">
+                            <span data-rel="popover"
+                                  data-trigger="hover"
+                                  data-placement="right"
+                                  data-content="To run Temoa, you must select an input dataset from your 'data' folder. You must either select a relational database (sqlite) or a text (DAT) file.."
+                                  title="Input Data Textbox">
+                                <i class="fas fa-question-circle text-info mt-2"></i>
+                            </span>
+                        </div>
+                        <div class="col-sm-2 text-left ">
+                            <span class="hidden" data-rel="popover" data-trigger="hover" data-placement="right"
+                                  data-content="Download updated sqlite database file" title="Download Sqlite file">
+                                <i class="fas fa-question-circle mt-2 text-info"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-3 no-padding-right">&nbsp;</div>
+                        <div class="control-label col-sm-4 no-padding-right" style="text-align:left">
+
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 control-label no-padding-right"> Please Select Your Model Output </label>
+                        <div class="col-sm-5">
+                            <div id="outputdropArea">
+                                <select class="form-control" id="outputdatafilename" name="outputdatafilename"
+                                        data-placeholder=""></select>
+                            </div>
+
+                            <div class="mark-error" id="output-file-error">Error: Please select output data file</div>
+                        </div>
+                        <div class="col-sm-1 text-left ">
+                            <span data-rel="popover"
+                                  data-trigger="hover"
+                                  data-placement="right"
+                                  data-content="Regardless of whether Temoa is run with an input database or text (DAT) file, model outputs can either be stored in a text file or in a database. Users who opt to run with database input will typically store the model outputs in the same database, which will include a set of output tables that track model outputs by scenario."
+                                  title="Output Input Textbox">
+                                <i class="fas fa-question-circle mt-2 text-info"></i>
+                            </span>
+                        </div>
+
+                        <div class="col-sm-1 text-left ">
+                            <span id="download-ouput-button-help"
+                                  class="hidden"
+                                  data-rel="popover"
+                                  data-trigger="hover"
+                                  data-placement="right"
+                                  data-content="Download updated sqlite database file"
+                                  title="Download Sqlite file">
+                                <i class="fas fa-question-circle mt-2 text-info"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-3 no-padding-right">&nbsp;</div>
+                        <div class="control-label col-sm-4 no-padding-right" style="text-align:left">
+
+                        </div>
+                    </div>-->
+
+                    <!--<div class="form-group row">
+                        <label class="col-sm-4 control-label no-padding-right"> Scenario Name </label>
+                        <div class="col-sm-5">
+                            <input name="scenarioname" type="text" placeholder="Scenario Name" class="form-control"/>
+
+                            <div class="mark-error" id="scenarioname-error">Error: Please enter scenario name</div>
+                        </div>
+                        <div class="col-sm-3 text-left ">
+                            <span data-rel="popover"
+                                  data-trigger="hover"
+                                  data-placement="right"
+                                  data-content="If running the model with an input database, please specify a scenario name. Model results are stored in the provided database. The specified name will be used to track scenario-specific results within the database output tables."
+                                  title="Scenario Name Textbox">
+                                <i class="fas fa-question-circle mt-2 text-info"></i>
+                            </span>
+                        </div>
+                    </div>-->
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 control-label no-padding-right"> Create Spreadsheet Output </label>
+                        <div class="col-sm-5">
+                            <div class="control-group">
+                                <label style="margin-right:20px;">
+                                    <input name="createspreadsheetoption" type="radio" checked="checked" value="yes"
+                                           class="ace">
+                                    <span class="lbl"> Yes </span> </label>
+                                <label>
+                                    <input name="createspreadsheetoption" type="radio" value="" class="ace">
+                                    <span class="lbl"> No </span> </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 control-label no-padding-right"> Create Text-file Output </label>
+                        <div class="col-sm-5">
+                            <div class="control-group">
+                                <label style="margin-right:20px;">
+                                    <input name="createtextfileoption" type="radio" checked="checked" value="yes"
+                                           class="ace">
+                                    <span class="lbl"> Yes </span> </label>
+                                <label>
+                                    <input name="createtextfileoption" type="radio" value="" class="ace">
+                                    <span class="lbl"> No </span> </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 control-label no-padding-right"> Generate LP File </label>
+                        <div class="col-sm-5">
+                            <div class="control-group">
+                                <label style="margin-right:20px;">
+                                    <input name="generatelpfileoption" type="radio" checked="checked" value="yes"
+                                           class="ace">
+                                    <span class="lbl"> Yes</span> </label>
+                                <label>
+                                    <input name="generatelpfileoption" type="radio" value="" class="ace">
+                                    <span class="lbl"> No</span> </label>
+                                <span data-rel="popover" data-trigger="hover" data-placement="right"
+                                      data-content="If 'yes' is chosen for this option, pyomo will save a copy of the LP file that is sent to the solver. The LP file represents the instantiated model, and applies the input data to calculate objective function and constraint coefficients. Viewing the LP file is often useful for debugging purposes."
+                                      title="Lp Radio Button" style="margin-left:20px;"><i
+                                        class="fas fa-question-circle mt-2 text-info"></i></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 control-label no-padding-right"> Server </label>
+                        <div class="col-sm-5">
+                            <label>
+                                <input type="checkbox" value="neos" id="chkneosserver" name="chkneosserver" class="ace">
+                                <span>Neos</span>
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 control-label no-padding-right"> Solver </label>
+                        <div class="col-sm-5">
+                            <!--                  <input name="solvern" value="glpk" id="tags" type="text" class="form-control" placeholder="Solver Name" />-->
+                            <select class="form-control" id="solver" name="solver"
+                                    data-placeholder="Enter values like glpk, cplex etc...">
+                                <!--option value="glpk">GLPK</option-->
+                                <!--option value="cplex">CPLEX</option-->
+                                <option value="cbc">Coin-OR Cbc</option>
+                            </select>
+
+
+                            <div class="mark-error" id="solver-error">Error: Please enter solver</div>
+                        </div>
+                        <div class="col-sm-3 text-left  ">
+                            <span data-rel="popover" data-trigger="hover"
+                                  data-placement="right"
+                                  data-content="Choose the solver you wish to employ for this model run. Note that the solver must be installed and must be specified in your system path. Common options include GLPK, CPLEX, and Gurobi."
+                                  title="Solver Textbox">
+                                <i class="fas fa-question-circle mt-2 text-info"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 control-label no-padding-right"> Run Option </label>
+                        <div class="col-sm-5">
+                            <div class="space-2"></div>
+                            <div class="control-group">
+                                <label style="margin-right:20px;">
+                                    <input name="runoption" value="Single-Run" type="radio" checked="checked"
+                                           class="runoption ace">
+                                    <span class="lbl"> Single Run</span>
+                                </label>
+                                <label>
+                                    <input name="runoption" value="Uncertainty-Analysis" type="radio"
+                                           class="runoption ace">
+                                    <span class="lbl"> Uncertainty Analysis </span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 control-label no-padding-right"> Custom flags </label>
+                        <div class="col-sm-5">
+                            <input name="custom_flags" type="text" placeholder="Custom flags" class="form-control"/>
+                        </div>
+                        <div class="col-sm-3 text-left ">
+                            <span data-rel="popover" data-trigger="hover"
+                                  data-placement="right"
+                                  data-content="Format: flag1=value, flag2=value, flag3, flag4=value"
+                                  title="Custom flags">
+                                <i class="fas fa-question-circle mt-2 text-info"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                    </div>
+            <div class="row">
+            <div class="card col-lg-12 hidden UncertaintyAnalysisOptions">
+                <div class="card-header">
+                    <h5 class="card-title">Uncertainty Analysis Options</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label "> </label>
+                        <div class="col-sm-6">
+                            <div class="control-group width-95">
+                                <div class="row">
+                                    <div class="col-sm-12 row mb-2">
+                                        <label class="col-md-8">
+                                            <input name="mode" type="hidden" value="{{mode}}"/>
+                                            <input name="form-field-radio" checked="checked" type="radio" class="ace">
+                                            <span class="lbl"> Modeling to Generate  Alternatives </span>
+                                        </label>
+                                        <div class="col-md-4 d-flex justify-content-end">
+                                            <a href="#" class="btn btn-info pull-right hidden " style="margin-right:30px;">
+                                                Configure</a>
+                                            <span class="pull-right hidden" data-rel="popover" data-trigger="hover"
+                                                  data-placement="right" data-content="More details."
+                                                  title="Popover on hover">
+                                                <i class="fas fa-question-circle mt-2 text-info"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="space-4"></div>
+                                <div class="row hidden">
+                                    <div class="col-sm-12 row mb-2">
+                                        <label class="col-md-8">
+                                            <input name="form-field-radio" type="radio" class="ace">
+                                            <span class="lbl"> Stochastic Optimization </span>
+                                        </label>
+                                        <div class="col-md-4 d-flex justify-content-end">
+                                            <a href="#" class="btn btn-info pull-right " style="margin-right:30px;">
+                                                Configure</a>
+                                            <span class="pull-right" data-rel="popover" data-trigger="hover"
+                                                  data-placement="right" data-content="More details."
+                                                  title="Popover on hover">
+                                                <i class="fas fa-question-circle mt-2 text-info"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="space-4"></div>
+                                <div class="row  hidden">
+                                    <div class="col-sm-12 row mb-2">
+                                        <label class="col-md-8">
+                                            <input name="form-field-radio" type="radio" class="ace">
+                                            <span class="lbl"> Parametric Sensitivity Analysis </span> </label>
+                                        <div class="col-md-4 d-flex justify-content-end">
+                                            <a href="#" class="btn btn-info pull-right " style="margin-right:30px;">
+                                                Configure</a>
+                                            <span class="pull-right" data-rel="popover" data-trigger="hover"
+                                                  data-placement="right" data-content="More details."
+                                                  title="Popover on hover"><i
+                                                    class="fas fa-question-circle mt-2 text-info"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="space-8"></div>
+                                <div class="row">
+                                    <span class="col-xs-6"> </span>
+                                    <span class="col-xs-6">
+                                         <span class="pull-right inline"> </span>
+                                         <span class="btn-toolbar inline middle no-margin"></span>
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div class="row">
+            <div class="card col-lg-12 hidden MGAConfiguration">
+                <div class="card-header">
+                    <h5 class="card-title">MGA Configuration</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-group row">
+                        <label class="col-sm-4 control-label no-padding-right"> MGA Slack Value </label>
+                        <div class="col-sm-5">
+                            <input type="text" placeholder="" name="MGASlackValue" class="form-control"/>
+                        </div>
+                        <div class="col-sm-3 text-left"> <span data-rel="popover" data-trigger="hover"
+                                                               data-placement="right" data-content="Modeling to generate alternative (MGA) is a technique that can produce alternative solutions that are close to cost optimal but very different in decision space. For more information on MGA applied to energy system models, please see the following publications:
+                                          DeCarolis, J. F. (2011). Using modeling to generate alternatives (MGA) to expand our thinking on energy futures. Energy Economics, 33(2), 145-152.
+                                          DeCarolis, J. F., Babaee, S., Li, B., & Kanungo, S. (2015). Modelling to generate alternatives with an energy system optimization model. Environmental Modelling & Software."
+                                                               title="MGA Textbox"><i
+                                class="fas fa-question-circle mt-2 text-info"></i></span></div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 control-label no-padding-right">Number of MGA Iterations </label>
+                        <div class="col-sm-5">
+                            <input type="text" placeholder="" name="NumberofMGAIterations" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 control-label no-padding-right"> MGA Weighting Method </label>
+                        <div class="col-sm-5">
+                            <select class="form-control" name="MGAWeightingMethod">
+                                <option value="integer">integer</option>
+                                <option value="normalized">normalized</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div class="row">
+            <div class="card col-lg-12 hidden">
+                <div class="card-header">
+                    <h5 class="card-title">Stochastic Optimization</h5>
+                </div>
+                <div class="card-body">
+                    <h4 class="text-info clearfix mb-4">Problem Formulation</h4>
+                    <div class="form-group row">
+                        <label class="col-sm-4 control-label no-padding-right"> Random Variable </label>
+                        <div class="col-sm-5">
+                            <input type="text" placeholder="" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 control-label no-padding-right"> Number of Branches</label>
+                        <div class="col-sm-5">
+                            <input type="text" placeholder="" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 control-label no-padding-right"> Problem Defination</label>
+                        <div class="col-sm-5">
+                            <input type="text" placeholder="" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 control-label no-padding-right"> Number of Stages </label>
+                        <div class="col-sm-5">
+                            <input type="text" placeholder="" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 control-label no-padding-right"> Interstage Structure </label>
+                        <div class="col-sm-5">
+                            <input type="text" placeholder="" class="form-control"/>
+                        </div>
+                    </div>
+                    <h4 class="text-info clearfix mb-4">Solution Options</h4>
+                    <div class="form-group row">
+                        <label class="col-sm-4 control-label no-padding-right text-center"> Solution Methods </label>
+                        <div class="col-sm-6">
+                            <div class="control-group">
+                                <label style="margin-right:20px;">
+                                    <input name="form-field-radio1" type="radio" class="ace">
+                                    <span class="lbl"> Extensive Formulation</span> </label>
+                                <label style="margin-right:20px;">
+                                    <input name="form-field-radio1" type="radio" class="ace">
+                                    <span class="lbl"> Progressive Hedging </span> </label>
+                                <label style="margin-right:20px;">
+                                    <input name="form-field-radio1" type="radio" class="ace">
+                                    <span class="lbl">SBDA </span> </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 control-label no-padding-right text-center"> Analysis</label>
+                        <div class="col-sm-5">
+                            <div class="control-group">
+                                <div class="checkbox">
+                                    <label>
+                                        <input name="form-field-checkbox" type="checkbox" class="ace ace-checkbox-2">
+                                        <span class="lbl"> choice 1</span>
+                                    </label>
+                                </div>
+
+                                <div class="checkbox">
+                                    <label>
+                                        <input name="form-field-checkbox" type="checkbox" class="ace ace-checkbox-2">
+                                        <span class="lbl"> choice 2</span>
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input name="form-field-checkbox" class="ace ace-checkbox-2" type="checkbox">
+                                        <span class="lbl"> choice 3</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 control-label no-padding-right text-center"> Results</label>
+                        <div class="col-sm-5">
+                            <div class="control-group">
+                                <div class="checkbox">
+                                    <label>
+                                        <input name="form-field-checkbox" type="checkbox" class="ace ace-checkbox-2">
+                                        <span class="lbl"> choice 1</span>
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input name="form-field-checkbox" type="checkbox" class="ace ace-checkbox-2">
+                                        <span class="lbl"> choice 2</span>
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input name="form-field-checkbox" class="ace ace-checkbox-2" type="checkbox">
+                                        <span class="lbl"> choice 3</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <!-- /row -->
+            <!-- PAGE CONTENT ENDS -->
+            <div class="d-flex flex-row justify-content-end mb-2">
+                <div class="spinner spinner--steps2 icomoon-spinner-7 invisible" aria-hidden="true"></div>
+                <button id="submit-button" type="submit" class="btn btn-info mr-2" value="Run Model"><i
+                        class="fas fa-play"></i> Run Model
+                </button>
+                <a id="download-button" class="btn btn-outline-info" href="#"><i class="fas fa-download"></i>
+                    Download</a>
+            </div>
+            <div class="row">
+            <div class="card col-lg-12">
+                <div class="card-header">
+                    <h5 class="card-title">Output Log</h5>
+                </div>
+                <div class="card-body">
+                    <div id="networkDiagram"></div>
+                    <div class="tabcontainer">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
+                            <li role="presentation" class="nav-item">
+                                <a href="#outputtab" class="nav-link active"
+                                   aria-controls="home" role="tab"
+                                   data-toggle="tab">Output Tab</a>
+                            </li>
+                        </ul>
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active mini-height overflow-auto" id="outputtab">
+                                <div id="outputarea" align='left'
+                                     class="form-control overflow-auto mt-2 mb-2 "
+                                     style="
+    height: 800px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="Run" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Run Details</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Some text in the modal.</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary">Ok</button>
+                                    <button type="button" class="btn btn-warning" data-dismiss="modal">Terminate the
+                                        Run
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            </form>
+        </div>
+    </section>
+<script src="/static/assets/js/model-run.js"></script>
+<script>
+    $(document).ready(function() {
+        initJs('{{mode}}', '{{project.uid}}', {{project.account.id}}, '{{scenario.uid}}');
+    });
+
+</script>
+{% endblock %}

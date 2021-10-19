@@ -1,0 +1,184 @@
+{% extends 'layout.html' %}
+{% block body_block %}
+<section class="content">
+    <div class="container-fluid">
+        <div class="row mb-4">
+            <div class="col-12 ">
+                <a href="{% url 'project.view' project.uid %}" class="btn btn-info float-right">
+                    <i class="fas fa-chevron-left"></i> Back to Scenario
+                </a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Project: <strong>{{project.name}} / </strong> Scenario:
+                    <strong>{{scenario.name}}</strong></h5>
+            </div>
+            <div class="card-body overflow-auto">
+                <div class="col-6">
+                    <div class="d-flex flex-row mb-4 btn-group">
+                <a href="{% url 'input_data.index' project.uid  scenario.uid %}" class="btn btn-primary">
+                    <i class="far fa-circle nav-icon"></i> Input Data
+                </a>
+                <a href="{% url 'model_run.index' project.uid  scenario.uid %}" class="btn btn-primary">
+                    <i class="far fa-square nav-icon"></i> Model Run
+                </a>
+                <a href="{% url 'output_data.index' project.uid  scenario.uid %}" class="btn btn-primary">
+                    <i class="far fa-circle nav-icon"></i> Output Data
+                </a>
+                </div>
+                </div>
+
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Mode</th>
+                        <th>Started On
+                        <th>Last Updated</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for action in actions %}
+                    <tr>
+                        <td>{{ action.name }}</td>
+                        <td>
+                            {% if action.mode == 'input' %}
+                            Input Diagram
+                            {% elif action.mode == 'output' %}
+                            Output Diagram
+                            {% else %}
+                            Model Run
+                            {% endif %}
+                        </td>
+                        <td>{{ action.created }}</td>
+                        <td>{{ action.updated }}</td>
+                        <td>
+                            <div class="btn-group1" role="group" aria-label="Actions">
+                                <a class="btn btn-outline-primary px-2 py-1"
+                                   href="{% url 'actions.view' project.uid scenario.uid action.uid %}">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                </a>
+
+                                <a class="btn btn-outline-danger px-2 py-1"
+                                   href="javascript://;"
+                                   data-toggle="modal"
+                                   data-target="#confirm-delete"
+                                   data-href="{% url 'actions.delete' project.uid scenario.uid action.uid %}"><i
+                                        class="fa fa-trash" aria-hidden="true"></i></a>
+                            </div>
+
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5">No Actions to display</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card card-info">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            {{scenario.name}}
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="main-container" class="container-fluid">
+                            <div id="output-box" class="container-fluid">
+
+                                <div class="row" style="padding:1em">
+                                    <div class="col-md-12">
+                                        <select id="tables" class="form-control select2" title="Table"></select><br/>
+                                    </div>
+
+                                    <div class="col-md-11" style="margin-bottom: 1em">
+                                        <div id="sql-editor" class="panel panel-default form-control"></div>
+
+                                    </div>
+
+                                    <div class="col-sm-1">
+                                        <button class="btn btn-sm btn-primary" id="sql-run" type="submit"
+                                                onclick="executeSql(this)">Execute
+                                        </button>
+                                    </div>
+
+                                    <div class="col-md-12">
+
+                                        <div style="overflow-x: auto">
+                                            <table id="data"
+                                                   class="table table-condensed table-bordered table-hover table-striped">
+                                                <thead>
+                                                <tr></tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
+
+                                        <div class="alert alert-danger box" id="error" style="display: none"></div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="alert alert-danger box" style="display: none"></div>
+                            <div class="alert alert-warning box" style="display: none"></div>
+                            <div class="alert alert-info box" style="display: none"></div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div id="bottom-bar" class="text-center">
+                            <div class="inline">
+                                <button class="btn btn-default btn-sm " id="page-prev" type="submit"
+                                        onclick="setPage(this, false)"><i class="fa fa-angle-left"
+                                                                             aria-hidden="true"></i></button>
+                                <a href="javascript:void(0)" data-toggle="tooltip" data-placement="top"
+                                   onclick="setPage(this)" id="pager"></a>
+                                <button class="btn btn-default btn-sm " id="page-next" type="submit"
+                                        onclick="setPage(this, true)"><i class="fa fa-angle-right"
+                                                                            aria-hidden="true"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% include "common/confirm_dialog.html" with message="Are you sure?" %}
+
+{% endblock %}
+
+
+{% block javascript %}
+<script src="/static/assets/js/confirm_dialog.js"></script>
+<script src="/static/assets/js/filereader.js"></script>
+<script src="/static/assets/js/sql.js"></script>
+<script src="/static/assets/js/select2.min.js"></script>
+<script src="/static/assets/js/ace/ace.js"></script>
+<script src="/static/assets/js/mindmup-editabletable.js"></script>
+<script src="/static/assets/js/main.js"></script>
+
+<script>
+    $(document).ready(function() {
+        init_confirm_dialog()
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+             readFile('{% url 'files.download' project.uid 'files' data_file.name %}');
+    }, false);
+</script>
+{% endblock %}

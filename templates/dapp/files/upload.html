@@ -1,0 +1,74 @@
+{% extends 'layout.html' %}
+
+{% block title %}Add Project{% endblock %}
+
+{% block body_block %}
+
+
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="d-flex flex-row justify-content-end mb-4">
+            <a class="btn btn-info" d="modelCreateProject" href="{% url 'project.view' project.uid %}"><i
+                    class="fas fa-chevron-left mr-2"></i>Back to Scenarios
+            </a>
+        </div>
+
+        <div class="card card-info">
+            <div class="card-header">
+                <h5 class="card-title">Upload File</h5>
+            </div>
+            <div class="card-body">
+                <form action="" method="post" id="upload-file">
+                    {% csrf_token %}
+                    <div class="form-group no-margin-bottom row d-flex justify-content-center">
+                        <div class="col-sm-8">
+                            <input name="scenario_name" id="scenario_name" onkeypress="return AvoidSpace(event)" type="text" placeholder="Scenario Name"
+                                   class="form-control"/>
+                        </div>
+                        <div id="dropAreaBox" class="col-sm-8">
+                            <div id="dropArea" class="dropzone"></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+
+</section>
+<script src="/static/assets/js/upload.js"></script>
+<script>
+    $(document).ready(function() {
+    Dropzone.autoDiscover = false;
+    initJs();
+    $("#dropArea").css({"pointer-events": "none", "cursor": "not-allowed"});
+    });
+
+    function AvoidSpace(event) {
+    var k = event ? event.which : window.event.keyCode;
+    if (k == 32)
+     {
+     PNotify.error({ text:'Space not allowed in scenario name',});
+     return false;
+     }
+}
+
+$("#dropAreaBox").click( function() {
+
+        if($("[name=scenario_name]").val().trim() == "") {
+        $("#dropArea").css({"pointer-events": "none", "cursor": "not-allowed"});
+            PNotify.error({
+            text:'Enter Scenario Name',
+            });
+        } else {
+            $("#dropArea").css({"pointer-events": "auto", "cursor": "auto"});
+            $("#dropArea").trigger('click');
+        }
+    });
+
+</script>
+
+{% endblock %}
+
