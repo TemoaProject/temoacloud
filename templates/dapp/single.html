@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" style="background-color:#f7f7f7 !important;height: auto">
+<head>
+    <link rel="stylesheet" href="/static/assets/css/dropzone.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/assets/css/adminlte.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" type="text/css" href="/static/assets/css/dataTables.bootstrap4.css">
+    <title>{{title}} - TEMOA</title>
+    <meta charset="utf-8" />
+    <meta name="description" content="Draggabble Widget Boxes &amp; Containers" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+
+        <div class="content-wrapper pt-4">
+            {% block body_block %}{% endblock %}
+        </div>
+
+        <a id="back-to-top" href="#" class="btn btn-info back-to-top" role="button" aria-label="Scroll to top">
+            <i class="fas fa-chevron-up"></i>
+        </a>
+        <footer class="main-footer text-center">
+            <div class="d-sm-inline-block">
+                <strong>TEMOA © 2015-2020 Joe DeCarolis</strong>
+            </div>
+        </footer>
+    </div>
+    <!-- jQuery -->
+    <script src="/static/assets/js/jquery.min.js"></script>
+    <script src="/static/assets/js/jquery-ui.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="/static/assets/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="/static/assets/js/adminlte.min.js"></script>
+    <!-- Drop-zone -->
+    <script src="/static/assets/js/dropzone.js"></script>
+    <!-- DataTables -->
+    <script src="/static/assets/js/jquery.dataTables.js"></script>
+    <script src="/static/assets/js/dataTables.bootstrap4.js"></script>
+    <script>
+      $(function () {
+        $('#project').DataTable({
+          "paging": true,
+          "lengthChange": false,
+          "searching": false,
+          "ordering": true,
+          "info": true,
+          "autoWidth": false,
+        });
+      });
+
+    </script>
+    <script type="text/javascript">
+         Dropzone.autoDiscover = false;
+      $(document).ready(function() {
+       $("a").each(function() {
+        if ((window.location.pathname.indexOf($(this).attr('href'))) > -1) {
+            $(this).addClass('active');
+        }
+    });
+    });
+        $(document).ready(function(){
+        $('[data-rel="popover"]').popover();
+    });
+        jQuery(function ($) {
+                //dynamically change allowed formats by changing before_change callback function
+
+    const availableTags = [
+                        "ActionScript",
+                        "AppleScript",
+                        "Asp",
+                        "BASIC",
+                        "C",
+                        "C++",
+                        "Clojure",
+                        "COBOL",
+                        "ColdFusion",
+                        "Erlang",
+                        "Fortran",
+                        "Groovy",
+                        "Haskell",
+                        "Java",
+                        "JavaScript",
+                        "Lisp",
+                        "Perl",
+                        "PHP",
+                        "Python",
+                        "Ruby",
+                        "Scala",
+                        "Scheme"
+                    ];
+                    $( "#tags" ).autocomplete({
+                        source: availableTags
+                    });
+
+
+                //we could just set the data-provide="tag" of the element inside HTML, but IE8 fails!
+
+
+            });
+    </script>
+{% block javascript %}{% endblock %}
+</body>
+</html>

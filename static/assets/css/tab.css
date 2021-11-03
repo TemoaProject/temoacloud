@@ -1,0 +1,55 @@
+.nav-tabs > li {
+    position:relative;
+}
+.nav-tabs>li>a:hover{
+    border-color: #eee #eee #ddd;
+}
+.nav-tabs > li > a {
+    margin-right: 2px;
+    line-height: 1.5;
+    border: 1px solid transparent;
+    border-radius: 4px 4px 0 0;
+    display:inline-block;
+    padding: 10px 15px;
+}
+.nav-tabs > li > span {
+    display:none;
+    cursor:pointer;
+    position:absolute;
+    right: 6px;
+    top: 8px;
+    color: red;
+}
+.nav-tabs > li:hover > span {
+    display: inline-block;
+}
+
+#outputarea
+{
+	margin: 15px 0 25px 10px;
+	width: 98%;
+}
+
+.tabcontainer
+{
+	margin-left: 12px;
+	width: 98%;
+}
+
+.mini-height
+{
+	min-height: 400px;
+	overflow: auto;
+}
+
+.mini-height-query
+{
+    margin: 15px 0 25px 10px;
+    width: 98%;
+    min-height: 200px;
+}
+#queryresult
+{
+    margin-top: 30px;
+    font-size: 16px;
+}

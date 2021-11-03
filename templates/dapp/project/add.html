@@ -1,0 +1,72 @@
+{% extends 'layout.html' %}
+
+{% block title %}Add Project{% endblock %}
+
+{% block body_block %}
+
+
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="d-flex flex-row justify-content-end mb-4">
+            <a class="btn btn-info" d="modelCreateProject" href="{% url 'project.index'%}"><i
+                    class="fas fa-chevron-left mr-2"></i>Back to Projects
+            </a>
+        </div>
+
+        <div class="card">
+            <div class="card-header ch-alt">
+                <h4><strong>Add Project</strong></h4>
+                <p class="card-sub-heading">A project represents a container that can include several different model scenarios.</p>
+            </div>
+
+            <div class="table-responsive">
+
+                <div class="bs-callout bs-callout-warning d-none">
+                    <h4>Oh snap!</h4>
+                    <p>This form seems to be invalid :(</p>
+                </div>
+
+                <div class="bs-callout bs-callout-info d-none">
+                    <h4>Yay!</h4>
+                    <p>Everything seems to be ok :)</p>
+                </div>
+
+
+                <form action="" method="post" id="add-project">
+
+                    {% csrf_token %}
+                    <table class="table  projects">
+
+                        <tr>
+                            <th>{{form.name.label_tag}}</th>
+                            <td>{{form.name}} {{ form.name.errors }} {{form.name.help_text}}</td>
+                        </tr>
+
+                        <tr>
+                            <th>{{form.desc.label_tag}}</th>
+                            <td>{{form.desc}} {{ form.desc.errors }}</td>
+                        </tr>
+
+
+
+                        <tr>
+                            <th></th>
+                            <td><input type="submit" class="btn btn-primary  add-project-btn" value="Create"/>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</section>
+
+
+{% endblock %}
+

@@ -1,0 +1,9 @@
+Log file cannot be opened. Please check path. Trying to find:
+/home/nikhil/temoacloud/resultdebug_logs folder
+
+Solver will write file: biscuit.lp
+
+Reading data files.[    0.05]
+Creating Temoa model instance.[    0.30]
+Solving.Exception found in solve_temoa_instance
+[Errno 2] No such file or directory: '/home/nikhil/temoacloud/resultdebug_logs/lp_files/tmpcsbwuuvi.pyomo.lp'

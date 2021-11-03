@@ -1,0 +1,26 @@
+{% load custom_tags %}
+<ul class="list-group list-group-bordered">
+                  <li class="list-group-item">
+                    <b>Select Region</b> <p class="float-right">{{output_data.region}}</p>
+                  </li>
+                  <li class="list-group-item">
+                    <b>Select scenario</b> <p class="float-right">{{output_data.selected_scenario}}</p>
+                  </li>
+                  <li class="list-group-item">
+                    <b>plot type</b>
+                      <p class="float-right">
+                          {% if output_data.plot_type == "1"%}
+                            Capacity
+                          {% elif output_data.plot_type == "2" %}
+                            Output Flow
+                          {% else %}
+                            Emissions
+                          {% endif%}
+
+                      </p>
+                  </li>
+                  <li class="list-group-item">
+                    <b>sector</b> <p class="float-right">{{output_data.sector}}</p>
+                  </li>
+
+                </ul>

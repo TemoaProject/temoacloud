@@ -1,0 +1,53 @@
+{% extends 'layout.html' %} 
+{% block body_block %}
+<div class="content-header">
+ <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+             <h1 class="m-0 text-dark">About us</h1>
+             </div><!-- /.col -->
+            </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+ <!-- /.content-header -->
+
+    <!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+    <section class="col-lg-8 connectedSortable ui-sortable">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">About The TEMOA Project</h5>
+            </div>
+            <div class="card-body">
+                <div>
+                    <p class="justify-content-between"> <i class="ace-icon fa fa-umbrella bigger-120 blue"></i> Tools for Energy Model Optimization and Assessment (Temoa) is an open source modeling framework for conducting energy system analysis. The core component of Temoa is an energy system optimization model. It's similar in design to the MARKAL / TIMES model generators, OSeMOSYS, and MESSAGE. For more information on Temoa, please visit our <a href="http://www.temoaproject.org/" target="_blank">project website</a>.</p></div>
+                <div class="text-center col-md-12 mb-3">
+                    <iframe  height="315" width="100%" src="https://www.youtube.com/embed/u5kWC7q6OTs" frameborder="0" allowfullscreen></iframe>
+                </div>
+                 <div class="text-center col-md-12 mb-3">
+                    <iframe height="315" width="100%" src="https://www.youtube.com/embed/pvlI-ZIGWW8" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="text-center col-md-12 mb-3">
+                     <iframe height="315" width="100%" src="https://www.youtube.com/embed/0wUi64bW-JI" frameborder="0" allowfullscreen></iframe>
+                </div>
+                </div>
+        </div>
+    </section>
+    <section class="col-lg-4 connectedSortable ui-sortable">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">User Manual</h5>
+        </div>
+          <div class="card-body">
+            <div class="form-group">
+                <a href="http://temoaproject.org/download/TemoaDocumentation.pdf" id="download-button" class="btn btn-outline-info" href="#" ><i class="fas fa-download"></i> View</a>
+            </div>
+            </div>
+        </div>  <!-- /.card-body -->
+    </section>
+    </div>
+  </div>
+</section>
+{% endblock %}

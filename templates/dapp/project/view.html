@@ -1,0 +1,112 @@
+{% extends "layout.html" %}
+{% block body_block %}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="d-flex flex-row justify-content-end mb-4">
+            <a class="btn btn-info" d="modelCreateProject" href="{% url 'project.index'%}"><i
+                    class="fas fa-chevron-left mr-2"></i>Back to projects
+            </a>
+        </div>
+        <div class="card card-info">
+            <div class="card-header">
+                <h5 class="card-title">Project: <strong>{{project.name}}</strong></h5>
+            </div>
+            <div class="card-body overflow-auto">
+                <div class="row">
+          <!--<div class="col-lg-3 col-6">
+            &lt;!&ndash; small box &ndash;&gt;
+            <div class="small-box">
+              <div class="inner">
+                <h4>Scenarios</h4>
+
+                <p>Manage Scenarios</p>
+              </div>
+              <div class="icon">
+                 <i class="fas fa-project-diagram"></i>
+              </div>
+              <a  class="small-box-footer bg-info text-right px-2">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>-->
+          <!-- ./col -->
+          <!--<div class="col-lg-3 col-6">
+            &lt;!&ndash; small box &ndash;&gt;
+            <div class="small-box">
+              <div class="inner">
+                <h4>Files</h4>
+                  <p>Manage Files</p>
+              </div>
+              <div class="icon">
+                <i class="fa fa-file"></i>
+              </div>
+              <a href="{% url 'files.index' project.uid%}" class="small-box-footer bg-info text-right px-2">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>-->
+          <!-- ./col -->
+
+
+        </div>
+        <div class="card-body overflow-auto">
+             <div class="d-flex flex-row mb-4">
+            <a href="{% url 'files.index' project.uid%}" class="btn btn-primary"><i class="fas fa-plus mr-2"></i> Manage Scenarios  </a>
+             </div>
+                 <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Started On
+                        <th>Last Updated</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                     {% for scenario in scenarios %}
+                    <tr>
+                        <td>{{ scenario.name }}</td>
+
+                        <td>{{ scenario.created }}</td>
+                        <td>{{ scenario.updated }}</td>
+                        <td>
+                            <div class="btn-group1" role="group" aria-label="Actions">
+                                <a class="btn btn-outline-primary px-2 py-1"
+                                   href="{% url 'scenario.view' project.uid scenario.uid %}"  >
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                </a>
+
+                                <a class="btn btn-outline-danger px-2 py-1"
+                                   href="javascript://;"
+                                   data-toggle="modal"
+                                   data-target="#confirm-delete"
+                                   data-href="{% url 'scenario.delete' project.uid scenario.uid %}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                            </div>
+
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5">No Scenario to display</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+{% include "common/confirm_dialog.html" with message="Are you sure?" %}
+
+{% endblock %}
+
+
+{% block javascript %}
+<script src="/static/assets/js/confirm_dialog.js"></script>
+<script>
+    $(document).ready(function() {
+        init_confirm_dialog()
+    });
+</script>
+{% endblock %}
